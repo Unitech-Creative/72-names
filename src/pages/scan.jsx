@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Check, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import React from "react";
 
 export default function Home({}) {
   return (
@@ -45,8 +46,8 @@ function Header() {
         <div>72 Names of God</div>
       </h1>
       <div className="mt-10">
-        <div className="mt-10 flex place-content-end rounded-full ">
-          <div className="flex rounded-full bg-cal-500 p-2 px-3 text-sm text-cal-900">
+        <div className="mt-10 flex place-content-end ">
+          <div className="flex p-2 px-3 text-sm text-cal-700">
             <ArrowLeft className="-mt-0.5 mr-2 w-4" /> scan right to left
           </div>
         </div>
@@ -70,7 +71,7 @@ function ScanChart() {
         const reversedIndex = row * 8 + (7 - col);
 
         return (
-          <>
+          <React.Fragment key={index}>
             <NameOfGod
               key={index}
               position={reversedIndex + 1}
@@ -78,7 +79,7 @@ function ScanChart() {
             />
 
             {(index + 1) % 8 === 0 && index !== n - 1 && <Divider />}
-          </>
+          </React.Fragment>
         );
       })}
       <Divider />
