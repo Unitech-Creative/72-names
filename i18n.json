@@ -1,0 +1,8 @@
+{
+  "locales": ["ru", "en"],
+  "defaultLocale": "ru",
+  "pages": {
+    "*": ["navigation"],
+    "/lesson/[id]": ["comments", "time_ago"]
+  }
+}
