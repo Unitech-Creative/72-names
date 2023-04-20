@@ -1,11 +1,15 @@
 import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
+import clsx from "clsx";
+import Link from "next/link";
+import { Check, ArrowLeft } from "lucide-react";
+import { useState } from "react";
 
-export default function Home({ courses }) {
+export default function Home({}) {
   return (
     <Layout>
       <div>
-        <h1 className="text-4xl font-bold">SCAN</h1>
+        <Header />
 
         <ScanChart />
       </div>
@@ -20,32 +24,91 @@ export default function Home({ courses }) {
 //   };
 // }
 
-function ScanChart() {
-  const n = 16;
+function Tip() {
+  const [showCheck, setShowCheck] = useState(false);
 
+  const handleMouseEnter = () => {
+    setShowCheck(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowCheck(false);
+  };
+}
+
+function Header() {
   return (
-    // <div className="gap2-4 grid grid-cols-8">
-    <div className="flex space-x-2">
-      {Array.from({ length: n }, (_, index) => (
-        <div className="col-span-1" key={index}>
-          <EnergizingForce position={index + 1} />
+    <div className="mb-5">
+      <h1 className="flex place-content-end space-x-3 text-right text-xl font-bold">
+        <div className="text-cal-300">Scan</div>
+        <div>&lt;</div>
+        <div>72 Names of God</div>
+      </h1>
+      <div className="mt-10">
+        <div className="mt-10 flex place-content-end rounded-full ">
+          <div className="flex rounded-full bg-cal-500 p-2 px-3 text-sm text-cal-900">
+            <ArrowLeft className="-mt-0.5 mr-2 w-4" /> scan right to left
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
 
-function EnergizingForce({ position }) {
+function ScanChart() {
+  const n = 72;
+
+  const Divider = () => (
+    <div className="col-span-8 my-2 h-0.5 w-full bg-gradient-to-tl from-cal-100 to-cal-950 "></div>
+  );
+
   return (
-    <div className="relative aspect-square h-[100px] bg-sky-300 p-4 text-white">
-      <div className="absolute bottom-0 right-0 h-1/2 w-full bg-black"></div>
+    <div className="grid grid-cols-8">
+      {Array.from({ length: n }, (_, index) => {
+        const row = Math.floor(index / 8);
+        const col = index % 8;
+        const reversedIndex = row * 8 + (7 - col);
+
+        return (
+          <>
+            <NameOfGod
+              key={index}
+              position={reversedIndex + 1}
+              className="aspect-video w-[50px] border-cal-800 p-4 md:w-[90px] lg:w-[110px]"
+            />
+
+            {(index + 1) % 8 === 0 && index !== n - 1 && <Divider />}
+          </>
+        );
+      })}
+      <Divider />
+    </div>
+  );
+}
+
+function NameOfGod({ position, className }) {
+  const debug = false;
+
+  return (
+    <Link
+      href={String(position)}
+      className={clsx(className, "relative text-white", {
+        "bg-sky-300": debug,
+      })}
+    >
+      {debug && (
+        <div className="absolute bottom-0 right-0 h-1/2 w-full bg-green-800"></div>
+      )}
+
       <ReactSVG
         src={`/images/svgs/72-${position}.svg`}
-        className="absolute top-0 left-0 w-full fill-white"
+        className="absolute top-0 left-0 -mt-[20px] w-full fill-white"
       />
-      <div className="text-red absolute bottom-0 right-0 text-sm">
-        {position}
-      </div>
-    </div>
+      {debug && (
+        <div className="text-red absolute bottom-0 right-0 text-sm">
+          {position}
+        </div>
+      )}
+    </Link>
   );
 }
