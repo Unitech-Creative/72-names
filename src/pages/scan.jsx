@@ -93,7 +93,7 @@ function NameOfGod({ position, className }) {
   return (
     <Link
       href={String(position)}
-      className={clsx(className, "relative text-white", {
+      className={clsx(className, "relative", "fill-white hover:fill-red-500", {
         "bg-sky-300": debug,
       })}
     >
@@ -103,7 +103,7 @@ function NameOfGod({ position, className }) {
 
       <ReactSVG
         src={`/images/svgs/72-${position}.svg`}
-        className="absolute top-0 left-0 -mt-[20px] w-full fill-white"
+        className="absolute top-0 left-0 -mt-[20px] w-full"
       />
       {debug && (
         <div className="text-red absolute bottom-0 right-0 text-sm">
