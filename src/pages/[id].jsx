@@ -5,24 +5,19 @@ import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { Language } from "@/lib/language";
 
 const INDENTATION = "80px";
 
-export default function Home({ id }) {
-  const data = {
-    id: id,
-    title: "Fertility",
-    subTitle: "build your vessel and spiritual DNA of fertility",
-    subSubTitle: "When conception is difficult",
-    meditation: `I have the power of clear vision and foresight in every part of my
-    life. The blindfolds are removed. I can see the full–grown tree within
-    the newly planted seed. I can grasp the cause-and-effect relationship
-    that governs all of reality. My life choices and actions are motivated
-    by ultimate results, not momentary illusions. I can now also see more
-    with my eyes. I can perceive more through my mind’s eye. And I feel
-    more through my intuition.`,
-  };
+function getData(id) {
+  let { locale, lang } = Language();
+  const data = lang[String(id)];
+  data.id = id;
+  return data;
+}
 
+export default function Home({ id }) {
+  const data = getData(id);
   const imageCard = <ImageCard data={data} />;
 
   return (
@@ -68,16 +63,16 @@ function NameHeader({ data }) {
     <>
       <div className="mb-5 flex w-full font-serif text-3xl text-cal-200">
         <div className={`flex w-[${INDENTATION}]`}>
-          #{data.id}{" "}
+          #{data.id}
           <div className="ml-1.5 text-cal-700">
             <ChevronRight className="mt-1" />
           </div>
         </div>
-        <div className="">{data.title}</div>
+        <div className="">{data.purpose}</div>
       </div>
 
       <div className={`my-5 ml-[${INDENTATION}] leading-6 text-cal-400`}>
-        {data.subTitle} <br />( {data.subSubTitle} )
+        {data.short}
       </div>
     </>
   );
