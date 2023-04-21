@@ -13,6 +13,7 @@ import {
   goToPreviousId,
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
+import { useRouter } from "next/router";
 
 function getData(id) {
   let { locale, lang } = Language();
@@ -135,13 +136,15 @@ function ImageCard({ data }) {
     trackTouch: true, // track touch input
     trackMouse: false, // track mouse input
     rotationAngle: 0, // set a rotation angle
-    swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
+    swipeDuration: 250, // allowable duration of a swipe (ms). *See Notes*
     touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
   };
 
+  const router = useRouter();
+
   const handlers = useSwipeable({
-    onSwipedLeft: (eventData) => goToPreviousId(data.id),
-    onSwipedRight: (eventData) => goToNextId(data.id),
+    onSwipedLeft: (eventData) => goToNextId(data.id, router),
+    onSwipedRight: (eventData) => goToPreviousId(data.id, router),
     ...config,
   });
 

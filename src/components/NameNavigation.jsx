@@ -1,7 +1,17 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import {useRouter} from "next/router";
 
-export const goToPreviousId = (id) => {
+
+export const goToNextId = (id, router) => {
+  router.push(`/${getNextId(id)}`);
+};
+
+export const goToPreviousId = (id, router) => {
+  router.push(`/${getPreviousId(id)}`);
+};
+
+export const getPreviousId = (id) => {
   const prevId = id - 1;
   const targetId = prevId < 1 ? 72 : prevId;
   return targetId;
@@ -9,13 +19,13 @@ export const goToPreviousId = (id) => {
 
 export const PrevButton = ({ id }) => {
   return (
-    <Link href={`/${goToPreviousId(id)}`}>
+    <Link href={`/${getPreviousId(id)}`}>
       <ChevronLeft className="text-cal-400" />
     </Link>
   );
 };
 
-export const goToNextId = (id) => {
+export const getNextId = (id) => {
   const nextId = id + 1;
   const targetId = nextId > 72 ? 1 : nextId;
   return targetId;
@@ -23,7 +33,7 @@ export const goToNextId = (id) => {
 
 export const NextButton = ({ id }) => {
   return (
-    <Link href={`/${goToNextId(id)}`}>
+    <Link href={`/${getNextId(id)}`}>
       <ChevronRight className="text-cal-400" />
     </Link>
   );
