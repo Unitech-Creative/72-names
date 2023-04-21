@@ -159,7 +159,7 @@ function Footer() {
             <div key={item.name} className="pb-6">
               <Link
                 {...item}
-                className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                className="flex place-content-center text-sm leading-6 text-gray-600 hover:text-gray-900"
               >
                 {item.name}
               </Link>

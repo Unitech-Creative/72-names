@@ -7,8 +7,6 @@ import { ChevronRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Language } from "@/lib/language";
 
-const INDENTATION = "80px";
-
 function getData(id) {
   let { locale, lang } = Language();
   const data = lang[String(id)];
@@ -61,18 +59,18 @@ export async function getStaticProps(context) {
 function NameHeader({ data }) {
   return (
     <>
-      <div className="mb-5 flex w-full font-serif text-3xl text-cal-200">
-        <div className={`flex w-[${INDENTATION}]`}>
+      <div className="mb-5 flex w-full font-serif text-2xl text-cal-200 md:text-3xl">
+        <div className={`flex w-[80px]`}>
           #{data.id}
           <div className="ml-1.5 text-cal-700">
             <ChevronRight className="mt-1" />
           </div>
         </div>
-        <div className="">{data.purpose}</div>
+        <div>{data.purpose}</div>
       </div>
 
-      <div className={`my-5 ml-[${INDENTATION}] leading-6 text-cal-400`}>
-        {data.short}
+      <div className={`my-5 w-full leading-6 text-cal-400`}>
+        <div className={clsx("w-full", `md:pl-[80px]`)}>{data.short}</div>
       </div>
     </>
   );
@@ -88,23 +86,21 @@ function Header({ data }) {
 
 function Meditation({ data }) {
   return (
-    <div className="my-10">
+    <div className=" mt-12 mb-10 md:pl-[80px]">
       <h3 className="mb-5 font-serif text-2xl text-cal-300">Meditation</h3>
 
-      <div className={`my-5 leading-6 text-cal-400 ml-[${INDENTATION}]`}>
-        {data.meditation}
-      </div>
+      <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
     </div>
   );
 }
 
 function ImageCard({ data }) {
   return (
-    <div className="flex w-full flex-1 flex-col items-center justify-center text-center">
-      <div className="bordexr aspect-video overflow-hidden rounded-lg border-cal-700">
+    <div className="flex w-full justify-center ">
+      <div>
         <Svg
           id={data.id}
-          className="-mt-[20px] aspect-video w-[260px] border-cal-800 p-4 md:-mt-[40px] md:w-[400px] lg:-mt-[100px] lg:w-[600px]"
+          className="-mt-[20px] aspect-video w-[260px] md:-mt-[40px] md:w-[400px] lg:-mt-[50px] lg:w-[550px] xl:-mt-[100px] xl:w-[600px]"
         />
       </div>
     </div>
