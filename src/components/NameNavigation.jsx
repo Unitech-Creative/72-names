@@ -31,12 +31,12 @@ export const NextButton = ({ id }) => {
 
 export const ButtonNavigation = ({ id }) => {
   return (
-    <div className="rounded-full bg-cal-800 py-1 px-2">
-      <div className="z-10 grid grid-cols-2 divide-x divide-cal-600">
-        <div className="mx-1">
+    <div className="h-9 rounded-full border border-cal-800 py-1 px-2">
+      <div className="grid grid-cols-2 divide-x divide-cal-600">
+        <div className="mx-1 pt-0.5 z-10">
           <PrevButton id={id} />
         </div>
-        <div className="ml-1 pl-1">
+        <div className="ml-1 pl-1 pt-0.5 z-10">
           <NextButton id={id} />
         </div>
       </div>
