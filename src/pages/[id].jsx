@@ -1,7 +1,6 @@
 import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
-
 import React from "react";
 import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -11,6 +10,7 @@ import {
   NextButton,
   ButtonNavigation,
 } from "@/components/NameNavigation";
+import { useSwipeable } from "react-swipeable";
 
 function getData(id) {
   let { locale, lang } = Language();
@@ -87,23 +87,25 @@ function NameHeader({ data }) {
   );
 }
 
-function HeaderWithNav({data}) {
-  return (<div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
-    <div className="lg:col-start-2">
-      <Header data={data} />
-    </div>
+function HeaderWithNav({ data }) {
+  return (
+    <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
+      <div className="lg:col-start-2">
+        <Header data={data} />
+      </div>
 
-    <div className="flex place-content-end space-x-4">
-      <div>
-        <div className="flex items-center rounded-full border border-cal-800 p-2">
-          <MoreVertical className="h-5 text-cal-400" />
+      <div className="flex place-content-end space-x-4">
+        <div>
+          <div className="flex items-center rounded-full border border-cal-800 p-2">
+            <MoreVertical className="h-5 text-cal-400" />
+          </div>
+        </div>
+        <div className="hidden lg:block">
+          <ButtonNavigation id={data.id} />
         </div>
       </div>
-      <div className="hidden lg:block">
-        <ButtonNavigation id={data.id} />
-      </div>
     </div>
-  </div>)
+  );
 }
 
 function Header({ data }) {
@@ -125,8 +127,24 @@ function Meditation({ data }) {
 }
 
 function ImageCard({ data }) {
+  const config = {
+    delta: 10, // min distance(px) before a swipe starts. *See Notes*
+    preventScrollOnSwipe: false, // prevents scroll during swipe (*See Details*)
+    trackTouch: true, // track touch input
+    trackMouse: false, // track mouse input
+    rotationAngle: 0, // set a rotation angle
+    swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
+    touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
+  };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: (eventData) => alert("User Swiped Left!", eventData),
+    onSwipedRight: (eventData) => alert("User Swiped Right!", eventData),
+    ...config,
+  });
+
   return (
-    <div className="flex w-full justify-center ">
+    <div className="flex w-full justify-center" {...handlers}>
       <div>
         <Svg
           id={data.id}

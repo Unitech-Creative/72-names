@@ -66,6 +66,7 @@ specifiers:
   react-markdown: ^8.0.5
   react-portable-text: ^0.6.0
   react-svg: ^16.1.8
+  react-swipeable: ^7.0.0
   react-wrap-balancer: ^0.4.0
   stripe: ^10.17.0
   superjson: 1.9.1
@@ -124,6 +125,7 @@ dependencies:
   react-markdown: 8.0.5_luyos4mouogwq6z3wafb3re4ce
   react-portable-text: 0.6.0_react@18.2.0
   react-svg: 16.1.8_biqbaboplfbrettd7655fr4n2y
+  react-swipeable: 7.0.0_react@18.2.0
   react-wrap-balancer: 0.4.0_react@18.2.0
   stripe: 10.17.0
   superjson: 1.9.1
@@ -5418,6 +5420,14 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /react-swipeable/7.0.0_react@18.2.0:
+    resolution: {integrity: sha512-NI7KGfQ6gwNFN0Hor3vytYW3iRfMMaivGEuxcADOOfBCx/kqwXE8IfHFxEcxSUkxCYf38COLKYd9EMYZghqaUA==}
+    peerDependencies:
+      react: ^16.8.3 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-textarea-autosize/8.3.4_luyos4mouogwq6z3wafb3re4ce:
