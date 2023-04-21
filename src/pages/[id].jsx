@@ -1,11 +1,16 @@
 import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
-import Link from "next/link";
+
 import React from "react";
-import { ChevronRight } from "lucide-react";
+import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Language } from "@/lib/language";
+import {
+  PrevButton,
+  NextButton,
+  ButtonNavigation,
+} from "@/components/NameNavigation";
 
 function getData(id) {
   let { locale, lang } = Language();
@@ -26,10 +31,21 @@ export default function Home({ id }) {
           <div className="grid-cols-2 space-x-1 lg:grid">
             <div>
               <NameHeader data={data} />
-              <div className="lg:hidden">{imageCard}</div>
+              <div className="flex place-content-between items-center lg:hidden ">
+                <PrevButton id={id} />
+                {imageCard}
+                <NextButton id={id} />
+              </div>
               <Meditation data={data} />
             </div>
             <div className="hidden lg:block">{imageCard}</div>
+          </div>
+
+          <div className="hidden place-content-end space-x-4 lg:flex">
+            <div className="rounded-full bg-cal-800 p-1">
+              <MoreVertical className="text-cal-400" />
+            </div>
+            <ButtonNavigation id={data.id} />
           </div>
         </div>
       </Container>
@@ -100,7 +116,7 @@ function ImageCard({ data }) {
       <div>
         <Svg
           id={data.id}
-          className="-mt-[20px] aspect-video w-[260px] md:-mt-[40px] md:w-[400px] lg:-mt-[50px] lg:w-[550px] xl:-mt-[100px] xl:w-[600px]"
+          className="z-1 -mt-[20px] aspect-video w-[260px] md:-mt-[40px] md:w-[400px] lg:-mt-[50px] lg:w-[550px] xl:-mt-[100px] xl:w-[600px]"
         />
       </div>
     </div>
