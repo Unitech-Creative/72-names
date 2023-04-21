@@ -2,7 +2,6 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
 import Link from "next/link";
-import { Check } from "lucide-react";
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -64,19 +63,17 @@ export async function getStaticProps(context) {
 function NameHeader({ data }) {
   return (
     <>
-      <div className="mb-5 flex w-full">
-        <div
-          className={`flex w-[${INDENTATION}] text-2xl font-bold text-cal-200`}
-        >
+      <div className="mb-5 flex w-full font-serif text-3xl text-cal-200">
+        <div className={`flex w-[${INDENTATION}]`}>
           #{data.id}{" "}
-          <div className="ml-1.5 text-2xl text-cal-700">
+          <div className="ml-1.5 text-cal-700">
             <ChevronRight className="mt-1" />
           </div>
         </div>
-        <div className="text-2xl text-cal-300">{data.title}</div>
+        <div className="">{data.title}</div>
       </div>
 
-      <div className={`my-5 ml-[${INDENTATION}] text-lg text-cal-400`}>
+      <div className={`my-5 ml-[${INDENTATION}] leading-6 text-cal-400`}>
         {data.subTitle} <br />( {data.subSubTitle} )
       </div>
     </>
@@ -85,7 +82,7 @@ function NameHeader({ data }) {
 
 function Header({ data }) {
   return (
-    <div className="mb-5 flex w-full w-full place-content-end text-xl font-bold text-cal-600">
+    <div className="mb-5 flex w-full place-content-end font-serif text-xl font-bold text-cal-600">
       72 Names of God
     </div>
   );
@@ -94,7 +91,7 @@ function Header({ data }) {
 function Meditation({ data }) {
   return (
     <div className="my-10">
-      <h3 className="mb-5 text-cal-300">Meditation</h3>
+      <h3 className="mb-5 font-serif text-2xl text-cal-300">Meditation</h3>
 
       <div className={`my-5 leading-6 text-cal-400 ml-[${INDENTATION}]`}>
         {data.meditation}

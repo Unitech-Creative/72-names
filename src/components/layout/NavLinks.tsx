@@ -33,14 +33,14 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="relative -mx-3 rounded-lg px-3 py-1 text-sm text-gray-700 transition-colors delay-150 hover:text-gray-900 hover:delay-[0ms]"
+      className="relative -mx-3 rounded-lg px-3 py-1 text-sm text-cal-300 transition-colors delay-150 hover:text-cal-900 hover:delay-[0ms]"
       onMouseEnter={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(null)}
     >
       <AnimatePresence>
         {hoveredIndex === index && (
           <motion.span
-            className="absolute inset-0 rounded-lg bg-indigo-100"
+            className="absolute inset-0 rounded-lg bg-cal-100"
             layoutId="hoverBackground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.15 } }}

@@ -10,6 +10,7 @@ import Russian from "@/locales/ru.json";
 import { Analytics } from "@vercel/analytics/react";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
+import { fontSans, fontSerif } from "@/styles/fonts";
 
 import { trpc } from "../utils/trpc";
 
@@ -76,7 +77,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <PostHogProvider client={posthog}>
         <SessionProvider session={session}>
           <IntlProvider locale={locale} messages={messages}>
-            <Component {...pageProps} />
+            <main
+              className={`${fontSans.variable} ${fontSerif.variable} font-sans`}
+            >
+              <Component {...pageProps} />
+            </main>
             <Analytics />
             <ReactQueryDevtools initialIsOpen={false} />
           </IntlProvider>
