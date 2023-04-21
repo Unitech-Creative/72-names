@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply bg-gradient min-h-full sm:h-auto
+  @apply bg-cal-900
 }
 
 body {
@@ -11,13 +11,17 @@ body {
 }
 
 h1{
-  @apply text-cal-500 text-4xl
+  @apply text-cal-500 text-5xl
 }
 
-h2, h3, h4, h5, h6 {
-  @apply text-cal-300 text-5xl
+h2 {
+  @apply text-cal-300 text-4xl
+}
+h3, h4, h5, h6 {
+  @apply text-cal-400 text-xl
 }
 
 a {
   @apply text-cal-300
 }
+ 

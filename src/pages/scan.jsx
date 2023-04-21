@@ -2,7 +2,7 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
 import Link from "next/link";
-import { Check, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import React from "react";
 
