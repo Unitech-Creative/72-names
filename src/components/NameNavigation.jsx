@@ -1,29 +1,29 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export const PrevButton = ({ id }) => {
-  const goToPreviousId = () => {
-    const prevId = id - 1;
-    const targetId = prevId < 1 ? 72 : prevId;
-    return targetId;
-  };
+export const goToPreviousId = (id) => {
+  const prevId = id - 1;
+  const targetId = prevId < 1 ? 72 : prevId;
+  return targetId;
+};
 
+export const PrevButton = ({ id }) => {
   return (
-    <Link href={`/${goToPreviousId()}`}>
+    <Link href={`/${goToPreviousId(id)}`}>
       <ChevronLeft className="text-cal-400" />
     </Link>
   );
 };
 
-export const NextButton = ({ id }) => {
-  const goToNextId = () => {
-    const nextId = id + 1;
-    const targetId = nextId > 72 ? 1 : nextId;
-    return targetId;
-  };
+export const goToNextId = (id) => {
+  const nextId = id + 1;
+  const targetId = nextId > 72 ? 1 : nextId;
+  return targetId;
+};
 
+export const NextButton = ({ id }) => {
   return (
-    <Link href={`/${goToNextId()}`}>
+    <Link href={`/${goToNextId(id)}`}>
       <ChevronRight className="text-cal-400" />
     </Link>
   );

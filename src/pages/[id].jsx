@@ -9,6 +9,8 @@ import {
   PrevButton,
   NextButton,
   ButtonNavigation,
+  goToNextId,
+  goToPreviousId,
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
 
@@ -138,8 +140,8 @@ function ImageCard({ data }) {
   };
 
   const handlers = useSwipeable({
-    onSwipedLeft: (eventData) => alert("User Swiped Left!", eventData),
-    onSwipedRight: (eventData) => alert("User Swiped Right!", eventData),
+    onSwipedLeft: (eventData) => goToPreviousId(data.id),
+    onSwipedRight: (eventData) => goToNextId(data.id),
     ...config,
   });
 
