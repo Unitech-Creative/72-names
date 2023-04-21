@@ -1,15 +1,16 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { Provider as JotaiProvider } from "jotai";
 import { IntlProvider } from "react-intl";
-import Russian from "@/locales/ru.json";
 import { Analytics } from "@vercel/analytics/react";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
+import { fontSans, fontSerif } from "@/styles/fonts";
+import { Language } from "@/lib/language";
 
 import { trpc } from "../utils/trpc";
 
@@ -65,18 +66,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }, []);
   /* posthog */
 
-  let { locale } = useRouter();
-
-  const messages = useMemo(() => {
-    return locale === "ru" ? Russian : {};
-  }, [locale]);
+  let { locale, lang } = Language();
 
   return (
     <JotaiProvider>
       <PostHogProvider client={posthog}>
         <SessionProvider session={session}>
-          <IntlProvider locale={locale} messages={messages}>
-            <Component {...pageProps} />
+          <IntlProvider locale={locale} messages={lang}>
+            <main
+              className={`${fontSans.variable} ${fontSerif.variable} font-sans`}
+            >
+              <Component {...pageProps} />
+            </main>
             <Analytics />
             <ReactQueryDevtools initialIsOpen={false} />
           </IntlProvider>

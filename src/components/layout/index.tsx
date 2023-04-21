@@ -149,7 +149,7 @@ const navigation = {
 
 function Footer() {
   return (
-    <footer className="">
+    <footer className="font-serif">
       <div className="py-10 px-6 sm:py-12 lg:px-8">
         <nav
           className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
@@ -159,7 +159,7 @@ function Footer() {
             <div key={item.name} className="pb-6">
               <Link
                 {...item}
-                className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                className="flex place-content-center text-sm leading-6 text-gray-600 hover:text-gray-900"
               >
                 {item.name}
               </Link>

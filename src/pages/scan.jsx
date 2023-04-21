@@ -2,9 +2,8 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
 import Link from "next/link";
-import { Check, ArrowLeft } from "lucide-react";
-import { useState } from "react";
-import React from "react";
+import { ChevronLeft, ArrowLeft } from "lucide-react";
+import React, { useState } from "react";
 
 export default function Home({}) {
   return (
@@ -39,10 +38,12 @@ function Tip() {
 
 function Header() {
   return (
-    <div className="mb-5">
+    <div className="mb-5 font-serif">
       <h1 className="flex place-content-end space-x-3 text-right text-xl font-bold">
         <div className="text-cal-300">Scan</div>
-        <div>&lt;</div>
+        <div>
+          <ChevronLeft className="mt-1" />
+        </div>
         <div>72 Names of God</div>
       </h1>
       <div className="mt-10">

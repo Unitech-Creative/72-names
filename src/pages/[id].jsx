@@ -1,0 +1,135 @@
+import { ReactSVG } from "react-svg";
+import Layout from "../components/layout";
+import clsx from "clsx";
+import Link from "next/link";
+import React from "react";
+import { ChevronRight } from "lucide-react";
+import { Container } from "@/components/layout/Container";
+import { Language } from "@/lib/language";
+
+function getData(id) {
+  let { locale, lang } = Language();
+  const data = lang[String(id)];
+  data.id = id;
+  return data;
+}
+
+export default function Home({ id }) {
+  const data = getData(id);
+  const imageCard = <ImageCard data={data} />;
+
+  return (
+    <Layout>
+      <Container>
+        <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
+          <Header data={data} />
+          <div className="grid-cols-2 space-x-1 lg:grid">
+            <div>
+              <NameHeader data={data} />
+              <div className="lg:hidden">{imageCard}</div>
+              <Meditation data={data} />
+            </div>
+            <div className="hidden lg:block">{imageCard}</div>
+          </div>
+        </div>
+      </Container>
+    </Layout>
+  );
+}
+
+export async function getStaticPaths() {
+  const ids = Array.from({ length: 72 }, (_, i) => i + 1).map((id) => ({
+    params: { id: id.toString() },
+  }));
+
+  return {
+    paths: ids,
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps(context) {
+  const { id } = context.params;
+
+  return {
+    props: { id }, // will be passed to the page component as props
+  };
+}
+
+function NameHeader({ data }) {
+  return (
+    <>
+      <div className="mb-5 flex w-full font-serif text-2xl text-cal-200 md:text-3xl">
+        <div className={`flex w-[80px]`}>
+          #{data.id}
+          <div className="ml-1.5 text-cal-700">
+            <ChevronRight className="mt-1" />
+          </div>
+        </div>
+        <div>{data.purpose}</div>
+      </div>
+
+      <div className={`my-5 w-full leading-6 text-cal-400`}>
+        <div className={clsx("w-full", `md:pl-[80px]`)}>{data.short}</div>
+      </div>
+    </>
+  );
+}
+
+function Header({ data }) {
+  return (
+    <div className="mb-5 flex w-full font-serif text-xl font-bold text-cal-600 lg:place-content-end">
+      72 Names of God
+    </div>
+  );
+}
+
+function Meditation({ data }) {
+  return (
+    <div className=" mt-12 mb-10 md:pl-[80px]">
+      <h3 className="mb-5 font-serif text-2xl text-cal-300">Meditation</h3>
+
+      <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
+    </div>
+  );
+}
+
+function ImageCard({ data }) {
+  return (
+    <div className="flex w-full justify-center ">
+      <div>
+        <Svg
+          id={data.id}
+          className="-mt-[20px] aspect-video w-[260px] md:-mt-[40px] md:w-[400px] lg:-mt-[50px] lg:w-[550px] xl:-mt-[100px] xl:w-[600px]"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Svg({ id, className }) {
+  const debug = false;
+
+  return (
+    <div
+      href={String(id)}
+      className={clsx(className, "relative", "fill-white", {
+        "bg-sky-300": debug,
+      })}
+    >
+      {debug && (
+        <div className="absolute bottom-0 right-0 h-1/2 w-full bg-green-800"></div>
+      )}
+
+      <ReactSVG
+        src={`/images/svgs/72-${id}.svg`}
+        className="absolute top-0 left-0 -mt-[20px] w-full"
+      />
+      {debug && (
+        <div className="absolute bottom-0 right-0 text-sm text-red-600">
+          {id}
+        </div>
+      )}
+    </div>
+  );
+}
