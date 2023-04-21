@@ -23,17 +23,20 @@ export default function Home({ id }) {
     more through my intuition.`,
   };
 
+  const imageCard = <ImageCard data={data} />;
+
   return (
     <Layout>
       <Container>
         <div className="mt-10 rounded-lg border border-cal-700 p-10">
           <Header data={data} />
-          <div className="grid-cols-2 lg:grid">
+          <div className="grid-cols-2 space-x-1 lg:grid">
             <div>
               <NameHeader data={data} />
+              <div className="lg:hidden">{imageCard}</div>
               <Meditation data={data} />
             </div>
-            <ImageCard data={data} />
+            <div className="hidden lg:block">{imageCard}</div>
           </div>
         </div>
       </Container>
@@ -82,7 +85,7 @@ function NameHeader({ data }) {
 
 function Header({ data }) {
   return (
-    <div className="mb-5 flex w-full place-content-end font-serif text-xl font-bold text-cal-600">
+    <div className="mb-5 flex w-full font-serif text-xl font-bold text-cal-600 lg:place-content-end">
       72 Names of God
     </div>
   );
