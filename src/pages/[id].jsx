@@ -28,7 +28,7 @@ export default function Home({ id }) {
   return (
     <Layout>
       <Container>
-        <div className="mt-10 rounded-lg border border-cal-700 p-10">
+        <div className="mt-10 rounded-lg border border-cal-700 p-2 md:p-4 lg:p-10">
           <Header data={data} />
           <div className="grid-cols-2 space-x-1 lg:grid">
             <div>
@@ -106,10 +106,10 @@ function Meditation({ data }) {
 function ImageCard({ data }) {
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center text-center">
-      <div className="bordexr aspect-video rounded-lg border-cal-700">
+      <div className="bordexr aspect-video overflow-hidden rounded-lg border-cal-700">
         <Svg
           id={data.id}
-          className="-mt-[50px] aspect-video w-[400px] border-cal-800  p-4 lg:-mt-[100px] lg:w-[600px]"
+          className="-mt-[50px] aspect-video w-[400px]  border-cal-800 p-4 lg:-mt-[100px] lg:w-[600px]"
         />
       </div>
     </div>
