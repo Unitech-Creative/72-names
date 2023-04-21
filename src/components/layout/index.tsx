@@ -96,7 +96,7 @@ export default function Layout({
           </div>
         </div>
       </div>
-      <main className="flex w-full flex-col items-center justify-center pt-32 text-black">
+      <main className="flex w-full flex-col items-center justify-center pt-20 text-black">
         {children}
         <Footer />
       </main>
