@@ -44,8 +44,8 @@ export default function Home({ id }) {
                 {imageCard}
                 <NextButton id={id} />
               </div>
-              <div className="w-full flex place-content-end mt-10 -mb-10">
-              {timer}
+              <div className="lg:hidden w-full flex place-content-end mt-10 -mb-10">
+                {timer}
               </div>
               <Meditation data={data} />
             </div>
@@ -159,7 +159,7 @@ function ImageCard({ data }) {
   });
 
   return (
-    <div className="flex w-full justify-center" {...handlers}>
+    <div className="min-h-[130px] flex w-full justify-center" {...handlers}>
       <div>
         <Svg
           id={data.id}
