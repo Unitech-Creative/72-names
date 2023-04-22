@@ -29,6 +29,8 @@ export default function Home({ id }) {
   const imageCard = <ImageCard data={data} />;
   const timer = <Timer seconds={3*60} rest={2.5*60} />;
 
+  // const timer = <Timer seconds={4} rest={2} />;
+
   return (
     <Layout>
       <Container>
@@ -44,7 +46,7 @@ export default function Home({ id }) {
                 {imageCard}
                 <NextButton id={id} />
               </div>
-              <div className="lg:hidden w-full flex place-content-end mt-10 -mb-10">
+              <div className="mt-10 -mb-10 flex w-full place-content-end lg:hidden">
                 {timer}
               </div>
               <Meditation data={data} />

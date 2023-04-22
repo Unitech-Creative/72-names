@@ -11,28 +11,32 @@ export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
+        setSeconds((seconds) => {
+          if (seconds === 1) {
+            if (!isResting) {
+              playDing();
+            } else {
+              playDone();
+            }
+          }
+          if (seconds === 0) {
+            if (!isResting) {
+              setIsResting(true);
+              return initialRestSeconds;
+            } else {
+              setIsActive(false);
+              setIsResting(false);
+              return initialWorkSeconds;
+            }
+          }
+          return seconds - 1;
+        });
       }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [isActive, seconds]);
-
-  useEffect(() => {
-    if (seconds === 0) {
-      if (!isResting) {
-        setIsResting(true);
-        setSeconds(initialRestSeconds);
-        playDing();
-      } else {
-        setIsActive(false);
-        setIsResting(false);
-        playDone();
-      }
-    }
-  }, [seconds]);
-
   const toggle = () => {
     setIsActive(!isActive);
   };
