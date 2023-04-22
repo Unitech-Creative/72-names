@@ -14,6 +14,7 @@ import {
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
+import { Timer } from "../components/Timer";
 
 function getData(id) {
   let { locale, lang } = Language();
@@ -26,20 +27,25 @@ export default function Home({ id }) {
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
+  const timer = <Timer seconds={3*60} rest={2.5*60} />;
 
   return (
     <Layout>
       <Container>
         <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
-          <HeaderWithNav data={data} />
+          <HeaderWithNav data={data} timer={timer} />
 
           <div className="grid-cols-2 space-x-1 lg:grid">
             <div>
               <NameHeader data={data} />
+
               <div className="flex place-content-between items-center lg:hidden ">
                 <PrevButton id={id} />
                 {imageCard}
                 <NextButton id={id} />
+              </div>
+              <div className="w-full flex place-content-end mt-10 -mb-10">
+              {timer}
               </div>
               <Meditation data={data} />
             </div>
@@ -90,21 +96,25 @@ function NameHeader({ data }) {
   );
 }
 
-function HeaderWithNav({ data }) {
+function HeaderWithNav({ data, timer }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
       <div className="lg:col-start-2">
         <Header data={data} />
       </div>
 
-      <div className="flex place-content-end space-x-4">
-        <div>
-          <div className="flex items-center rounded-full border border-cal-800 p-2">
-            <MoreVertical className="h-5 text-cal-400" />
+      <div>
+        <div className="flex place-content-end space-x-4">
+          <div>
+            {/* This empty parent div is required, it's keeping the roundedness of this circle */}
+            <div className="flex items-center rounded-full border border-cal-800 p-2">
+              <MoreVertical className="h-5 text-cal-400" />
+            </div>
           </div>
-        </div>
-        <div className="hidden lg:block">
-          <ButtonNavigation id={data.id} />
+          <div className="hidden space-x-2 lg:flex z-10">
+            {timer}
+            <ButtonNavigation id={data.id} />
+          </div>
         </div>
       </div>
     </div>
