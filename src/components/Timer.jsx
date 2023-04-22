@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Play, Pause, RotateCcw, MoreVertical } from "lucide-react";
+import {TimerDialog} from "./TimerDialog";
 
 export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
   const initialRestSeconds = rest;
@@ -47,12 +48,6 @@ export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
     setIsResting(false);
   };
 
-  const formatTime = (seconds) => {
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
-    return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
-  };
-
   const playDing = () => {
     const audio = new Audio("/audio/ding.mp3");
     audio.play();
@@ -79,10 +74,17 @@ export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
         <button onClick={reset} className="rounded py-2 hover:text-cal-300">
           <RotateCcw size={16} />
         </button>
-        <button onClick={handleMore}>
+        <TimerDialog />
+        {/* <button onClick={handleMore}>
           <MoreVertical size={16} />
-        </button>
+        </button> */}
       </div>
     </div>
   );
+};
+
+export const formatTime = (seconds) => {
+  const min = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+  return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
