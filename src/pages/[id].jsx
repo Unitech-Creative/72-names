@@ -32,7 +32,6 @@ export default function Home({ id }) {
   const imageCard = <ImageCard data={data} />;
   const timer = <Timer />;
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
-  // const [fullScreen, setFullScreen] = useState(false);
 
   return (
     <Layout>

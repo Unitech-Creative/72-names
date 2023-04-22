@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Play, Pause, RotateCcw, MoreVertical } from "lucide-react";
 import { TimerDialog } from "./TimerDialog";
-import { meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
+import { fullScreenAtom, meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 
+
 export const Timer = () => {
+  const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
   );
@@ -14,6 +16,7 @@ export const Timer = () => {
   const [isResting, setIsResting] = useState(false);
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
 
+  // fetch the meditation and rest seconds from local storage
   useEffect(() => {
     const savedMeditationSeconds = Number(
       localStorage.getItem("meditationSeconds")
@@ -27,6 +30,7 @@ export const Timer = () => {
     }
   }, [setCurrentSeconds, meditationSeconds, restSeconds]);
 
+  // timer interval
   useEffect(() => {
     let interval = null;
     let seconds = currentSeconds;
@@ -43,6 +47,7 @@ export const Timer = () => {
             playDone();
             setIsResting(false);
             setIsActive(false); // Stop the timer after the rest is done
+            if( getFullScreenTimerPermission() ) setFullScreen(false);
             setCurrentSeconds(meditationSeconds);
           }
         } else {
@@ -58,8 +63,20 @@ export const Timer = () => {
   }, [isActive, meditationSeconds, restSeconds, isResting]);
 
   const toggle = () => {
-    setIsActive(!isActive);
+    isActive ? pause() : start()
   };
+
+  const start = () => {
+    if(getFullScreenTimerPermission()) {
+      console.log("full screen timer permission ", getFullScreenTimerPermission())
+      setFullScreen(true)
+    }
+    setIsActive(true);
+  }
+
+  const pause = () => {
+    setIsActive(false);
+  }
 
   const reset = () => {
     setIsActive(false);
@@ -106,3 +123,7 @@ export const formatTime = (seconds) => {
   const sec = seconds % 60;
   return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
+
+export const getFullScreenTimerPermission = () => (
+  JSON.parse(localStorage.getItem("fullScreenTimerPermission"))
+)

@@ -14,10 +14,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch"
 
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { formatTime } from "./Timer";
 import { meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
+import { getFullScreenTimerPermission } from "./Timer";
 
 export const TimerDialog = () => {
   const [meditationSeconds, setMeditationSeconds] = useAtom(
@@ -42,7 +43,7 @@ export const TimerDialog = () => {
   };
 
   const saveFullScreenPermission = (permission) => {
-    localStorage.setItem("fullScreenTimerPermission", permission);
+    localStorage.setItem("fullScreenTimerPermission", Boolean(permission));
   }
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export const TimerDialog = () => {
       localStorage.getItem("meditationSeconds")
     );
     const savedRestTime = Number(localStorage.getItem("restSeconds"));
-    const savedHasFullScreenPermission = Boolean(localStorage.getItem("fullScreenTimerPermission"));
+    const savedHasFullScreenPermission = getFullScreenTimerPermission();
 
     if (savedMeditationTime) {
       setMeditationValue(savedMeditationTime);
