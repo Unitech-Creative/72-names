@@ -17,6 +17,9 @@ import { useRouter } from "next/router";
 import { Timer } from "../components/Timer";
 import { fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { Minimize2 } from "lucide-react";
+
 
 function getData(id) {
   let { locale, lang, Pronounced } = Language();
@@ -30,24 +33,17 @@ export default function Home({ id }) {
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
-  const timer = <Timer />;
+  const fullScreenHandle = useFullScreenHandle();
+  const timer = <Timer fullScreenHandle={fullScreenHandle} />;
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
 
   return (
     <Layout>
       <Container>
         <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
-          <HeaderWithNav data={data} timer={timer} fullScreen={fullScreen} setFullScreen={setFullScreen} />
+          <HeaderWithNav data={data} timer={timer} fullScreen={fullScreen} setFullScreen={setFullScreen} fullScreenHandle={fullScreenHandle} />
 
-          <div className={
-            clsx(
-              {
-                "grid-cols-2 space-x-1 lg:grid": !fullScreen,
-                "flex place-content-center": fullScreen,
-
-              }
-            )
-          }>
+          <div className="grid-cols-2 space-x-1 lg:grid">
             <div className={clsx({
               "hidden": fullScreen,
             })}>
@@ -56,12 +52,58 @@ export default function Home({ id }) {
               <Meditation data={data} />
             </div>
 
+            <FullScreenLayout setFullScreen={setFullScreen} fullScreen={fullScreen} handle={fullScreenHandle} timer={timer} imageCard={imageCard} data={data} />
+
             <Desktop timer={timer} imageCard={imageCard} data={data} />
+
+
 
           </div>
         </div>
       </Container>
     </Layout>
+  );
+}
+
+function FullScreenLayout({handle, timer, imageCard, data, setFullScreen, fullScreen}){
+
+  return (
+    <FullScreen
+      handle={handle}
+      onChange={(bool) => setFullScreen(bool)}
+      className={clsx("bg-cal-900", {
+        hidden: !fullScreen,
+      })}
+    >
+      {/* <div className="flex flex-col h-screen text-white"> */}
+
+      <div className="flex h-screen items-center">
+        <div className="w-full">
+
+          <PronouncedAs data={data} />
+          {imageCard}
+
+
+          <div className="flex flex-col place-items-center font-serif my-10">
+            <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
+              <div className={`leading-6 text-cal-400`}>{"00:00"}</div>
+            </div>
+          </div>
+
+
+
+          <div className="flex w-full place-content-center">
+            <button
+              className="rounded-full bg-cal-100 p-2"
+              onClick={() => handle.exit()}
+            >
+              <Minimize2 className="h-4 w-4 text-cal-800" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* </div> */}
+    </FullScreen>
   );
 }
 
@@ -132,7 +174,7 @@ function NameHeader({ data }) {
   );
 }
 
-function HeaderWithNav({ data, timer, fullScreen, setFullScreen }) {
+function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
       <div className="lg:col-start-2">
@@ -150,7 +192,7 @@ function HeaderWithNav({ data, timer, fullScreen, setFullScreen }) {
           <div className="z-10 hidden space-x-2 lg:flex">
             {timer}
             <ButtonNavigation id={data.id} />
-            <button onClick={(e) => setFullScreen(!fullScreen) }>
+            <button onClick={(e) => { setFullScreen(!fullScreen); fullScreenHandle.enter() } }>
               <Expand className="h-5 text-cal-400" />
             </button >
 

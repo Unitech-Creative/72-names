@@ -5,8 +5,8 @@ import { fullScreenAtom, meditationSecondsAtom, restSecondsAtom } from "@/atoms/
 import { useAtom } from "jotai";
 
 
-export const Timer = () => {
-  const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
+export const Timer = ({fullScreenHandle}) => {
+  const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
   );
@@ -47,7 +47,10 @@ export const Timer = () => {
             playDone();
             setIsResting(false);
             setIsActive(false); // Stop the timer after the rest is done
-            if( getFullScreenTimerPermission() ) setFullScreen(false);
+            if( getFullScreenTimerPermission() ) {
+              setFullScreen(false);
+              fullScreenHandle.exit();
+            }
             setCurrentSeconds(meditationSeconds);
           }
         } else {
@@ -70,6 +73,7 @@ export const Timer = () => {
     if(getFullScreenTimerPermission()) {
       console.log("full screen timer permission ", getFullScreenTimerPermission())
       setFullScreen(true)
+      fullScreenHandle.enter();
     }
     setIsActive(true);
   }
