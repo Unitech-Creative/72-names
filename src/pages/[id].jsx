@@ -27,9 +27,7 @@ export default function Home({ id }) {
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
-  const timer = <Timer seconds={3*60} rest={2.5*60} />;
-
-  // const timer = <Timer seconds={4} rest={2} />;
+  const timer = <Timer />;
 
   return (
     <Layout>

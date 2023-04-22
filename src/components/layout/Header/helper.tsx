@@ -137,20 +137,20 @@ function NavLink({ href, label, member }) {
   );
 }
 
-function SanityDynamicLink() {
-  const [lesson] = useAtom(lessonAtom);
-  const [course] = useAtom(courseAtom);
-  const [admin] = useAtom(adminAtom);
-  const router = useRouter();
-  if (!admin) return;
+// function SanityDynamicLink() {
+//   const [lesson] = useAtom(lessonAtom);
+//   const [course] = useAtom(courseAtom);
+//   const [admin] = useAtom(adminAtom);
+//   const router = useRouter();
+//   if (!admin) return;
 
-  const className = "pt-1";
-  if (router.pathname.startsWith("/lesson/")) {
-    return SanityLink(`/lesson;${lesson._id}`, "Edit Lesson", className);
-  } else if (router.pathname.startsWith("/course/")) {
-    return SanityLink(`/course;${course._id}`, "Edit Course", className);
-  }
-}
+//   const className = "pt-1";
+//   if (router.pathname.startsWith("/lesson/")) {
+//     return SanityLink(`/lesson;${lesson._id}`, "Edit Lesson", className);
+//   } else if (router.pathname.startsWith("/course/")) {
+//     return SanityLink(`/course;${course._id}`, "Edit Course", className);
+//   }
+// }
 
 export function UserFlow({ onClick }) {
   const [admin] = useAtom(adminAtom);
@@ -169,7 +169,7 @@ export function UserFlow({ onClick }) {
                 admin ? "grid-cols-4" : "grid-cols-3"
               )}
             >
-              <SanityDynamicLink />
+              {/* <SanityDynamicLink /> */}
               <Link href="/liked" className="pt-1">
                 <Bookmark className="h-6 w-6" />
               </Link>

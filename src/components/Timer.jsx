@@ -1,49 +1,67 @@
 import { useState, useEffect } from "react";
 import { Play, Pause, RotateCcw, MoreVertical } from "lucide-react";
-import {TimerDialog} from "./TimerDialog";
+import { TimerDialog } from "./TimerDialog";
+import { meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
+import { useAtom } from "jotai";
 
-export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
-  const initialRestSeconds = rest;
-  const [seconds, setSeconds] = useState(initialWorkSeconds);
+export const Timer = () => {
+  const [meditationSeconds, setMeditationSeconds] = useAtom(
+    meditationSecondsAtom
+  );
+  const [restSeconds, setRestSeconds] = useAtom(restSecondsAtom);
+
   const [isActive, setIsActive] = useState(false);
   const [isResting, setIsResting] = useState(false);
+  const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
+
+  useEffect(() => {
+    const savedMeditationSeconds = Number(
+      localStorage.getItem("meditationSeconds")
+    );
+    const savedRestSeconds = Number(localStorage.getItem("restSeconds"));
+
+    if (savedMeditationSeconds) {
+      setMeditationSeconds(savedMeditationSeconds);
+      setRestSeconds(savedRestSeconds);
+      setCurrentSeconds(savedMeditationSeconds);
+    }
+  }, [setCurrentSeconds, meditationSeconds, restSeconds]);
 
   useEffect(() => {
     let interval = null;
+    let seconds = currentSeconds;
+
     if (isActive) {
       interval = setInterval(() => {
-        setSeconds((seconds) => {
-          if (seconds === 1) {
-            if (!isResting) {
-              playDing();
-            } else {
-              playDone();
-            }
+        setCurrentSeconds(seconds);
+        if (seconds === 1) {
+          if (!isResting) {
+            playDing();
+            setIsResting(true);
+            setCurrentSeconds(restSeconds);
+          } else {
+            playDone();
+            setIsResting(false);
+            setIsActive(false); // Stop the timer after the rest is done
+            setCurrentSeconds(meditationSeconds);
           }
-          if (seconds === 0) {
-            if (!isResting) {
-              setIsResting(true);
-              return initialRestSeconds;
-            } else {
-              setIsActive(false);
-              setIsResting(false);
-              return initialWorkSeconds;
-            }
-          }
-          return seconds - 1;
-        });
+        } else {
+          seconds -= 1;
+          setCurrentSeconds(seconds);
+        }
       }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
+
     return () => clearInterval(interval);
-  }, [isActive, seconds]);
+  }, [isActive, meditationSeconds, restSeconds, isResting]);
+
   const toggle = () => {
     setIsActive(!isActive);
   };
 
   const reset = () => {
-    setSeconds(initialWorkSeconds);
     setIsActive(false);
     setIsResting(false);
   };
@@ -58,14 +76,10 @@ export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
     audio.play();
   };
 
-  const handleMore = () => {
-    alert("💕 More Clicked");
-  };
-
   return (
     <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
       <div className={`${isResting ? "text-green-500" : ""}`}>
-        {formatTime(seconds)}
+        {formatTime(currentSeconds)}
       </div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
@@ -75,9 +89,6 @@ export const Timer = ({ seconds: initialWorkSeconds, rest }) => {
           <RotateCcw size={16} />
         </button>
         <TimerDialog />
-        {/* <button onClick={handleMore}>
-          <MoreVertical size={16} />
-        </button> */}
       </div>
     </div>
   );
