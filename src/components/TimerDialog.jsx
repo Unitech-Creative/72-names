@@ -121,14 +121,21 @@ export const TimerDialog = () => {
                 variant="secondary"
                 onClick={() => useDevMode(2, 4)}
               >
-                Use Dev
+                2/4
               </Button>
               <Button
                 className="text-xs"
                 variant="secondary"
                 onClick={() => useDevMode(3, 6)}
               >
-                Use 2nd Dev
+                3/6
+              </Button>
+              <Button
+                className="text-xs"
+                variant="secondary"
+                onClick={() => useDevMode(3*60, 2.5*60)}
+              >
+                3m / 2.5m
               </Button>
             </>
           )}

@@ -76,9 +76,16 @@ export const Timer = () => {
     audio.play();
   };
 
+  const textColor = function() {
+    if(!isActive) return "text-cal-400"
+    return (isResting ? "text-yellow-300" : "text-green-500")
+  }
+
   return (
     <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
-      <div className={`${isResting ? "text-green-500" : ""}`}>
+      <div
+        className={textColor()}
+      >
         {formatTime(currentSeconds)}
       </div>
       <div className="ml-2 flex space-x-4">
