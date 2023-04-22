@@ -10,9 +10,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch"
+
+import { useRef, useState, useEffect } from "react";
 import { formatTime } from "./Timer";
 import { meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
@@ -22,6 +24,7 @@ export const TimerDialog = () => {
     meditationSecondsAtom
   );
   const [restSeconds, setRestSeconds] = useAtom(restSecondsAtom);
+  const [fullScreenPermission, setFullScreenPermission] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [meditationValue, setMeditationValue] = useState(3 * 60);
@@ -38,11 +41,16 @@ export const TimerDialog = () => {
     localStorage.setItem("restSeconds", seconds);
   };
 
+  const saveFullScreenPermission = (permission) => {
+    localStorage.setItem("fullScreenTimerPermission", permission);
+  }
+
   useEffect(() => {
     const savedMeditationTime = Number(
       localStorage.getItem("meditationSeconds")
     );
     const savedRestTime = Number(localStorage.getItem("restSeconds"));
+    const savedHasFullScreenPermission = Boolean(localStorage.getItem("fullScreenTimerPermission"));
 
     if (savedMeditationTime) {
       setMeditationValue(savedMeditationTime);
@@ -51,6 +59,11 @@ export const TimerDialog = () => {
     if (savedRestTime) {
       setRestValue(savedRestTime);
     }
+
+    if (savedHasFullScreenPermission) {
+      setFullScreenPermission(savedHasFullScreenPermission);
+    }
+
   }, [meditationSeconds, restSeconds]);
 
   const useDevMode = (m, r) => {
@@ -62,6 +75,7 @@ export const TimerDialog = () => {
   const saveChanges = () => {
     saveMeditationSeconds(meditationValue);
     saveRestSeconds(restValue);
+    saveFullScreenPermission(fullScreenPermission)
     setOpen(false);
   };
 
@@ -81,7 +95,7 @@ export const TimerDialog = () => {
             done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid space-y-6 py-4">
           <div className="flex flex-col space-y-5">
             <Label htmlFor="name" className="flex place-content-between">
               Meditation Time
@@ -110,6 +124,12 @@ export const TimerDialog = () => {
                 step={30}
                 onValueChange={(v) => setRestValue(v)}
               />
+            </div>
+          </div>
+          <div className="flex flex-col space-y-5">
+            <div className="flex place-content-between">
+              <Label htmlFor="fullscreen-mode">Enter Fullscreen When Timer Starts</Label>
+              <Switch checked={fullScreenPermission} onCheckedChange={(e) => {setFullScreenPermission(e)} } id="fullscreen-mode" />
             </div>
           </div>
         </div>
