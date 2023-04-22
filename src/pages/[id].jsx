@@ -17,9 +17,10 @@ import { useRouter } from "next/router";
 import { Timer } from "../components/Timer";
 
 function getData(id) {
-  let { locale, lang } = Language();
+  let { locale, lang, Pronounced } = Language();
   const data = lang[String(id)];
   data.id = id;
+  data.pronounced = Pronounced[String(id)].text;
   return data;
 }
 
@@ -41,15 +42,22 @@ export default function Home({ id }) {
 
               <div className="flex place-content-between items-center lg:hidden ">
                 <PrevButton id={id} />
-                {imageCard}
+                <div>
+                  <PronouncedAs data={data} />
+                  {imageCard}
+                </div>
                 <NextButton id={id} />
               </div>
               <div className="mt-10 -mb-10 flex w-full place-content-end lg:hidden">
                 {timer}
               </div>
+
               <Meditation data={data} />
             </div>
-            <div className="hidden lg:block">{imageCard}</div>
+            <div className="hidden lg:block">
+              <PronouncedAs data={data} />
+              {imageCard}
+            </div>
           </div>
         </div>
       </Container>
@@ -111,7 +119,7 @@ function HeaderWithNav({ data, timer }) {
               <MoreVertical className="h-5 text-cal-400" />
             </div>
           </div>
-          <div className="hidden space-x-2 lg:flex z-10">
+          <div className="z-10 hidden space-x-2 lg:flex">
             {timer}
             <ButtonNavigation id={data.id} />
           </div>
@@ -135,6 +143,18 @@ function Meditation({ data }) {
       <h3 className="mb-5 font-serif text-2xl text-cal-300">Meditation</h3>
 
       <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
+    </div>
+  );
+}
+
+function PronouncedAs({ data }) {
+  return (
+    <div className="flex flex-col place-items-center font-serif">
+      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
+        {/* <h3 className="mb-5 font-serif text-2xl text-cal-300">Pronounced</h3> */}
+
+        <div className={`leading-6 text-cal-400`}>{data.pronounced}</div>
+      </div>
     </div>
   );
 }

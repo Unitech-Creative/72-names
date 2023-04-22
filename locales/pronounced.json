@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "text": "VAV HEY VAV"
+  },
+  {
+    "id": 2,
+    "text": "YUD LAMED YUD"
+  },
+  {
+    "id": 3,
+    "text": "SAMECH YUD TET"
+  },
+  {
+    "id": 4,
+    "text": "AYIN LAMED MEM"
+  },
+  {
+    "id": 5,
+    "text": "MEM HEY SHIN"
+  },
+  {
+    "id": 6,
+    "text": "LAMED LAMED HEY"
+  },
+  {
+    "id": 7,
+    "text": "ALEPH KAF ALEPH"
+  },
+  {
+    "id": 8,
+    "text": "KAF HEY  TAV"
+  },
+  {
+    "id": 9,
+    "text": "HEY ZAYIN YUD"
+  },
+  {
+    "id": 10,
+    "text": "ALEPH LAMED DALED"
+  },
+  {
+    "id": 11,
+    "text": "LAMED ALEPH VAV"
+  },
+  {
+    "id": 12,
+    "text": "HEY HEY AYIN"
+  },
+  {
+    "id": 13,
+    "text": "YUD ZAYIN LAMED"
+  },
+  {
+    "id": 14,
+    "text": "MEM BET HEY"
+  },
+  {
+    "id": 15,
+    "text": "HEY RESH YUD"
+  },
+  {
+    "id": 16,
+    "text": "HEY KUF MEM"
+  },
+  {
+    "id": 17,
+    "text": "LAMED ALEPH VAV"
+  },
+  {
+    "id": 18,
+    "text": "KAF LAMED YUD"
+  },
+  {
+    "id": 19,
+    "text": "LAMED VAV VAV"
+  },
+  {
+    "id": 20,
+    "text": "PEY HEY LAMED"
+  },
+  {
+    "id": 21,
+    "text": "NUN LAMED KAF"
+  },
+  {
+    "id": 22,
+    "text": "YUD YUD YUD"
+  },
+  {
+    "id": 23,
+    "text": "MEM LAMED HEY"
+  },
+  {
+    "id": 24,
+    "text": "CHET HEY VAV"
+  },
+  {
+    "id": 25,
+    "text": "NUN TAV HEY"
+  },
+  {
+    "id": 26,
+    "text": "HEY ALEPH ALEPH"
+  },
+  {
+    "id": 27,
+    "text": "YUD RESH TAV"
+  },
+  {
+    "id": 28,
+    "text": "SHIN ALEPH HEY"
+  },
+  {
+    "id": 29,
+    "text": "RESH YUD YUD"
+  },
+  {
+    "id": 30,
+    "text": "ALEPH VAV MEM"
+  },
+  {
+    "id": 31,
+    "text": "LAMED KAF BET"
+  },
+  {
+    "id": 32,
+    "text": "VAV SHIN RESH"
+  },
+  {
+    "id": 33,
+    "text": "YUD CHET VAV"
+  },
+  {
+    "id": 34,
+    "text": "LAMED HEY CHET"
+  },
+  {
+    "id": 35,
+    "text": "KAF VAV KUF"
+  },
+  {
+    "id": 36,
+    "text": "MEM NUN DALET"
+  },
+  {
+    "id": 37,
+    "text": "ALEPH NUN YUD"
+  },
+  {
+    "id": 38,
+    "text": "CHET AYIN MEM"
+  },
+  {
+    "id": 39,
+    "text": "RESH HEY AYIN"
+  },
+  {
+    "id": 40,
+    "text": "YUD YUD ZAYIN"
+  },
+  {
+    "id": 41,
+    "text": "HEY HEY HEY"
+  },
+  {
+    "id": 42,
+    "text": "MEM YUD KAF"
+  },
+  {
+    "id": 43,
+    "text": "VAV VAV LAMED"
+  },
+  {
+    "id": 44,
+    "text": "YUD LAMED HEY"
+  },
+  {
+    "id": 45,
+    "text": "SAMECH ALEPH LAMED"
+  },
+  {
+    "id": 46,
+    "text": "AYIN RESH YUD"
+  },
+  {
+    "id": 47,
+    "text": "AYIN SHIN LAMED"
+  },
+  {
+    "id": 48,
+    "text": "MEM YUD HEY"
+  },
+  {
+    "id": 49,
+    "text": "VAV HEY VAV"
+  },
+  {
+    "id": 50,
+    "text": "DALED NUN YUD"
+  },
+  {
+    "id": 51,
+    "text": "HEY CHET SHIN"
+  },
+  {
+    "id": 52,
+    "text": "AYEN MEM MEM"
+  },
+  {
+    "id": 53,
+    "text": "NUN NUN ALEPH"
+  },
+  {
+    "id": 54,
+    "text": "NUN YUD TAV"
+  },
+  {
+    "id": 55,
+    "text": "MEM BET HEY"
+  },
+  {
+    "id": 56,
+    "text": "PEY VAV YUD"
+  },
+  {
+    "id": 57,
+    "text": "NUN MEM MEM"
+  },
+  {
+    "id": 58,
+    "text": "YUD YUD LAMED"
+  },
+  {
+    "id": 59,
+    "text": "HEY RESH CHET"
+  },
+  {
+    "id": 60,
+    "text": "MEM ZADIK RESH"
+  },
+  {
+    "id": 61,
+    "text": "VAV MEM BET"
+  },
+  {
+    "id": 62,
+    "text": "YUD HEY HEY"
+  },
+  {
+    "id": 63,
+    "text": "AYIN  NUN VAV"
+  },
+  {
+    "id": 64,
+    "text": "MEM CHET YUD"
+  },
+  {
+    "id": 65,
+    "text": "DALED MEM BET"
+  },
+  {
+    "id": 66,
+    "text": "MEM NUN KUF"
+  },
+  {
+    "id": 67,
+    "text": "ALEPH YUD AYIN"
+  },
+  {
+    "id": 68,
+    "text": "CHET BET VAV"
+  },
+  {
+    "id": 69,
+    "text": "RESH ALEPH HEY"
+  },
+  {
+    "id": 70,
+    "text": "YUD BET MEM"
+  },
+  {
+    "id": 71,
+    "text": "HEY YUD YUD"
+  },
+  {
+    "id": 72,
+    "text": "MEM VAV MEM"
+  }
+]
