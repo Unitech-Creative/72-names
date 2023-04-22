@@ -20,7 +20,7 @@ function getData(id) {
   let { locale, lang, Pronounced } = Language();
   const data = lang[String(id)];
   data.id = id;
-  data.pronounced = Pronounced[String(id)].text;
+  data.pronounced = Pronounced[String(id)];
   return data;
 }
 
