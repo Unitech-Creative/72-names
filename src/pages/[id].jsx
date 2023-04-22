@@ -1,8 +1,8 @@
 import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import clsx from "clsx";
-import React from "react";
-import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
+import React, {useState} from "react";
+import { MoreVertical, ChevronRight, Expand } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Language } from "@/lib/language";
 import {
@@ -15,6 +15,8 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer } from "../components/Timer";
+import { fullScreenAtom } from "@/atoms/index";
+import { useAtom } from "jotai";
 
 function getData(id) {
   let { locale, lang, Pronounced } = Language();
@@ -29,40 +31,67 @@ export default function Home({ id }) {
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
   const timer = <Timer />;
+  // const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
+  const [fullScreen, setFullScreen] = useState(false);
 
   return (
     <Layout>
       <Container>
         <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
-          <HeaderWithNav data={data} timer={timer} />
+          <HeaderWithNav data={data} timer={timer} fullScreen={fullScreen} setFullScreen={setFullScreen} />
 
-          <div className="grid-cols-2 space-x-1 lg:grid">
-            <div>
+          <div className={
+            clsx(
+              {
+                "grid-cols-2 space-x-1 lg:grid": !fullScreen,
+                "flex place-content-center": fullScreen,
+
+              }
+            )
+          }>
+            <div className={clsx({
+              "hidden": fullScreen,
+            })}>
               <NameHeader data={data} />
-
-              <div className="flex place-content-between items-center lg:hidden ">
-                <PrevButton id={id} />
-                <div>
-                  <PronouncedAs data={data} />
-                  {imageCard}
-                </div>
-                <NextButton id={id} />
-              </div>
-              <div className="mt-10 -mb-10 flex w-full place-content-end lg:hidden">
-                {timer}
-              </div>
-
+              <Mobile timer={timer} imageCard={imageCard} data={data} />
               <Meditation data={data} />
             </div>
-            <div className="hidden lg:block">
-              <PronouncedAs data={data} />
-              {imageCard}
-            </div>
+
+            <Desktop timer={timer} imageCard={imageCard} data={data} />
+
           </div>
         </div>
       </Container>
     </Layout>
   );
+}
+
+function Desktop({data, imageCard, timer}){
+  return (
+    <div className="hidden lg:block">
+      <PronouncedAs data={data} />
+      {imageCard}
+    </div>
+  )
+}
+
+function Mobile({data, imageCard, timer}){
+  return (
+    <>
+      <div className="flex place-content-between items-center lg:hidden ">
+        <PrevButton id={data.id} />
+        <div>
+          <PronouncedAs data={data} />
+          {imageCard}
+        </div>
+        <NextButton id={data.id} />
+      </div>
+
+      <div className="mt-10 -mb-10 flex w-full place-content-end lg:hidden">
+        {timer}
+      </div>
+    </>
+  )
 }
 
 export async function getStaticPaths() {
@@ -104,7 +133,7 @@ function NameHeader({ data }) {
   );
 }
 
-function HeaderWithNav({ data, timer }) {
+function HeaderWithNav({ data, timer, fullScreen, setFullScreen }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
       <div className="lg:col-start-2">
@@ -122,6 +151,10 @@ function HeaderWithNav({ data, timer }) {
           <div className="z-10 hidden space-x-2 lg:flex">
             {timer}
             <ButtonNavigation id={data.id} />
+            <button onClick={(e) => setFullScreen(!fullScreen) }>
+              <Expand className="h-5 text-cal-400" />
+            </button >
+
           </div>
         </div>
       </div>
@@ -179,7 +212,7 @@ function ImageCard({ data }) {
   });
 
   return (
-    <div className="min-h-[130px] flex w-full justify-center" {...handlers}>
+    <div className="min-h-[130px] md:min-h-[350px] flex w-full justify-center" {...handlers}>
       <div>
         <Svg
           id={data.id}

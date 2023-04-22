@@ -15,5 +15,6 @@ export const signedInAtom = atomWithToggle(false);
 export const unauthenticatedAtom = atomWithToggle(false);
 export const meditationSecondsAtom = atom(3 * 60);
 export const restSecondsAtom = atom(2.5 * 60);
+export const fullScreenAtom = atom(false);
 export const hasPermissionAtom = atomWithToggle(false);
 export const permissionsLoadedAtom = atomWithToggle(false);
