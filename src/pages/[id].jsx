@@ -1,9 +1,9 @@
 import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
+import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
 import React, {useState} from "react";
 import { MoreVertical, ChevronRight, Expand } from "lucide-react";
-import { Container } from "@/components/layout/Container";
 import { Language } from "@/lib/language";
 import {
   PrevButton,
@@ -19,7 +19,7 @@ import { isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/in
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
-import { Logo } from "../components/Logo";
+import { Logo } from "@/components/Logo";
 
 function getData(id) {
   let { locale, lang, Pronounced } = Language();
