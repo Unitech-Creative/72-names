@@ -13,6 +13,7 @@ export const adminAtom = atomWithToggle(false);
 export const sigInModalToggleAtom = atomWithToggle(false);
 export const signedInAtom = atomWithToggle(false);
 export const unauthenticatedAtom = atomWithToggle(false);
+export const timerSecondsAtom = atom(0);
 export const meditationSecondsAtom = atom(3 * 60);
 export const restSecondsAtom = atom(2.5 * 60);
 export const fullScreenAtom = atom(false);

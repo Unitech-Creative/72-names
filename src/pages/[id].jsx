@@ -14,12 +14,11 @@ import {
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
-import { Timer } from "../components/Timer";
-import { fullScreenAtom } from "@/atoms/index";
+import { Timer, formatTime } from "../components/Timer";
+import { meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
-
 
 function getData(id) {
   let { locale, lang, Pronounced } = Language();
@@ -41,23 +40,35 @@ export default function Home({ id }) {
     <Layout>
       <Container>
         <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
-          <HeaderWithNav data={data} timer={timer} fullScreen={fullScreen} setFullScreen={setFullScreen} fullScreenHandle={fullScreenHandle} />
+          <HeaderWithNav
+            data={data}
+            timer={timer}
+            fullScreen={fullScreen}
+            setFullScreen={setFullScreen}
+            fullScreenHandle={fullScreenHandle}
+          />
 
           <div className="grid-cols-2 space-x-1 lg:grid">
-            <div className={clsx({
-              "hidden": fullScreen,
-            })}>
+            <div
+              className={clsx({
+                hidden: fullScreen,
+              })}
+            >
               <NameHeader data={data} />
               <Mobile timer={timer} imageCard={imageCard} data={data} />
               <Meditation data={data} />
             </div>
 
-            <FullScreenLayout setFullScreen={setFullScreen} fullScreen={fullScreen} handle={fullScreenHandle} timer={timer} imageCard={imageCard} data={data} />
+            <FullScreenLayout
+              setFullScreen={setFullScreen}
+              fullScreen={fullScreen}
+              handle={fullScreenHandle}
+              timer={timer}
+              imageCard={imageCard}
+              data={data}
+            />
 
             <Desktop timer={timer} imageCard={imageCard} data={data} />
-
-
-
           </div>
         </div>
       </Container>
@@ -65,7 +76,15 @@ export default function Home({ id }) {
   );
 }
 
-function FullScreenLayout({handle, timer, imageCard, data, setFullScreen, fullScreen}){
+function FullScreenLayout({
+  handle,
+  timer,
+  imageCard,
+  data,
+  setFullScreen,
+  fullScreen,
+}) {
+  const [currentSeconds] = useAtom(meditationSecondsAtom);
 
   return (
     <FullScreen
@@ -79,18 +98,16 @@ function FullScreenLayout({handle, timer, imageCard, data, setFullScreen, fullSc
 
       <div className="flex h-screen items-center">
         <div className="w-full">
-
           <PronouncedAs data={data} />
           {imageCard}
 
-
-          <div className="flex flex-col place-items-center font-serif my-10">
+          <div className="my-10 flex flex-col place-items-center font-serif">
             <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-              <div className={`leading-6 text-cal-400`}>{"00:00"}</div>
+              <div className={`leading-6 text-cal-400`}>
+                {formatTime(currentSeconds)}
+              </div>
             </div>
           </div>
-
-
 
           <div className="flex w-full place-content-center">
             <button

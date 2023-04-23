@@ -1,20 +1,31 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Play, Pause, RotateCcw, MoreVertical } from "lucide-react";
 import { TimerDialog } from "./TimerDialog";
-import { fullScreenAtom, meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
+import {
+  fullScreenAtom,
+  meditationSecondsAtom,
+  restSecondsAtom,
+  timerSecondsAtom,
+} from "@/atoms/index";
 import { useAtom } from "jotai";
 
-
-export const Timer = ({fullScreenHandle}) => {
+export const Timer = ({ fullScreenHandle }) => {
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
   );
   const [restSeconds, setRestSeconds] = useAtom(restSecondsAtom);
+  const [timerSeconds, setTimerSeconds] = useAtom(timerSecondsAtom);
 
   const [isActive, setIsActive] = useState(false);
   const [isResting, setIsResting] = useState(false);
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
+  const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
+
+  const updateSeconds = useCallback((seconds) => {
+    setCurrentSeconds(seconds);
+    setGlobalSeconds(seconds);
+  }, [setCurrentSeconds, setGlobalSeconds]);
 
   // fetch the meditation and rest seconds from local storage
   useEffect(() => {
@@ -26,61 +37,66 @@ export const Timer = ({fullScreenHandle}) => {
     if (savedMeditationSeconds) {
       setMeditationSeconds(savedMeditationSeconds);
       setRestSeconds(savedRestSeconds);
-      setCurrentSeconds(savedMeditationSeconds);
+      updateSeconds(savedMeditationSeconds);
     }
-  }, [setCurrentSeconds, meditationSeconds, restSeconds]);
+  }, [updateSeconds]);
 
   // timer interval
   useEffect(() => {
     let interval = null;
-    let seconds = currentSeconds;
 
     if (isActive) {
       interval = setInterval(() => {
-        setCurrentSeconds(seconds);
-        if (seconds === 1) {
+        if (currentSeconds === 1) {
           if (!isResting) {
             playDing();
             setIsResting(true);
-            setCurrentSeconds(restSeconds);
+            // setCurrentSeconds(restSeconds);
+            updateSeconds(restSeconds)
           } else {
             playDone();
             setIsResting(false);
             setIsActive(false); // Stop the timer after the rest is done
-            if( getFullScreenTimerPermission() ) {
+            if (getFullScreenTimerPermission()) {
               setFullScreen(false);
               fullScreenHandle.exit();
             }
-            setCurrentSeconds(meditationSeconds);
+            // setCurrentSeconds(meditationSeconds);
+            updateSeconds(meditationSeconds)
           }
         } else {
-          seconds -= 1;
-          setCurrentSeconds(seconds);
+          const newSeconds = currentSeconds - 1;
+          // setCurrentSeconds(newSeconds);
+          updateSeconds(newSeconds);
+          setTimerSeconds(newSeconds); // Update the timerSecondsAtom
         }
       }, 1000);
-    } else if (!isActive && seconds !== 0) {
+    } else if (!isActive && currentSeconds !== 0) {
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
-  }, [isActive, meditationSeconds, restSeconds, isResting]);
+  }, [isActive, meditationSeconds, restSeconds, isResting, currentSeconds, updateSeconds]);
 
   const toggle = () => {
-    isActive ? pause() : start()
+    isActive ? pause() : start();
   };
 
   const start = () => {
-    if(getFullScreenTimerPermission()) {
-      console.log("full screen timer permission ", getFullScreenTimerPermission())
-      setFullScreen(true)
+    if (getFullScreenTimerPermission()) {
+      console.log(
+        "full screen timer permission ",
+        getFullScreenTimerPermission()
+      );
+      setFullScreen(true);
       fullScreenHandle.enter();
     }
     setIsActive(true);
-  }
+  };
 
   const pause = () => {
     setIsActive(false);
-  }
+  };
 
   const reset = () => {
     setIsActive(false);
@@ -97,18 +113,14 @@ export const Timer = ({fullScreenHandle}) => {
     audio.play();
   };
 
-  const textColor = function() {
-    if(!isActive) return "text-cal-400"
-    return (isResting ? "text-yellow-300" : "text-green-500")
-  }
+  const textColor = function () {
+    if (!isActive) return "text-cal-400";
+    return isResting ? "text-yellow-300" : "text-green-500";
+  };
 
   return (
     <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
-      <div
-        className={textColor()}
-      >
-        {formatTime(currentSeconds)}
-      </div>
+      <div className={textColor()}>{formatTime(currentSeconds)}</div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
           {isActive ? <Pause size={16} /> : <Play size={16} />}
