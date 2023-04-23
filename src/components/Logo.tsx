@@ -1,11 +1,11 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ReactSVG } from "react-svg";
-import { APP_NAME, APP_LOGO_URL } from "@/lib/constants";
+import clsx from "clsx";
 
-export function Logo() {
-  // Thank you https://thenounproject.com/icon/light-2167925/
+export interface LogoProps { className?: string; }
+
+export function Logo({ className }: LogoProps) {
   return (
-    <ReactSVG src="/images/logo.svg" className="mt-5 h-10 w-10 fill-cal-200" />
+    <div className={clsx("font-serif text-xl font-bold text-cal-600", className)}>
+      72 Names of God
+    </div>
   );
 }

@@ -4,15 +4,18 @@ import clsx from "clsx";
 import Link from "next/link";
 import { ChevronLeft, ArrowLeft } from "lucide-react";
 import React, { useState } from "react";
+import { Container } from "@/components/layout/Container";
+import { Logo } from "../components/Logo";
 
 export default function Home({}) {
   return (
     <Layout>
-      <div>
-        <Header />
-
-        <ScanChart />
-      </div>
+      <Container className="">
+        <div className="">
+          <Header />
+          <ScanChart />
+        </div>
+      </Container>
     </Layout>
   );
 }
@@ -44,7 +47,7 @@ function Header() {
         <div>
           <ChevronLeft className="mt-1" />
         </div>
-        <div>72 Names of God</div>
+        <div><Logo /></div>
       </h1>
       <div className="mt-10">
         <div className="mt-10 flex place-content-end ">

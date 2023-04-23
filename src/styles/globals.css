@@ -24,4 +24,89 @@ h3, h4, h5, h6 {
 a {
   @apply text-cal-300
 }
- 
+
+/* UI.SHADCN */
+@layer base {
+  :root {
+    /* these are applied in the tailwind.config.js */
+
+    /* Yes there are silly styles here that are bold red and blue, to notice and fix them as they come up in development*/
+
+    --background: #101010;
+    --foreground: #0000FF;
+
+    --muted: #ff0000;
+    --muted-foreground: #7A7A7A;
+
+    --popover: #ff0000;
+    --popover-foreground: #ff0000;
+
+    --card: #ff0000;
+    --card-foreground: #ff0000;
+
+    --border: #7A7A7A;
+    --input: #ff0000;
+
+    --primary: #7A7A7A;
+    --primary-foreground: #f2f2f2;
+
+    --secondary: #454545;
+    --secondary-foreground: #E6E6E6;
+
+    --accent: #ff0000;
+    --accent-foreground: #ff0000;
+
+    --destructive: #ff0000;
+    --destructive-foreground: #ff0000;
+
+    --ring: 0000FF;
+
+    --radius: 0.5rem;
+  }
+
+  /*
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+
+   */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    /* @apply bg-background text-foreground; */
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
