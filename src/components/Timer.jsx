@@ -51,22 +51,15 @@ export const Timer = ({ fullScreenHandle }) => {
           if (!isResting) {
             playDing();
             setIsResting(true);
-            // setCurrentSeconds(restSeconds);
-            updateSeconds(restSeconds)
+            updateSeconds(restSeconds);
           } else {
             playDone();
             setIsResting(false);
-            setIsActive(false); // Stop the timer after the rest is done
-            if (getFullScreenTimerPermission()) {
-              setFullScreen(false);
-              fullScreenHandle.exit();
-            }
-            // setCurrentSeconds(meditationSeconds);
-            updateSeconds(meditationSeconds)
+            updateSeconds(meditationSeconds);
+            setIsActive(false);
           }
         } else {
           const newSeconds = currentSeconds - 1;
-          // setCurrentSeconds(newSeconds);
           updateSeconds(newSeconds);
           setTimerSeconds(newSeconds); // Update the timerSecondsAtom
         }
@@ -77,6 +70,7 @@ export const Timer = ({ fullScreenHandle }) => {
 
     return () => clearInterval(interval);
   }, [isActive, meditationSeconds, restSeconds, isResting, currentSeconds, updateSeconds]);
+
 
   const toggle = () => {
     isActive ? pause() : start();
