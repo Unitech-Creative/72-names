@@ -4,6 +4,7 @@ import { Language } from "@/lib/language";
 import { ReactSVG } from "react-svg";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
+import clsx from "clsx";
 
 export default function NamesPage() {
   let { locale, lang, Pronounced } = Language();
@@ -19,11 +20,14 @@ export default function NamesPage() {
       <Container>
         <Logo className="mb-10 flex w-full place-content-center" />
 
-        <div className="divide-y divide-cal-800 overflow-hidden rounded-lg shadow md:grid md:grid-cols-2 ">
+        <div className="overflow-hidden rounded-lg md:grid md:grid-cols-2 ">
           {names.map((name) => (
             <div
               key={name.id}
-              className="group relative p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-yellow-600"
+              className={clsx("border-cal-800 group relative p-6",
+                {'border-b': ![71,72].includes(Number(name.id)) },
+                {'border-b md:border-0': name.id == 71 },
+              )}
             >
               <div className="text-cal-500">
                 #{name.id}
