@@ -42,29 +42,36 @@ export const Timer = ({ fullScreenHandle }) => {
   const getTimes = function () {
     let mSeconds = Number(localStorage.getItem("meditationSeconds"));
     let rSeconds = Number(localStorage.getItem("restSeconds"));
-
-    if (!mSeconds) {
-      mSeconds = 3 * 60;
-    }
-    if (!rSeconds) {
-      rSeconds = 2.5 * 60;
-    }
+    if (!mSeconds) mSeconds = 3 * 60;
+    if (!rSeconds) rSeconds = 2.5 * 60;
 
     return [mSeconds, rSeconds];
   };
 
   // fetch the meditation and rest seconds from local storage
   useEffect(() => {
-    if(storageUpdated){
+    if (storageUpdated) {
       initializeTimes();
       setStorageUpdated(false);
     }
-  }, [storageUpdated, setStorageUpdated]);
-
+  }, [storageUpdated, setStorageUpdated, initializeTimes]);
 
   // timer interval
   useEffect(() => {
     let interval = null;
+
+    const stop = () => {
+      playDone();
+      setIsResting(false);
+      initializeTimes();
+      setIsActive(false);
+      if (getFullScreenTimerPermission()) {
+        setTimeout(() => {
+          setFullScreen(true);
+          fullScreenHandle.exit();
+        }, 1000);
+      }
+    };
 
     if (isActive) {
       interval = setInterval(() => {
@@ -87,8 +94,18 @@ export const Timer = ({ fullScreenHandle }) => {
     }
 
     return () => clearInterval(interval);
-  }, [isActive, meditationSeconds, restSeconds, isResting, currentSeconds, updateSeconds]);
-
+  }, [
+    isActive,
+    meditationSeconds,
+    restSeconds,
+    isResting,
+    currentSeconds,
+    updateSeconds,
+    setTimerSeconds,
+    fullScreenHandle,
+    setFullScreen,
+    initializeTimes,
+  ]);
 
   const toggle = () => {
     isActive ? pause() : start();
@@ -101,19 +118,6 @@ export const Timer = ({ fullScreenHandle }) => {
     }
     setIsActive(true);
   };
-
-  const stop = () => {
-    playDone();
-    setIsResting(false);
-    initializeTimes();
-    setIsActive(false);
-    if (getFullScreenTimerPermission()) {
-      setTimeout(() => {
-        setFullScreen(true);
-        fullScreenHandle.exit();
-      }, 1000);
-    }
-  }
 
   const pause = () => {
     setIsActive(false);
