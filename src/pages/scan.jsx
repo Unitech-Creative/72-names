@@ -86,7 +86,6 @@ function ScanChart() {
           </React.Fragment>
         );
       })}
-      <Divider />
     </div>
   );
 }
