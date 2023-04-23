@@ -29,18 +29,18 @@ export default function NamesPage() {
                 {'border-b md:border-0': name.id == 71 },
               )}
             >
-              <div className="text-cal-500">
+              <div className="text-cal-500 group-hover:text-cal-200">
                 #{name.id}
               </div>
               <div className="mt-8">
-                <h3 className="text-base font-semibold leading-6 text-gray-900">
-                  <Link href={`/${name.id}`} className="focus:outline-none">
+                <h3 className="text-base font-semibold leading-6">
+                  <Link href={`/${name.id}`} className="focus:outline-none text-cal-300 group-hover:text-cal-200">
                     {/* Extend touch target to entire panel */}
                     <span className="absolute inset-0" aria-hidden="true" />
                     {name.purpose}
                   </Link>
                 </h3>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-cal-500">
                   {name.short}
                 </p>
               </div>
@@ -50,7 +50,7 @@ export default function NamesPage() {
               >
               <ReactSVG
                 src={`/images/svgs/72-${name.id}.svg`}
-                className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-200"
+                className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-400 group-hover:fill-cal-200"
               />
 
 
