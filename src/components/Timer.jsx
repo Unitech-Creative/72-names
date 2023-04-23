@@ -7,6 +7,7 @@ import {
   restSecondsAtom,
   timerSecondsAtom,
   storageUpdatedAtom,
+  isRestingAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
@@ -17,10 +18,10 @@ export const Timer = ({ fullScreenHandle }) => {
     meditationSecondsAtom
   );
   const [restSeconds, setRestSeconds] = useAtom(restSecondsAtom);
-  const [timerSeconds, setTimerSeconds] = useAtom(timerSecondsAtom);
+  const [, setTimerSeconds] = useAtom(timerSecondsAtom);
 
   const [isActive, setIsActive] = useState(false);
-  const [isResting, setIsResting] = useState(false);
+  const [isResting, setIsResting] = useAtom(isRestingAtom);
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
   const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
 

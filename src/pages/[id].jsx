@@ -15,7 +15,7 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer, formatTime } from "../components/Timer";
-import { meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
+import { isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
@@ -84,6 +84,11 @@ function FullScreenLayout({
   fullScreen,
 }) {
   const [currentSeconds] = useAtom(meditationSecondsAtom);
+  const [isResting, setIsResting] = useAtom(isRestingAtom);
+
+  const textColor = function () {
+    return isResting ? "text-yellow-300" : "text-cal-400";
+  };
 
   return (
     <FullScreen
@@ -102,7 +107,7 @@ function FullScreenLayout({
 
           <div className="my-10 flex flex-col place-items-center font-serif">
             <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-              <div className={`leading-6 text-cal-400`}>
+              <div className={`leading-6 ${textColor()}`}>
                 {formatTime(currentSeconds)}
               </div>
             </div>
