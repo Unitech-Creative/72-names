@@ -44,8 +44,6 @@ export const Timer = ({ fullScreenHandle }) => {
     const getTimes = function () {
       let mSeconds = Number(localStorage.getItem("meditationSeconds"));
       let rSeconds = Number(localStorage.getItem("restSeconds"));
-      console.log("rSeconds: ", rSeconds);
-      console.log("mSeconds", mSeconds);
       if (!mSeconds) mSeconds = 3 * 60;
       if (!rSeconds) rSeconds = 2.5 * 60;
 
@@ -75,7 +73,7 @@ export const Timer = ({ fullScreenHandle }) => {
       setIsActive(false);
       if (getFullScreenTimerPermission()) {
         setTimeout(() => {
-          setFullScreen(true);
+          setFullScreen(false);
           fullScreenHandle.exit();
         }, 1000);
       }
