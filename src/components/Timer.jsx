@@ -6,7 +6,7 @@ import {
   meditationSecondsAtom,
   restSecondsAtom,
   timerSecondsAtom,
-  storageUpdatedAtom
+  storageUpdatedAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
@@ -24,13 +24,6 @@ export const Timer = ({ fullScreenHandle }) => {
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
   const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
 
-  const initializeTimes = () => {
-    const [mSeconds, rSeconds] = getTimes();
-    setMeditationSeconds(mSeconds);
-    setRestSeconds(rSeconds);
-    updateSeconds(mSeconds);
-  };
-
   const updateSeconds = useCallback(
     (seconds) => {
       setCurrentSeconds(seconds);
@@ -39,14 +32,29 @@ export const Timer = ({ fullScreenHandle }) => {
     [setCurrentSeconds, setGlobalSeconds]
   );
 
-  const getTimes = function () {
-    let mSeconds = Number(localStorage.getItem("meditationSeconds"));
-    let rSeconds = Number(localStorage.getItem("restSeconds"));
-    if (!mSeconds) mSeconds = 3 * 60;
-    if (!rSeconds) rSeconds = 2.5 * 60;
+    // Wrap the initializeTimes function with useCallback
+    const initializeTimes = useCallback(() => {
+      const [mSeconds, rSeconds] = getTimes();
+      setMeditationSeconds(mSeconds);
+      setRestSeconds(rSeconds);
+      updateSeconds(mSeconds);
+    }, [setMeditationSeconds, setRestSeconds, updateSeconds]);
 
-    return [mSeconds, rSeconds];
-  };
+    const getTimes = function () {
+      let mSeconds = Number(localStorage.getItem("meditationSeconds"));
+      let rSeconds = Number(localStorage.getItem("restSeconds"));
+      console.log("rSeconds: ", rSeconds);
+      console.log("mSeconds", mSeconds);
+      if (!mSeconds) mSeconds = 3 * 60;
+      if (!rSeconds) rSeconds = 2.5 * 60;
+
+      return [mSeconds, rSeconds];
+    };
+
+  // Run initializeTimes when the component is mounted
+  useEffect(() => {
+    initializeTimes();
+  }, [initializeTimes]);
 
   // fetch the meditation and rest seconds from local storage
   useEffect(() => {
@@ -165,6 +173,5 @@ export const formatTime = (seconds) => {
   return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-export const getFullScreenTimerPermission = () => (
-  JSON.parse(localStorage.getItem("fullScreenTimerPermission"))
-)
+export const getFullScreenTimerPermission = () =>
+  JSON.parse(localStorage.getItem("fullScreenTimerPermission"));
