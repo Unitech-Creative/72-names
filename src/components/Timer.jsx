@@ -74,10 +74,7 @@ export const Timer = ({ fullScreenHandle }) => {
             setIsResting(true);
             updateSeconds(restSeconds);
           } else {
-            playDone();
-            setIsResting(false);
-            initializeTimes();
-            setIsActive(false);
+            stop();
           }
         } else {
           const newSeconds = currentSeconds - 1;
@@ -99,15 +96,24 @@ export const Timer = ({ fullScreenHandle }) => {
 
   const start = () => {
     if (getFullScreenTimerPermission()) {
-      console.log(
-        "full screen timer permission ",
-        getFullScreenTimerPermission()
-      );
       setFullScreen(true);
       fullScreenHandle.enter();
     }
     setIsActive(true);
   };
+
+  const stop = () => {
+    playDone();
+    setIsResting(false);
+    initializeTimes();
+    setIsActive(false);
+    if (getFullScreenTimerPermission()) {
+      setTimeout(() => {
+        setFullScreen(true);
+        fullScreenHandle.exit();
+      }, 1000);
+    }
+  }
 
   const pause = () => {
     setIsActive(false);
