@@ -65,6 +65,11 @@ export default function Layout({
     label: <FormattedMessage id="scan" defaultMessage="Scan" />,
     member: false,
   });
+  navLinks.push({
+    href: "/names",
+    label: <FormattedMessage id="allNames" defaultMessage="All Names" />,
+    member: false,
+  });
   navLinks.push({ href: "/admin", label: "Admin", member: true, admin: true });
 
   return (
