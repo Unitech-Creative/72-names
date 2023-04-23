@@ -19,6 +19,7 @@ import { meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
+import { Logo } from "../components/Logo";
 
 function getData(id) {
   let { locale, lang, Pronounced } = Language();
@@ -39,7 +40,6 @@ export default function Home({ id }) {
   return (
     <Layout>
       <Container>
-        <div className="rounded-lg border border-cal-700 p-3 md:p-4 lg:mt-10 lg:p-10">
           <HeaderWithNav
             data={data}
             timer={timer}
@@ -70,7 +70,6 @@ export default function Home({ id }) {
 
             <Desktop timer={timer} imageCard={imageCard} data={data} />
           </div>
-        </div>
       </Container>
     </Layout>
   );
@@ -221,11 +220,7 @@ function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandl
 }
 
 function Header({ data }) {
-  return (
-    <div className="mb-5 flex w-full font-serif text-xl font-bold text-cal-600 lg:place-content-center">
-      72 Names of God
-    </div>
-  );
+  return <Logo className="mb-5 flex w-full lg:place-content-center" />
 }
 
 function Meditation({ data }) {
