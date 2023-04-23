@@ -16,11 +16,12 @@ import { Switch } from "@/components/ui/switch"
 
 import { useState, useEffect } from "react";
 import { formatTime } from "./Timer";
-import { meditationSecondsAtom, restSecondsAtom } from "@/atoms/index";
+import { meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { getFullScreenTimerPermission } from "./Timer";
 
 export const TimerDialog = () => {
+  const [, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
   );
@@ -67,15 +68,19 @@ export const TimerDialog = () => {
 
   }, [meditationSeconds, restSeconds]);
 
-  const useDevMode = (m, r) => {
+  const update = (m,r) => {
     saveMeditationSeconds(m);
     saveRestSeconds(r);
+    setStorageUpdated(true);
+  }
+
+  const useDevMode = (m, r) => {
+    update(m, r)
     setOpen(false);
   };
 
   const saveChanges = () => {
-    saveMeditationSeconds(meditationValue);
-    saveRestSeconds(restValue);
+    update(meditationValue, restValue)
     saveFullScreenPermission(fullScreenPermission)
     setOpen(false);
   };

@@ -6,10 +6,12 @@ import {
   meditationSecondsAtom,
   restSecondsAtom,
   timerSecondsAtom,
+  storageUpdatedAtom
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
 export const Timer = ({ fullScreenHandle }) => {
+  const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
@@ -22,24 +24,43 @@ export const Timer = ({ fullScreenHandle }) => {
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
   const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
 
-  const updateSeconds = useCallback((seconds) => {
-    setCurrentSeconds(seconds);
-    setGlobalSeconds(seconds);
-  }, [setCurrentSeconds, setGlobalSeconds]);
+  const initializeTimes = () => {
+    const [mSeconds, rSeconds] = getTimes();
+    setMeditationSeconds(mSeconds);
+    setRestSeconds(rSeconds);
+    updateSeconds(mSeconds);
+  };
+
+  const updateSeconds = useCallback(
+    (seconds) => {
+      setCurrentSeconds(seconds);
+      setGlobalSeconds(seconds);
+    },
+    [setCurrentSeconds, setGlobalSeconds]
+  );
+
+  const getTimes = function () {
+    let mSeconds = Number(localStorage.getItem("meditationSeconds"));
+    let rSeconds = Number(localStorage.getItem("restSeconds"));
+
+    if (!mSeconds) {
+      mSeconds = 3 * 60;
+    }
+    if (!rSeconds) {
+      rSeconds = 2.5 * 60;
+    }
+
+    return [mSeconds, rSeconds];
+  };
 
   // fetch the meditation and rest seconds from local storage
   useEffect(() => {
-    const savedMeditationSeconds = Number(
-      localStorage.getItem("meditationSeconds")
-    );
-    const savedRestSeconds = Number(localStorage.getItem("restSeconds"));
-
-    if (savedMeditationSeconds) {
-      setMeditationSeconds(savedMeditationSeconds);
-      setRestSeconds(savedRestSeconds);
-      updateSeconds(savedMeditationSeconds);
+    if(storageUpdated){
+      initializeTimes();
+      setStorageUpdated(false);
     }
-  }, [updateSeconds]);
+  }, [storageUpdated, setStorageUpdated]);
+
 
   // timer interval
   useEffect(() => {
@@ -55,7 +76,7 @@ export const Timer = ({ fullScreenHandle }) => {
           } else {
             playDone();
             setIsResting(false);
-            updateSeconds(meditationSeconds);
+            initializeTimes();
             setIsActive(false);
           }
         } else {
