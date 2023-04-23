@@ -10,7 +10,7 @@ import { Logo } from "../components/Logo";
 export default function Home({}) {
   return (
     <Layout>
-      <Container className="">
+      <Container className="w-full">
         <div className="">
           <Header />
           <ScanChart />
@@ -68,24 +68,26 @@ function ScanChart() {
   );
 
   return (
-    <div className="grid grid-cols-8">
-      {Array.from({ length: n }, (_, index) => {
-        const row = Math.floor(index / 8);
-        const col = index % 8;
-        const reversedIndex = row * 8 + (7 - col);
+    <div className="flex place-content-center">
+      <div className="grid grid-cols-8 w-fit mb-10">
+        {Array.from({ length: n }, (_, index) => {
+          const row = Math.floor(index / 8);
+          const col = index % 8;
+          const reversedIndex = row * 8 + (7 - col);
 
-        return (
-          <React.Fragment key={index}>
-            <NameOfGod
-              key={index}
-              position={reversedIndex + 1}
-              className="aspect-video w-[50px] border-cal-800 p-4 md:w-[90px] lg:w-[110px]"
-            />
+          return (
+            <React.Fragment key={index}>
+              <NameOfGod
+                key={index}
+                position={reversedIndex + 1}
+                className="aspect-video w-[50px] border-cal-800 p-4 md:w-[90px] lg:w-[110px]"
+              />
 
-            {(index + 1) % 8 === 0 && index !== n - 1 && <Divider />}
-          </React.Fragment>
-        );
-      })}
+              {(index + 1) % 8 === 0 && index !== n - 1 && <Divider />}
+            </React.Fragment>
+          );
+        })}
+      </div>
     </div>
   );
 }
