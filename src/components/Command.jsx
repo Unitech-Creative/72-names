@@ -129,11 +129,15 @@ const NameCommandItem = ({ id }) => {
   const data = lang[id]
 
   return (
-    <CommandItem key={id} onSelect={() => { router.push(`/${id}`) } }>
+    <CommandItem
+      key={id}
+      onSelect={() => { router.push(`/${id}`) } }
+      className="group cursor-pointer"
+    >
       <div className="flex space-x-4">
-        <div className="text-cal-500">#{id}</div>
+        <div className="group-hover:text-cal-200 text-cal-500">#{id}</div>
         <div>
-          <div className="flex text-cal-200">{data.purpose}</div>
+          <div className="flex group-hover:text-cal-200 text-cal-300">{data.purpose}</div>
           <div className="flex text-cal-500">{data.short}</div>
         </div>
       </div>
