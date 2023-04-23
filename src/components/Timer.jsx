@@ -83,7 +83,7 @@ export const Timer = ({ fullScreenHandle }) => {
 
     if (isActive) {
       interval = setInterval(() => {
-        if (currentSeconds === 1) {
+        if (currentSeconds === 0) {
           if (!isResting) {
             playDing();
             setIsResting(true);
