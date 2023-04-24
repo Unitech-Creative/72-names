@@ -5,7 +5,7 @@ import { ReactNode, useEffect } from "react";
 import Meta from "./meta";
 import { useSignInModal } from "./sign-in-modal";
 import { NavLinks } from "./NavLinks";
-
+import clsx from "clsx";
 import { MobilePopover, UserFlow } from "./Header/helper";
 import { Logo } from "../Logo";
 
@@ -112,16 +112,19 @@ function Commands() {
   const router = useRouter()
 
   return (
-    <div className="z-[999] fixed md:bottom-10 md:right-10 bottom-9 right-4">
+    <div className="fixed bottom-9 right-4 z-[999] md:bottom-10 md:right-10">
       {commandsDialog()}
-      {router.route !== '/[id]' && (
-        <Button
-          onClick={() => setCommandsOpen(true)}
-          className="font-serif text-xl font-bold text-cal-600 h-[55px] border-cal-200 rounded-full bg-cal-900 shadow"
-        >72</Button>
-      )}
+      <Button
+        onClick={() => setCommandsOpen(true)}
+        className={clsx(
+          "h-[55px] rounded-full border-cal-200 bg-cal-900 font-serif text-xl font-bold text-cal-600 shadow",
+          router.route == "/[id]" ? "hidden lg:flex" : ""
+        )}
+      >
+        72
+      </Button>
     </div>
-  )
+  );
 }
 
 const navigation = {
