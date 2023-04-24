@@ -18,6 +18,9 @@ import {
 } from "@/atoms/index";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { useCommands } from "@/components/Command";
+import { Button } from "@/components/ui/Button";
+
 import { useRouter } from "next/router";
 import { usePostHog } from "posthog-js/react";
 
@@ -48,13 +51,13 @@ export default function Layout({
   const router = useRouter();
   const posthog = usePostHog();
 
-  useEffect(() => {
-    const routerSignedIn = router.query.signedIn == "True";
-    if (signedIn && routerSignedIn && posthog) {
-      posthog.identify(session?.user?.email || "");
-      router.replace(router.asPath, undefined, { shallow: true });
-    }
-  }, [posthog, router, session?.user?.email, signedIn]);
+  // useEffect(() => {
+  //   const routerSignedIn = router.query.signedIn == "True";
+  //   if (signedIn && routerSignedIn && posthog) {
+  //     posthog.identify(session?.user?.email || "");
+  //     router.replace(router.asPath, undefined, { shallow: true });
+  //   }
+  // }, [posthog, router, session?.user?.email, signedIn]);
   /* POSTHOG */
 
   const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
@@ -76,7 +79,6 @@ export default function Layout({
     <>
       <Meta {...meta} />
       {sigInModalToggle && <SignInModal />}
-      {/* <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" /> */}
       <div
         className={`w-full z-30`}
       >
@@ -97,11 +99,26 @@ export default function Layout({
         </div>
       </div>
       <main className="flex w-full flex-col items-center justify-center pt-20 text-black">
+        <Commands />
         {children}
         <Footer />
       </main>
     </>
   );
+}
+
+function Commands() {
+  const { open: commandsOpen, setOpen: setCommandsOpen, commandsDialog } = useCommands()
+
+  return (
+    <div className="z-[999] fixed md:bottom-10 mdright-10 bottom-7 right-7">
+      {commandsDialog()}
+      <Button
+        onClick={() => setCommandsOpen(true)}
+        className="font-serif text-xl font-bold text-cal-600 h-[55px] border-cal-200 rounded-full bg-cal-900 shadow"
+      >72</Button>
+    </div>
+  )
 }
 
 const navigation = {
