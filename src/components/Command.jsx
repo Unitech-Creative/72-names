@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/command"
 import { Language } from "@/lib/language";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
+import { commandsOpenAtom } from "@/atoms/index";
 
 
 import { useState } from "react";
@@ -49,8 +51,7 @@ const groups = [
 ]
 
 export function useCommands() {
-
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useAtom(commandsOpenAtom)
   const [search, setSearch] = useState('')
   const [pages, setPages] = useState([])
   const page = pages[pages.length - 1]

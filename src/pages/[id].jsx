@@ -15,7 +15,7 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer, formatTime } from "../components/Timer";
-import { isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
+import { commandsOpenAtom, isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
@@ -134,6 +134,9 @@ function Desktop({data, imageCard}){
 }
 
 function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
+
+  const [, setCommandsOpen] = useAtom(commandsOpenAtom)
+
   return (
     <>
       <div className="flex place-content-between items-center lg:hidden ">
@@ -153,6 +156,12 @@ function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
               fullScreen={fullScreen}
               setFullScreen={setFullScreen}
             />
+
+            <button
+              onClick={() => setCommandsOpen(true)}
+              className="font-serif text-xl font-bold text-cal-600 mt-0.5 p-2"
+            >72</button>
+
           </Timer>
         </div>
       </div>
