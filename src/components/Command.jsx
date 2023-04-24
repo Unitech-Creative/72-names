@@ -32,7 +32,7 @@ const groups = [
   },
   {
     title: "Money",
-    items: [41,45, 70]
+    items: [41,45, 38, 70]
   },
   {
     title: "Sharing",
@@ -98,7 +98,7 @@ function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
         <CommandEmpty>No results found.</CommandEmpty>
         <Suggestions page={page} setPages={setPages} pages={pages} />
         <CommandSeparator />
-        <Names page={page} />
+        <Names page={page} setOpen={setOpen} />
       </CommandList>
     </CommandDialog>
   );
@@ -133,7 +133,7 @@ const Suggestions = ({page, setPages, pages}) => {
 
 };
 
-const Names = ({page}) => {
+const Names = ({page, setOpen}) => {
   const ids = Array.from({ length: 72 }, (_, i) => i + 1);
   const names = ids.map((id) => {
 
@@ -141,7 +141,7 @@ const Names = ({page}) => {
     const groupTitles = inGroups.map((group) => group.title)
 
     if( !page || groupTitles.includes(page)) {
-      return <NameCommandItem key={id} id={id} />
+      return <NameCommandItem key={id} id={id} setOpen={setOpen} />
     }else{
       return <React.Fragment key={id} />
     }
@@ -150,7 +150,7 @@ const Names = ({page}) => {
   return <CommandGroup heading="All Names">{names}</CommandGroup>;
 }
 
-const NameCommandItem = ({ id }) => {
+const NameCommandItem = ({ id, setOpen }) => {
   const { lang } = Language();
   const router = useRouter()
   const data = lang[id]
@@ -158,7 +158,7 @@ const NameCommandItem = ({ id }) => {
   return (
     <CommandItem
       key={id}
-      onSelect={() => { router.push(`/${id}`) } }
+      onSelect={() => { router.push(`/${id}`); setOpen(false) } }
       className="group cursor-pointer"
     >
       <div className="flex space-x-4">
