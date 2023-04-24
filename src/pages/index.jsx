@@ -9,9 +9,9 @@ export default function Home({}) {
 
   return (
     <Layout>
-      <div className="bg-cal-300">
+      <Container>
         <Reviews />
-      </div>
+      </Container>
     </Layout>
   );
 }

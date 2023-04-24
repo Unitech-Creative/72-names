@@ -48,12 +48,10 @@ export default function NamesPage() {
                 className="pointer-events-none absolute right-6 top-6 text-gray-300 group-hover:text-gray-400 w-[100px]"
                 aria-hidden="true"
               >
-              <ReactSVG
-                src={`/images/svgs/72-${name.id}.svg`}
-                className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-400 group-hover:fill-cal-200"
-              />
-
-
+                <ReactSVG
+                  src={`/images/svgs/72-${name.id}.svg`}
+                  className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-400 group-hover:fill-cal-200"
+                />
               </div>
             </div>
           ))}
