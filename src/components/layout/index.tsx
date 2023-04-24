@@ -60,7 +60,8 @@ export default function Layout({
   // }, [posthog, router, session?.user?.email, signedIn]);
   /* POSTHOG */
 
-  const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
+  // const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
+  const userFlow = null;
 
   const navLinks = [];
   navLinks.push({
