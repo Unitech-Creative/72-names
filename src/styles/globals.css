@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#__next {
+  min-height: 100%;
+}
+
 html {
   @apply bg-cal-900
 }

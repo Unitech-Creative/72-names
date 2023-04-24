@@ -18,8 +18,6 @@ export default function NamesPage() {
 
     <Layout>
       <Container>
-        <Logo className="mb-10 flex w-full place-content-center !text-cal-400 " />
-
         <div className="overflow-hidden rounded-lg md:grid md:grid-cols-2 ">
           {names.map((name) => (
             <div
@@ -48,12 +46,10 @@ export default function NamesPage() {
                 className="pointer-events-none absolute right-6 top-6 text-gray-300 group-hover:text-gray-400 w-[100px]"
                 aria-hidden="true"
               >
-              <ReactSVG
-                src={`/images/svgs/72-${name.id}.svg`}
-                className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-400 group-hover:fill-cal-200"
-              />
-
-
+                <ReactSVG
+                  src={`/images/svgs/72-${name.id}.svg`}
+                  className="absolute top-0 left-0 -mt-[20px] w-full fill-cal-400 group-hover:fill-cal-200"
+                />
               </div>
             </div>
           ))}
