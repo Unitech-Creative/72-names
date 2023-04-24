@@ -151,22 +151,22 @@ function NameGrid() {
           />
         </>
       )}
-      <div className="mx-100 pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cal-900" />
-      <div className="mx-100 pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cal-900" />
+      <div className="mx-2 pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cal-900" />
+      <div className="mx-2 pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cal-900" />
     </div>
   );
 }
 
-export function Reviews() {
+export function ScrollingNames() {
   return (
     <>
       <h2
         id="names-title"
-        className="text-3xl font-medium tracking-tight text-cal-300 sm:text-center"
+        className="text-3xl font-medium tracking-tight text-cal-300 text-center"
       >
         The Frequency of Miracles
       </h2>
-      <p className="mt-2 text-lg text-cal-300 sm:text-center">
+      <p className="mt-2 text-lg text-cal-300 text-center">
         Attune yourself with these universal forces to unleash their powers
         within you.
       </p>
