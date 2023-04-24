@@ -1,18 +1,18 @@
 import Layout from "../components/layout";
+import { Container } from "@/components/layout/Container";
+import { Button } from "@/components/ui/button";
+import { useCommands } from "@/components/Command";
+import { Logo } from "../components/Logo";
 
-export default function Home({ courses }) {
+export default function Home({}) {
+
+
+
   return (
     <Layout>
-      <div className="">
-        <h1 className="text-4xl font-bold">WELCOME</h1>
-      </div>
+      <Container>
+        <Logo />
+      </Container>
     </Layout>
   );
 }
-
-// export async function getStaticProps(context) {
-
-//   return {
-//     props: {  }, // will be passed to the page component as props
-//   };
-// }

@@ -204,7 +204,7 @@ function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandl
 
       <div>
         <div className="flex place-content-end space-x-4">
-          <div>
+          <div className="hidden">
             {/* This empty parent div is required, it's keeping the roundedness of this circle */}
             <div className="flex items-center rounded-full border border-cal-800 p-2">
               <MoreVertical className="h-5 text-cal-400" />
@@ -225,7 +225,7 @@ function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandl
 }
 
 function Header({ data }) {
-  return <Logo className="mb-5 flex w-full lg:place-content-center" />
+  return <Logo className="mb-5 flex w-full hidden lg:place-content-center" />
 }
 
 function Meditation({ data }) {
@@ -241,9 +241,7 @@ function Meditation({ data }) {
 function PronouncedAs({ data }) {
   return (
     <div className="flex flex-col place-items-center font-serif">
-      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-        {/* <h3 className="mb-5 font-serif text-2xl text-cal-300">Pronounced</h3> */}
-
+      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold">
         <div className={`leading-6 text-cal-400`}>{data.pronounced}</div>
       </div>
     </div>

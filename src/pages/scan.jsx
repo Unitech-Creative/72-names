@@ -42,12 +42,11 @@ function Tip() {
 function Header() {
   return (
     <div className="mb-5 font-serif">
-      <h1 className="flex place-content-end space-x-3 text-right text-xl font-bold">
-        <div className="text-cal-300">Scan</div>
-        <div>
-          <ChevronLeft className="mt-1" />
-        </div>
-        <div><Logo /></div>
+      <h1 className="flex lg:place-content-end space-x-3 text-right text-xl font-bold">
+        <div className="text-cal-400">Scan</div>
+
+        <ChevronLeft className="mt-1 hidden lg:block" />
+        <div className="hidden lg:block"><Logo /></div>
       </h1>
       <div className="mt-10">
         <div className="mt-10 flex place-content-end ">

@@ -33,13 +33,13 @@ a {
     /* Yes there are silly styles here that are bold red and blue, to notice and fix them as they come up in development*/
 
     --background: #101010;
-    --foreground: #0000FF;
+    --foreground: #C9C9C9;
 
-    --muted: #ff0000;
+    --muted: #2caa2a;
     --muted-foreground: #7A7A7A;
 
-    --popover: #ff0000;
-    --popover-foreground: #ff0000;
+    --popover: #101010;
+    --popover-foreground: #C9C9C9;
 
     --card: #ff0000;
     --card-foreground: #ff0000;

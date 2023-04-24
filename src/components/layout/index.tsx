@@ -18,6 +18,9 @@ import {
 } from "@/atoms/index";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { useCommands } from "@/components/Command";
+import { Button } from "@/components/ui/button";
+
 import { useRouter } from "next/router";
 import { usePostHog } from "posthog-js/react";
 
@@ -48,13 +51,13 @@ export default function Layout({
   const router = useRouter();
   const posthog = usePostHog();
 
-  useEffect(() => {
-    const routerSignedIn = router.query.signedIn == "True";
-    if (signedIn && routerSignedIn && posthog) {
-      posthog.identify(session?.user?.email || "");
-      router.replace(router.asPath, undefined, { shallow: true });
-    }
-  }, [posthog, router, session?.user?.email, signedIn]);
+  // useEffect(() => {
+  //   const routerSignedIn = router.query.signedIn == "True";
+  //   if (signedIn && routerSignedIn && posthog) {
+  //     posthog.identify(session?.user?.email || "");
+  //     router.replace(router.asPath, undefined, { shallow: true });
+  //   }
+  // }, [posthog, router, session?.user?.email, signedIn]);
   /* POSTHOG */
 
   const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
@@ -76,14 +79,13 @@ export default function Layout({
     <>
       <Meta {...meta} />
       {sigInModalToggle && <SignInModal />}
-      {/* <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" /> */}
       <div
         className={`w-full z-30`}
       >
         <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
           <div className="relative z-10 flex items-center gap-16">
             <Link href="/" className="font-display flex items-center text-2xl">
-              <Logo className="mt-5" />
+              <Logo className="mt-5 !text-cal-300" />
             </Link>
             <div className="hidden pt-4 lg:flex lg:gap-10">
               <NavLinks navLinks={navLinks} />
@@ -96,12 +98,27 @@ export default function Layout({
           </div>
         </div>
       </div>
-      <main className="flex w-full flex-col items-center justify-center pt-20 text-black">
+      <main className="flex w-full flex-col items-center justify-center pt-10 lg:pt-20 text-black">
+        <Commands />
         {children}
         <Footer />
       </main>
     </>
   );
+}
+
+function Commands() {
+  const { open: commandsOpen, setOpen: setCommandsOpen, commandsDialog } = useCommands()
+
+  return (
+    <div className="z-[999] fixed md:bottom-10 mdright-10 bottom-7 right-7">
+      {commandsDialog()}
+      <Button
+        onClick={() => setCommandsOpen(true)}
+        className="font-serif text-xl font-bold text-cal-600 h-[55px] border-cal-200 rounded-full bg-cal-900 shadow"
+      >72</Button>
+    </div>
+  )
 }
 
 const navigation = {
