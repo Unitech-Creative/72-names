@@ -241,9 +241,7 @@ function Meditation({ data }) {
 function PronouncedAs({ data }) {
   return (
     <div className="flex flex-col place-items-center font-serif">
-      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-        {/* <h3 className="mb-5 font-serif text-2xl text-cal-300">Pronounced</h3> */}
-
+      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold">
         <div className={`leading-6 text-cal-400`}>{data.pronounced}</div>
       </div>
     </div>
