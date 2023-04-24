@@ -1,18 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
-import {
-  motion,
-  useAnimationFrame,
-  useInView,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion'
+import { useInView } from "framer-motion";
 
 import { Language } from "@/lib/language";
 import { ReactSVG } from "react-svg";
 
-function getReviews() {
+function getNames() {
   let { lang, Pronounced } = Language();
 
   const names = Object.entries(lang).map(([key, value]) => ({
@@ -42,15 +35,17 @@ function Name({ purpose, short, id, className, ...props }) {
   return (
     <figure
       className={clsx(
-        "animate-fade-in rounded-3xl bg-cal-950 p-6 opacity-0 shadow-md shadow-gray-800/5 text-center group",
+        "group animate-fade-in rounded-3xl bg-cal-950 p-6 text-center opacity-0 shadow-md shadow-gray-800/5",
         className
       )}
       style={{ animationDelay }}
       {...props}
     >
       <blockquote className="">
-        <p className="mt-4 text-lg font-semibold leading-6 text-cal-300">{purpose}</p>
-        <div className="mt-3 text-base leading-7 flex place-content-center">
+        <p className="mt-4 text-lg font-semibold leading-6 text-cal-300">
+          {purpose}
+        </p>
+        <div className="mt-3 flex place-content-center text-base leading-7">
           <div className="w-3/4">
             <ReactSVG
               src={`/images/svgs/72-${id}.svg`}
@@ -59,129 +54,123 @@ function Name({ purpose, short, id, className, ...props }) {
           </div>
         </div>
       </blockquote>
-      <figcaption className="mt-3 text-sm text-gray-400">
-        {short}
-      </figcaption>
+      <figcaption className="mt-3 text-sm text-gray-400">{short}</figcaption>
     </figure>
   );
 }
 
 function splitArray(array, numParts) {
-  let result = []
+  let result = [];
   for (let i = 0; i < array.length; i++) {
-    let index = i % numParts
+    let index = i % numParts;
     if (!result[index]) {
-      result[index] = []
+      result[index] = [];
     }
-    result[index].push(array[i])
+    result[index].push(array[i]);
   }
-  return result
+  return result;
 }
 
-function ReviewColumn({
+function NameColumn({
   className,
-  reviews,
-  reviewClassName = () => {},
+  names,
+  nameClassName = () => {},
   msPerPixel = 0,
 }) {
-  let columnRef = useRef()
-  let [columnHeight, setColumnHeight] = useState(0)
-  let duration = `${columnHeight * msPerPixel}ms`
+  let columnRef = useRef();
+  let [columnHeight, setColumnHeight] = useState(0);
+  let duration = `${columnHeight * msPerPixel}ms`;
 
   useEffect(() => {
     let resizeObserver = new window.ResizeObserver(() => {
-      setColumnHeight(columnRef.current.offsetHeight)
-    })
+      setColumnHeight(columnRef.current.offsetHeight);
+    });
 
-    resizeObserver.observe(columnRef.current)
+    resizeObserver.observe(columnRef.current);
 
     return () => {
-      resizeObserver.disconnect()
-    }
-  }, [])
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   return (
     <div
       ref={columnRef}
-      className={clsx('animate-marquee space-y-8 py-4', className)}
-      style={{ '--marquee-duration': duration }}
+      className={clsx("animate-marquee space-y-8 py-4", className)}
+      style={{ "--marquee-duration": duration }}
     >
-      {reviews.concat(reviews).map((review, reviewIndex) => (
+      {names.concat(names).map((name, nameIndex) => (
         <Name
-          key={reviewIndex}
-          aria-hidden={reviewIndex >= reviews.length}
-          className={reviewClassName(reviewIndex % reviews.length)}
-          {...review}
+          key={nameIndex}
+          aria-hidden={nameIndex >= names.length}
+          className={nameClassName(nameIndex % names.length)}
+          {...name}
         />
       ))}
     </div>
-  )
+  );
 }
 
-function ReviewGrid() {
-  let containerRef = useRef()
-  let isInView = useInView(containerRef, { once: true, amount: 0.4 })
-  const reviews = getReviews();
-  let columns = splitArray(reviews, 3)
-  columns = [columns[0], columns[1], splitArray(columns[2], 2)]
+function NameGrid() {
+  let containerRef = useRef();
+  let isInView = useInView(containerRef, { once: true, amount: 0.4 });
+  const names = getNames();
+  let columns = splitArray(names, 3);
+  columns = [columns[0], columns[1], splitArray(columns[2], 2)];
 
   return (
     <div
       ref={containerRef}
-      className="relative -mx-4 mt-5 lg:mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 md:grid-cols-2 lg:grid-cols-3"
+      className="relative -mx-4 mt-5 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 md:grid-cols-2 lg:mt-16 lg:grid-cols-3"
     >
       {isInView && (
         <>
-          <ReviewColumn
-            reviews={[...columns[0], ...columns[2].flat(), ...columns[1]]}
-            reviewClassName={(reviewIndex) =>
+          <NameColumn
+            names={[...columns[0], ...columns[2].flat(), ...columns[1]]}
+            nameClassName={(nameIndex) =>
               clsx(
-                reviewIndex >= columns[0].length + columns[2][0].length &&
+                nameIndex >= columns[0].length + columns[2][0].length &&
                   "md:hidden",
-                reviewIndex >= columns[0].length && "lg:hidden"
+                nameIndex >= columns[0].length && "lg:hidden"
               )
             }
             msPerPixel={10}
           />
-          <ReviewColumn
-            reviews={[...columns[1], ...columns[2][1]]}
+          <NameColumn
+            names={[...columns[1], ...columns[2][1]]}
             className="hidden md:block"
-            reviewClassName={(reviewIndex) =>
-              reviewIndex >= columns[1].length && "lg:hidden"
+            nameClassName={(nameIndex) =>
+              nameIndex >= columns[1].length && "lg:hidden"
             }
             msPerPixel={15}
           />
-          <ReviewColumn
-            reviews={columns[2].flat()}
+          <NameColumn
+            names={columns[2].flat()}
             className="hidden lg:block"
             msPerPixel={10}
           />
         </>
       )}
-      <div className="mx-2 lg:mx-0 pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cal-900" />
-      <div className="mx-2 lg:mx-0 pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cal-900" />
+      <div className="mx-100 pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cal-900" />
+      <div className="mx-100 pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cal-900" />
     </div>
   );
 }
 
 export function Reviews() {
   return (
-    // <section
-    //   id="reviews"
-    //   aria-labelledby="reviews-title"
-    //   className="pb-16 pt-20 sm:pb-24 sm:pt-32"
-    // >
     <>
       <h2
-        id="reviews-title"
+        id="names-title"
         className="text-3xl font-medium tracking-tight text-cal-300 sm:text-center"
       >
         The Frequency of Miracles
       </h2>
       <p className="mt-2 text-lg text-cal-300 sm:text-center">
-        Attune yourself with these universal forces to unleash their powers within you.
+        Attune yourself with these universal forces to unleash their powers
+        within you.
       </p>
-      <ReviewGrid />
+      <NameGrid />
     </>
   );
 }
