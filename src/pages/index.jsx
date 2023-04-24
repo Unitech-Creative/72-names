@@ -1,6 +1,6 @@
 import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { useCommands } from "@/components/Command";
 import { Logo } from "../components/Logo";
 

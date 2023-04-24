@@ -19,7 +19,7 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useCommands } from "@/components/Command";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { useRouter } from "next/router";
 import { usePostHog } from "posthog-js/react";
