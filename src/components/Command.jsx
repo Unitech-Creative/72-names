@@ -1,5 +1,8 @@
 import React from "react"
 import {
+
+  ChevronLeftIcon,
+
   Calculator,
   Calendar,
   CreditCard,
@@ -90,6 +93,15 @@ const Suggestions = ({page, setPages, pages}) => {
 
   return (
     <CommandGroup heading={page || "Suggestions"}>
+      {page && (
+        <CommandItem
+          onSelect={() => setPages([])}
+        >
+          <ChevronLeftIcon className="mr-2 h-4 w-4" />
+          <span>BACK</span>
+        </CommandItem>
+      )}
+
       {groups.map((group) => (
         !page ? (
           <CommandItem
