@@ -10,10 +10,10 @@ export default function Home({}) {
 
   return (
     <Layout>
-      <div class="flex items-center -mt-10 lg:mt-0">
-        <Logo className="!text-cal-300 !text-2xl !text-center hidden lg:block" />
+      <div className="-mt-10 flex items-center lg:mt-0">
+        <Logo className="hidden !text-center !text-2xl !text-cal-300 lg:block" />
       </div>
-      <div class="flex place-content-center">
+      <div className="flex place-content-center">
         <SearchButton />
       </div>
       <Container>
@@ -29,10 +29,12 @@ function SearchButton() {
   return (
     <button
       onClick={() => setOpen(true)}
-      class="my-10 flex space-x-4 rounded-full bg-cal-800/50 px-4 py-2 text-sm text-cal-200 hover:text-cal-100 hover:bg-cal-800/60"
+      className="my-10 flex space-x-4 rounded-full bg-cal-800/50 px-4 py-2 text-sm text-cal-200 hover:bg-cal-800/60 hover:text-cal-100"
     >
       {/* <Search size={16} className="mt-0.5" /> */}
-      <span className="mt-0.5font-serif text-sm font-bold text-cal-600">72</span>
+      <span className="mt-0.5font-serif text-sm font-bold text-cal-600">
+        72
+      </span>
       <p>Search</p>
     </button>
   );
