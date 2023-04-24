@@ -80,13 +80,11 @@ export default function Layout({
     <>
       <Meta {...meta} />
       {sigInModalToggle && <SignInModal />}
-      <div
-        className={`w-full z-30`}
-      >
+      <div className={`z-30 w-full`}>
         <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
           <div className="relative z-10 flex items-center gap-16">
             <Link href="/" className="font-display flex items-center text-2xl">
-              <Logo className="mt-5 !text-cal-300" />
+              <Logo className="mt-0 !text-cal-300 lg:mt-5" />
             </Link>
             <div className="hidden pt-4 lg:flex lg:gap-10">
               <NavLinks navLinks={navLinks} />
@@ -99,7 +97,7 @@ export default function Layout({
           </div>
         </div>
       </div>
-      <main className="flex w-full flex-col items-center justify-center pt-10 lg:pt-20 text-black">
+      <main className="flex w-full flex-col items-center justify-center pt-10 text-black lg:pt-20">
         <Commands />
         {children}
         <Footer />
