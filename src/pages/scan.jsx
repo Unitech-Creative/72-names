@@ -62,9 +62,9 @@ function Header() {
 function ScanChart() {
   const n = 72;
 
-  const Divider = () => (
-    <div className="col-span-8 my-2 h-0.5 w-full bg-gradient-to-tl from-cal-100 to-cal-950 "></div>
-  );
+  const Divider = () =>
+    // <div className="col-span-8 my-2 h-0.5 w-full bg-gradient-to-tl from-cal-100 to-cal-950 "></div>
+    null;
 
   return (
     <div className="flex place-content-center">

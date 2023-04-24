@@ -160,16 +160,18 @@ function NameGrid() {
 export function ScrollingNames() {
   return (
     <>
-      <h2
-        id="names-title"
-        className="text-3xl font-medium tracking-tight text-cal-300 text-center"
-      >
-        The Frequency of Miracles
-      </h2>
-      <p className="mt-2 text-lg text-cal-300 text-center">
-        Attune yourself with these universal forces to unleash their powers
-        within you.
-      </p>
+      <div className="p-3 lg:p-0">
+        <h2
+          id="names-title"
+          className="text-center font-serif text-3xl text-cal-300"
+        >
+          The Frequency of Miracles
+        </h2>
+        <p className="mt-2 text-center text-lg text-cal-300">
+          Attune yourself with these universal forces to unleash their powers
+          within you.
+        </p>
+      </div>
       <NameGrid />
     </>
   );
