@@ -18,8 +18,6 @@ export default function NamesPage() {
 
     <Layout>
       <Container>
-        <Logo className="mb-10 flex w-full place-content-center !text-cal-400 " />
-
         <div className="overflow-hidden rounded-lg md:grid md:grid-cols-2 ">
           {names.map((name) => (
             <div

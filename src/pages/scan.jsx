@@ -20,41 +20,10 @@ export default function Home({}) {
   );
 }
 
-// export async function getStaticProps(context) {
-
-//   return {
-//     props: {  }, // will be passed to the page component as props
-//   };
-// }
-
-function Tip() {
-  const [showCheck, setShowCheck] = useState(false);
-
-  const handleMouseEnter = () => {
-    setShowCheck(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowCheck(false);
-  };
-}
-
 function Header() {
   return (
-    <div className="mb-5 font-serif">
-      <h1 className="flex lg:place-content-end space-x-3 text-right text-xl font-bold">
-        <div className="text-cal-400">Scan</div>
-
-        <ChevronLeft className="mt-1 hidden lg:block" />
-        <div className="hidden lg:block"><Logo /></div>
-      </h1>
-      <div className="mt-10">
-        <div className="mt-10 flex place-content-end ">
-          <div className="flex p-2 px-3 text-sm text-cal-700">
-            <ArrowLeft className="-mt-0.5 mr-2 w-4" /> scan right to left
-          </div>
-        </div>
-      </div>
+    <div className="mb-10 flex place-content-end p-2 px-3 font-serif text-sm text-cal-700">
+      <ArrowLeft className="-mt-0.5 mr-2 w-4" /> scan right to left
     </div>
   );
 }
