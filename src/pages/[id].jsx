@@ -159,7 +159,7 @@ function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
 
             <button
               onClick={() => setCommandsOpen(true)}
-              className="font-serif text-xl font-bold text-cal-600 mt-0.5 p-2"
+              className="font-serif text-xl font-bold text-cal-400 mt-0.5 p-2"
             >72</button>
 
           </Timer>
