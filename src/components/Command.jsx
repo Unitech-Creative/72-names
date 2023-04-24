@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/command"
 import { Language } from "@/lib/language";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
+import { commandsOpenAtom } from "@/atoms/index";
 
 
 import { useState } from "react";
@@ -49,8 +51,7 @@ const groups = [
 ]
 
 export function useCommands() {
-
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useAtom(commandsOpenAtom)
   const [search, setSearch] = useState('')
   const [pages, setPages] = useState([])
   const page = pages[pages.length - 1]
@@ -58,13 +59,15 @@ export function useCommands() {
   return {
     open, setOpen,
     commandsDialog: function() {
-      return <Commands open={open} setOpen={setOpen} search={search} setSearch={setSearch} pages={pages} setPages={setPages} page={page} />
+      return <Commands search={search} setSearch={setSearch} pages={pages} setPages={setPages} page={page} />
     }
   }
 
 }
 
-function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
+function Commands({ search, setSearch, pages, setPages, page}) {
+  const [open, setOpen] = useAtom(commandsOpenAtom)
+
   useEffect(() => {
     const down = (e) => {
       if (e.key === "k" && e.metaKey) {
@@ -99,7 +102,7 @@ function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
         </CommandEmpty>
         <Suggestions page={page} setPages={setPages} pages={pages} setSearch={setSearch} />
         <CommandSeparator />
-        <Names page={page} setOpen={setOpen} />
+        <Names page={page} />
       </CommandList>
     </CommandDialog>
   );
@@ -141,7 +144,8 @@ const Suggestions = ({page, setPages, pages, setSearch}) => {
 
 };
 
-const Names = ({page, setOpen}) => {
+const Names = ({page}) => {
+  const [open, setOpen] = useAtom(commandsOpenAtom)
   const ids = Array.from({ length: 72 }, (_, i) => i + 1);
   const names = ids.map((id) => {
 
@@ -149,7 +153,7 @@ const Names = ({page, setOpen}) => {
     const groupTitles = inGroups.map((group) => group.title)
 
     if( !page || groupTitles.includes(page)) {
-      return <NameCommandItem key={id} id={id} setOpen={setOpen} />
+      return <NameCommandItem key={id} id={id} />
     }else{
       return <React.Fragment key={id} />
     }
@@ -158,7 +162,8 @@ const Names = ({page, setOpen}) => {
   return <CommandGroup heading="All Names">{names}</CommandGroup>;
 }
 
-const NameCommandItem = ({ id, setOpen }) => {
+const NameCommandItem = ({ id }) => {
+  const [open, setOpen] = useAtom(commandsOpenAtom)
   let { lang, Pronounced } = Language();
   const router = useRouter()
   const data = lang[id]

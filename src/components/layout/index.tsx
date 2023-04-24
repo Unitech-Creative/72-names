@@ -5,7 +5,7 @@ import { ReactNode, useEffect } from "react";
 import Meta from "./meta";
 import { useSignInModal } from "./sign-in-modal";
 import { NavLinks } from "./NavLinks";
-
+import clsx from "clsx";
 import { MobilePopover, UserFlow } from "./Header/helper";
 import { Logo } from "../Logo";
 
@@ -60,7 +60,8 @@ export default function Layout({
   // }, [posthog, router, session?.user?.email, signedIn]);
   /* POSTHOG */
 
-  const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
+  // const userFlow = <UserFlow onClick={() => setSigInModalToggle(true)} />;
+  const userFlow = null;
 
   const navLinks = [];
   navLinks.push({
@@ -109,16 +110,22 @@ export default function Layout({
 
 function Commands() {
   const { open: commandsOpen, setOpen: setCommandsOpen, commandsDialog } = useCommands()
+  const router = useRouter()
 
   return (
-    <div className="z-[999] fixed md:bottom-10 mdright-10 bottom-7 right-7">
+    <div className="fixed bottom-9 right-4 z-[999] md:bottom-10 md:right-10">
       {commandsDialog()}
       <Button
         onClick={() => setCommandsOpen(true)}
-        className="font-serif text-xl font-bold text-cal-600 h-[55px] border-cal-200 rounded-full bg-cal-900 shadow"
-      >72</Button>
+        className={clsx(
+          "h-[55px] rounded-full border-cal-200 bg-cal-900 font-serif text-xl font-bold text-cal-600 shadow",
+          router.route == "/[id]" ? "hidden lg:flex" : ""
+        )}
+      >
+        72
+      </Button>
     </div>
-  )
+  );
 }
 
 const navigation = {

@@ -5,7 +5,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Popover } from "@headlessui/react";
-import { LogOut, Bookmark, Hexagon } from "lucide-react";
+import { LogOut, Bookmark } from "lucide-react";
 import Novu from "@/components/Novu";
 import { useAtom } from "jotai";
 import { adminAtom, lessonAtom, chapterAtom, courseAtom } from "@/atoms/index";
@@ -57,16 +57,12 @@ export function MobilePopover({ navLinks, userFlow }) {
   const [admin] = useAtom(adminAtom);
 
   return (
-    <div className="grid grid-cols-3 gap-3 lg:hidden">
-      <Link href="/liked">
-        <Bookmark className="" />
-      </Link>
-      <Novu />
+    <div className="grid grid-cols-1 gap-3 lg:hidden">
       <Popover>
         {({ open }) => (
           <>
             <Popover.Button
-              className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-gray-900 p-2 hover:bg-gray-200/50 hover:stroke-gray-600 active:stroke-gray-900 [&:not(:focus-visible)]:focus:outline-none"
+              className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-cal-300 p-2 hover:bg-cal-600 hover:stroke-cal-200 active:stroke-cal-200 [&:not(:focus-visible)]:focus:outline-none"
               aria-label="Toggle site navigation"
             >
               {({ open }) =>
@@ -86,7 +82,7 @@ export function MobilePopover({ navLinks, userFlow }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-0 bg-gray-300/60 backdrop-blur"
+                    className="fixed inset-0 z-0 bg-cal-300/60 backdrop-blur"
                   />
                   <Popover.Panel
                     static
@@ -98,7 +94,7 @@ export function MobilePopover({ navLinks, userFlow }) {
                       y: -32,
                       transition: { duration: 0.2 },
                     }}
-                    className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-32 shadow-2xl shadow-gray-900/20"
+                    className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-cal-800 px-6 pb-6 pt-32 shadow-2xl shadow-gray-900/20"
                   >
                     <div className="space-y-4">
                       {navLinks.map((navLink, index) => {
@@ -131,7 +127,7 @@ function NavLink({ href, label, member }) {
   if (member && !session) return;
 
   return (
-    <MobileNavLink key={href} href={href}>
+    <MobileNavLink key={href} href={href} className="block text-cal-200">
       {label}
     </MobileNavLink>
   );
@@ -179,9 +175,9 @@ export function UserFlow({ onClick }) {
               <UserDropdown />
             </div>
           </div>
-          <div className="lg:hidden">
+          {/* <div className="lg:hidden">
             <LogoutButton />
-          </div>
+          </div> */}
         </>
       )}
     </AnimatePresence>

@@ -11,7 +11,7 @@ import {
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
-export const Timer = ({ fullScreenHandle }) => {
+export const Timer = ({ fullScreenHandle, mobile, children }) => {
   const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
@@ -145,14 +145,46 @@ export const Timer = ({ fullScreenHandle }) => {
     audio.play();
   };
 
-  const textColor = function () {
-    if (!isActive) return "text-cal-400";
-    return isResting ? "text-yellow-300" : "text-green-500";
-  };
+  const uiProps = {
+    isActive,
+    isResting,
+    currentSeconds,
+    toggle,
+    reset,
+  }
 
+  return (mobile ? <MobileUI {...uiProps} children={children} /> : <DesktopUI {...uiProps} />)
+
+};
+
+const textColor = function (isActive, isResting) {
+  if (!isActive) return "text-cal-400";
+  return isResting ? "text-yellow-300" : "text-green-500";
+};
+
+
+function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, children }) {
   return (
-    <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
-      <div className={textColor()}>{formatTime(currentSeconds)}</div>
+    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
+      <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
+      <div className="ml-2 flex space-x-4">
+        <button onClick={toggle} className="rounded-full p-3 ">
+          {isActive ? <Pause size={24} /> : <Play size={24} />}
+        </button>
+        <button onClick={reset} className="rounded-full p-1 ">
+          <RotateCcw size={16} />
+        </button>
+        <TimerDialog />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function DesktopUI({ isActive, isResting, currentSeconds, toggle, reset }) {
+  return (
+    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
+      <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
           {isActive ? <Pause size={16} /> : <Play size={16} />}
@@ -164,7 +196,7 @@ export const Timer = ({ fullScreenHandle }) => {
       </div>
     </div>
   );
-};
+}
 
 export const formatTime = (seconds) => {
   const min = Math.floor(seconds / 60);

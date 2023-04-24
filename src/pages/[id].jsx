@@ -15,14 +15,14 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer, formatTime } from "../components/Timer";
-import { isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
+import { commandsOpenAtom, isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Minimize2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
 function getData(id) {
-  let { locale, lang, Pronounced } = Language();
+  let { lang, Pronounced } = Language();
   const data = lang[String(id)];
   data.id = id;
   data.pronounced = Pronounced[String(id)];
@@ -34,7 +34,6 @@ export default function Home({ id }) {
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
   const fullScreenHandle = useFullScreenHandle();
-  const timer = <Timer fullScreenHandle={fullScreenHandle} />;
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
 
   return (
@@ -42,7 +41,6 @@ export default function Home({ id }) {
       <Container>
           <HeaderWithNav
             data={data}
-            timer={timer}
             fullScreen={fullScreen}
             setFullScreen={setFullScreen}
             fullScreenHandle={fullScreenHandle}
@@ -55,7 +53,7 @@ export default function Home({ id }) {
               })}
             >
               <NameHeader data={data} />
-              <Mobile timer={timer} imageCard={imageCard} data={data} />
+              <Mobile fullScreen={fullScreen} setFullScreen={setFullScreen} fullScreenHandle={fullScreenHandle} imageCard={imageCard} data={data} />
               <Meditation data={data} />
             </div>
 
@@ -63,12 +61,11 @@ export default function Home({ id }) {
               setFullScreen={setFullScreen}
               fullScreen={fullScreen}
               handle={fullScreenHandle}
-              timer={timer}
               imageCard={imageCard}
               data={data}
             />
 
-            <Desktop timer={timer} imageCard={imageCard} data={data} />
+            <Desktop setFullScreen={setFullScreen} imageCard={imageCard} data={data} />
           </div>
       </Container>
     </Layout>
@@ -77,7 +74,6 @@ export default function Home({ id }) {
 
 function FullScreenLayout({
   handle,
-  timer,
   imageCard,
   data,
   setFullScreen,
@@ -128,7 +124,7 @@ function FullScreenLayout({
   );
 }
 
-function Desktop({data, imageCard, timer}){
+function Desktop({data, imageCard}){
   return (
     <div className="hidden lg:block">
       <PronouncedAs data={data} />
@@ -137,7 +133,10 @@ function Desktop({data, imageCard, timer}){
   )
 }
 
-function Mobile({data, imageCard, timer}){
+function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
+
+  const [, setCommandsOpen] = useAtom(commandsOpenAtom)
+
   return (
     <>
       <div className="flex place-content-between items-center lg:hidden ">
@@ -149,8 +148,22 @@ function Mobile({data, imageCard, timer}){
         <NextButton id={data.id} />
       </div>
 
-      <div className="mt-10 -mb-10 flex w-full place-content-end lg:hidden">
-        {timer}
+      <div className="fixed bottom-10 w-full place-content-center lg:hidden flex">
+        <div className="z-[999] bg-cal-900 rounded-full border border-cal-300">
+          <Timer mobile={true} fullScreenHandle={fullScreenHandle}>
+            <ExpandButton
+              fullScreenHandle={fullScreenHandle}
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+            />
+
+            <button
+              onClick={() => setCommandsOpen(true)}
+              className="font-serif text-xl font-bold text-cal-400 mt-0.5 p-2"
+            >72</button>
+
+          </Timer>
+        </div>
       </div>
     </>
   )
@@ -195,7 +208,22 @@ function NameHeader({ data }) {
   );
 }
 
-function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandle }) {
+function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
+  return (
+    <button
+      onClick={() => {
+        setFullScreen(!fullScreen);
+        fullScreenHandle.enter();
+      }}
+    >
+      <Expand className="h-5 text-cal-400" />
+    </button>
+  );
+}
+
+
+
+function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
       <div className="lg:col-start-2">
@@ -211,12 +239,13 @@ function HeaderWithNav({ data, timer, fullScreen, setFullScreen, fullScreenHandl
             </div>
           </div>
           <div className="z-10 hidden space-x-2 lg:flex">
-            {timer}
+            <Timer fullScreenHandle={fullScreenHandle} />
             <ButtonNavigation id={data.id} />
-            <button onClick={(e) => { setFullScreen(!fullScreen); fullScreenHandle.enter() } }>
-              <Expand className="h-5 text-cal-400" />
-            </button >
-
+            <ExpandButton
+              fullScreenHandle={fullScreenHandle}
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+            />
           </div>
         </div>
       </div>
