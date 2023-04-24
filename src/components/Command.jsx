@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {
   ChevronLeftIcon,
-  Calendar,
+  Search,
 } from "lucide-react"
 
 
@@ -19,7 +19,7 @@ import { Language } from "@/lib/language";
 import { useRouter } from "next/router";
 
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 const groups = [
   {
@@ -66,7 +66,6 @@ export function useCommands() {
 
 function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
   useEffect(() => {
-    console.log("useEffect, commands")
     const down = (e) => {
       if (e.key === "k" && e.metaKey) {
         setOpen((open) => !open)
@@ -95,8 +94,10 @@ function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
         value={search} onValueChange={setSearch}
       />
       <CommandList className="max-h-[500px]">
-        <CommandEmpty>No results found.</CommandEmpty>
-        <Suggestions page={page} setPages={setPages} pages={pages} />
+        <CommandEmpty>
+          No results found for "{search}"
+        </CommandEmpty>
+        <Suggestions page={page} setPages={setPages} pages={pages} setSearch={setSearch} />
         <CommandSeparator />
         <Names page={page} setOpen={setOpen} />
       </CommandList>
@@ -104,29 +105,36 @@ function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
   );
 }
 
-const Suggestions = ({page, setPages, pages}) => {
+const Suggestions = ({page, setPages, pages, setSearch}) => {
+
+  const selectSuggestion = (selectPage) => {
+    setPages(selectPage)
+    setSearch("")
+  }
 
   return (
     <CommandGroup heading={page || "Suggestions"}>
       {page && (
         <CommandItem
+          key={page}
           onSelect={() => setPages([])}
         >
           <ChevronLeftIcon className="mr-2 h-4 w-4" />
-          <span>BACK</span>
+          <span>Back</span>
         </CommandItem>
       )}
 
-      {groups.map((group) => (
+      {groups.map((group, i) => (
         !page ? (
           <CommandItem
-            key={group.id}
-            onSelect={() => setPages([...pages, group.title])}
+            key={i}
+            onSelect={() => selectSuggestion([...pages, group.title])}
+            className="group cursor-pointer"
           >
-            <Calendar className="mr-2 h-4 w-4" />
+            <Search className="mr-2 h-3 w-3 text-cal-600 group-hover:text-cal-300" />
             <span>{group.title}</span>
           </CommandItem>
-        ) : <React.Fragment key={group.id} />
+        ) : <React.Fragment key={i} />
       ))}
     </CommandGroup>
   );
