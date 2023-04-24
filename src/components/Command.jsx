@@ -1,19 +1,12 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {
-
   ChevronLeftIcon,
-
-  Calculator,
   Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
 } from "lucide-react"
 
 
 import {
-  Command,
+  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -55,17 +48,39 @@ const groups = [
   }
 ]
 
-export function CommandDemo() {
+export function useCommands() {
 
-  const ref = useRef(null)
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [pages, setPages] = useState([])
   const page = pages[pages.length - 1]
 
+  return {
+    open, setOpen,
+    commandsDialog: function() {
+      return <Commands open={open} setOpen={setOpen} search={search} setSearch={setSearch} pages={pages} setPages={setPages} page={page} />
+    }
+  }
+
+}
+
+function Commands( {open, setOpen, search, setSearch, pages, setPages, page} ) {
+  useEffect(() => {
+    console.log("useEffect, commands")
+    const down = (e) => {
+      if (e.key === "k" && e.metaKey) {
+        setOpen((open) => !open)
+        setSearch("")
+      }
+    }
+
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
 
   return (
-    <Command className="rounded-lg border border-cal-500"
+    <CommandDialog
+      open={open} onOpenChange={setOpen}
       onKeyDown={(e) => {
         // Escape goes to previous page
         // Backspace goes to previous page when search is empty
@@ -76,7 +91,7 @@ export function CommandDemo() {
       }}
     >
       <CommandInput
-        placeholder="Type a command or search..."
+        placeholder="Type a name, number or search..."
         value={search} onValueChange={setSearch}
       />
       <CommandList className="max-h-[500px]">
@@ -85,7 +100,7 @@ export function CommandDemo() {
         <CommandSeparator />
         <Names page={page} />
       </CommandList>
-    </Command>
+    </CommandDialog>
   );
 }
 
