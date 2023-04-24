@@ -1,8 +1,7 @@
 import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
-import { useCommands } from "@/components/Command";
 import { Logo } from "../components/Logo";
+import { Reviews } from '@/components/Reviews'
 
 export default function Home({}) {
 
@@ -10,9 +9,9 @@ export default function Home({}) {
 
   return (
     <Layout>
-      <Container>
-        <Logo />
-      </Container>
+      <div className="bg-cal-300">
+        <Reviews />
+      </div>
     </Layout>
   );
 }
