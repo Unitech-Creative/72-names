@@ -11,7 +11,7 @@ import {
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
-export const Timer = ({ fullScreenHandle, mobile }) => {
+export const Timer = ({ fullScreenHandle, mobile, children }) => {
   const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
@@ -153,7 +153,7 @@ export const Timer = ({ fullScreenHandle, mobile }) => {
     reset,
   }
 
-  return (mobile ? <MobileUI {...uiProps} /> : <DesktopUI {...uiProps} />)
+  return (mobile ? <MobileUI {...uiProps} children={children} /> : <DesktopUI {...uiProps} />)
 
 };
 
@@ -163,18 +163,19 @@ const textColor = function (isActive, isResting) {
 };
 
 
-function MobileUI({ isActive, isResting, currentSeconds, toggle, reset }) {
+function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, children }) {
   return (
-    <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
+    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
       <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
       <div className="ml-2 flex space-x-4">
-        <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
-          {isActive ? <Pause size={16} /> : <Play size={16} />}
+        <button onClick={toggle} className="rounded-full p-3 ">
+          {isActive ? <Pause size={24} /> : <Play size={24} />}
         </button>
-        <button onClick={reset} className="rounded py-2 hover:text-cal-300">
+        <button onClick={reset} className="rounded-full p-1 ">
           <RotateCcw size={16} />
         </button>
         <TimerDialog />
+        {children}
       </div>
     </div>
   );
@@ -182,7 +183,7 @@ function MobileUI({ isActive, isResting, currentSeconds, toggle, reset }) {
 
 function DesktopUI({ isActive, isResting, currentSeconds, toggle, reset }) {
   return (
-    <div className="flex w-[160px] items-center justify-center rounded-full border border-cal-800 text-cal-400">
+    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
       <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">

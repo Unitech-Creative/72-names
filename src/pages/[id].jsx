@@ -53,7 +53,7 @@ export default function Home({ id }) {
               })}
             >
               <NameHeader data={data} />
-              <Mobile fullScreenHandle={fullScreenHandle} imageCard={imageCard} data={data} />
+              <Mobile fullScreen={fullScreen} setFullScreen={setFullScreen} fullScreenHandle={fullScreenHandle} imageCard={imageCard} data={data} />
               <Meditation data={data} />
             </div>
 
@@ -133,7 +133,7 @@ function Desktop({data, imageCard}){
   )
 }
 
-function Mobile({data, imageCard, fullScreenHandle}){
+function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
   return (
     <>
       <div className="flex place-content-between items-center lg:hidden ">
@@ -147,7 +147,13 @@ function Mobile({data, imageCard, fullScreenHandle}){
 
       <div className="fixed bottom-10 w-full place-content-center lg:hidden flex">
         <div className="z-[999] bg-cal-900 rounded-full border border-cal-300">
-          <Timer mobile={true} fullScreenHandle={fullScreenHandle} />
+          <Timer mobile={true} fullScreenHandle={fullScreenHandle}>
+            <ExpandButton
+              fullScreenHandle={fullScreenHandle}
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+            />
+          </Timer>
         </div>
       </div>
     </>
@@ -193,6 +199,21 @@ function NameHeader({ data }) {
   );
 }
 
+function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
+  return (
+    <button
+      onClick={() => {
+        setFullScreen(!fullScreen);
+        fullScreenHandle.enter();
+      }}
+    >
+      <Expand className="h-5 text-cal-400" />
+    </button>
+  );
+}
+
+
+
 function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
@@ -211,10 +232,11 @@ function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
           <div className="z-10 hidden space-x-2 lg:flex">
             <Timer fullScreenHandle={fullScreenHandle} />
             <ButtonNavigation id={data.id} />
-            <button onClick={(e) => { setFullScreen(!fullScreen); fullScreenHandle.enter() } }>
-              <Expand className="h-5 text-cal-400" />
-            </button >
-
+            <ExpandButton
+              fullScreenHandle={fullScreenHandle}
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+            />
           </div>
         </div>
       </div>

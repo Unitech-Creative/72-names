@@ -111,7 +111,7 @@ function Commands() {
   const { open: commandsOpen, setOpen: setCommandsOpen, commandsDialog } = useCommands()
 
   return (
-    <div className="z-[999] fixed md:bottom-10 mdright-10 bottom-7 right-7">
+    <div className="z-[999] fixed md:bottom-10 md:right-10 bottom-9 right-4">
       {commandsDialog()}
       <Button
         onClick={() => setCommandsOpen(true)}
