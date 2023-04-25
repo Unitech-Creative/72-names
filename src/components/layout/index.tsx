@@ -120,7 +120,7 @@ function Commands() {
       <Button
         onClick={() => setCommandsOpen(true)}
         className={clsx(
-          "h-[55px] rounded-full border-cal-200 bg-cal-900 font-serif text-xl font-bold text-cal-600 shadow",
+          "h-[55px] rounded-full border-cal-600 bg-cal-900 font-serif text-xl font-bold text-cal-600 shadow transition-all duration-200 ease-in-out hover:border-cal-500 hover:bg-cal-800/50 hover:text-cal-100",
           router.route == "/[id]" ? "hidden lg:flex" : ""
         )}
       >
