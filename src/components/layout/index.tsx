@@ -208,7 +208,7 @@ function Footer() {
         <div className="mt-10 font-sans font-light flex place-content-center">
           <LanguageButtons />
         </div>
-        <p className="mt-5 text-center text-xs leading-5 text-gray-500">
+        <p className="mt-5 mb-20 lg:mb-10  text-center text-xs leading-5 text-gray-500">
           &copy; 2023 Unitech Creative Technology Solutions PT. All rights
           reserved.
         </p>
