@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { MobilePopover, UserFlow } from "./Header/helper";
 import { Logo } from "../Logo";
 import { AppHeader } from "@/components/AppHeader";
+import { LanguageButtons } from "@/lib/language"
 
 import { useAtom } from "jotai";
 import {
@@ -131,16 +132,16 @@ function Commands() {
 
 const navigation = {
   main: [
-    {
-      name: "Privacy Policy",
-      href: process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL,
-      target: "_blank",
-    },
-    {
-      name: "Terms of Service",
-      href: process.env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL,
-      target: "_blank",
-    },
+    // {
+    //   name: "Privacy Policy",
+    //   href: process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL,
+    //   target: "_blank",
+    // },
+    // {
+    //   name: "Terms of Service",
+    //   href: process.env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL,
+    //   target: "_blank",
+    // },
   ],
   // social: [
   //   {
@@ -203,7 +204,11 @@ function Footer() {
             </a>
           ))}
         </div> */}
-        <p className="mt-10 text-center text-xs leading-5 text-gray-500">
+
+        <div className="mt-10 font-sans font-light flex place-content-center">
+          <LanguageButtons />
+        </div>
+        <p className="mt-5 text-center text-xs leading-5 text-gray-500">
           &copy; 2023 Unitech Creative Technology Solutions PT. All rights
           reserved.
         </p>
