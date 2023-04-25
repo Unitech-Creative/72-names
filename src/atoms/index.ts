@@ -22,3 +22,4 @@ export const fullScreenAtom = atom(false);
 export const hasPermissionAtom = atomWithToggle(false);
 export const permissionsLoadedAtom = atomWithToggle(false);
 export const commandsOpenAtom = atomWithToggle(false);
+export const iOSAtom = atomWithToggle(false);

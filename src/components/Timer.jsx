@@ -8,10 +8,12 @@ import {
   timerSecondsAtom,
   storageUpdatedAtom,
   isRestingAtom,
+  iOSAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
 export const Timer = ({ fullScreenHandle, mobile, children }) => {
+  const [iOS] = useAtom(iOSAtom)
   const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
@@ -71,7 +73,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
       setIsResting(false);
       initializeTimes();
       setIsActive(false);
-      if (getFullScreenTimerPermission()) {
+      if (getFullScreenTimerPermission(iOS)) {
         setTimeout(() => {
           setFullScreen(false);
           fullScreenHandle.exit();
@@ -119,7 +121,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   };
 
   const start = () => {
-    if (getFullScreenTimerPermission()) {
+    if (getFullScreenTimerPermission(iOS)) {
       setFullScreen(true);
       fullScreenHandle.enter();
     }
@@ -206,5 +208,6 @@ export const formatTime = (seconds) => {
   return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-export const getFullScreenTimerPermission = () =>
-  JSON.parse(localStorage.getItem("fullScreenTimerPermission"));
+export const getFullScreenTimerPermission = (iOS) => {
+  return iOS ? false : JSON.parse(localStorage.getItem("fullScreenTimerPermission"))
+}

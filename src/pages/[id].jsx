@@ -2,8 +2,8 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
-import React from "react";
-import { MoreVertical, ChevronRight, Expand } from "lucide-react";
+import React, {useState} from "react";
+import { Minimize2, MoreVertical, ChevronRight, Expand } from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { Language, appLocale } from "@/lib/language";
 import {
@@ -16,11 +16,12 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer, formatTime } from "../components/Timer";
-import { commandsOpenAtom, isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
+import { iOSAtom, commandsOpenAtom, isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { Minimize2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { isIOS } from 'react-device-detect';
+import { useEffect } from "react";
 
 function getData(id) {
   let { lang, Pronounced } = Language();
@@ -31,11 +32,16 @@ function getData(id) {
 }
 
 export default function Home({ id }) {
+  const [iOS, setIOS] = useAtom(iOSAtom)
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
   const fullScreenHandle = useFullScreenHandle();
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
+
+  useEffect(() => {
+    setIOS(isIOS)
+  }, [])
 
   return (
     <Layout>
@@ -210,8 +216,11 @@ function NameHeader({ data }) {
 }
 
 function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
+  const [iOS] = useAtom(iOSAtom)
+
   return (
     <button
+      className={iOS ? "hidden" : ""}
       onClick={() => {
         setFullScreen(!fullScreen);
         fullScreenHandle.enter();
