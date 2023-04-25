@@ -9,6 +9,7 @@ import {
   storageUpdatedAtom,
   isRestingAtom,
   iOSAtom,
+  timerActiveAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 
@@ -26,6 +27,11 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   const [isResting, setIsResting] = useAtom(isRestingAtom);
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
   const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
+  const [, setTimerActive] = useAtom(timerActiveAtom);
+
+  useEffect(() => {
+    setTimerActive(isActive);
+  }, [setTimerActive, isActive]);
 
   const updateSeconds = useCallback(
     (seconds) => {

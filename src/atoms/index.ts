@@ -13,6 +13,7 @@ export const adminAtom = atomWithToggle(false);
 export const sigInModalToggleAtom = atomWithToggle(false);
 export const signedInAtom = atomWithToggle(false);
 export const unauthenticatedAtom = atomWithToggle(false);
+export const timerActiveAtom = atomWithToggle(false);
 export const timerSecondsAtom = atom(0);
 export const storageUpdatedAtom = atomWithToggle(false);
 export const isRestingAtom = atomWithToggle(false);
