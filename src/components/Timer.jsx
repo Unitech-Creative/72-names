@@ -13,7 +13,7 @@ import {
 import { useAtom } from "jotai";
 
 export const Timer = ({ fullScreenHandle, mobile, children }) => {
-  const [iOS] = useAtom(iOSAtom)
+  const [iOS] = useAtom(iOSAtom);
   const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [, setFullScreen] = useAtom(fullScreenAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
@@ -35,22 +35,22 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
     [setCurrentSeconds, setGlobalSeconds]
   );
 
-    // Wrap the initializeTimes function with useCallback
-    const initializeTimes = useCallback(() => {
-      const [mSeconds, rSeconds] = getTimes();
-      setMeditationSeconds(mSeconds);
-      setRestSeconds(rSeconds);
-      updateSeconds(mSeconds);
-    }, [setMeditationSeconds, setRestSeconds, updateSeconds]);
+  // Wrap the initializeTimes function with useCallback
+  const initializeTimes = useCallback(() => {
+    const [mSeconds, rSeconds] = getTimes();
+    setMeditationSeconds(mSeconds);
+    setRestSeconds(rSeconds);
+    updateSeconds(mSeconds);
+  }, [setMeditationSeconds, setRestSeconds, updateSeconds]);
 
-    const getTimes = function () {
-      let mSeconds = Number(localStorage.getItem("meditationSeconds"));
-      let rSeconds = Number(localStorage.getItem("restSeconds"));
-      if (!mSeconds) mSeconds = 3 * 60;
-      if (!rSeconds) rSeconds = 2.5 * 60;
+  const getTimes = function () {
+    let mSeconds = Number(localStorage.getItem("meditationSeconds"));
+    let rSeconds = Number(localStorage.getItem("restSeconds"));
+    if (!mSeconds) mSeconds = 3 * 60;
+    if (!rSeconds) rSeconds = 2.5 * 60;
 
-      return [mSeconds, rSeconds];
-    };
+    return [mSeconds, rSeconds];
+  };
 
   // Run initializeTimes when the component is mounted
   useEffect(() => {
@@ -76,7 +76,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
       if (getFullScreenTimerPermission(iOS)) {
         setTimeout(() => {
           setFullScreen(false);
-          fullScreenHandle.exit();
+          if (!iOS) fullScreenHandle.exit();
         }, 1000);
       }
     };
@@ -121,9 +121,9 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   };
 
   const start = () => {
+    setFullScreen(true);
     if (getFullScreenTimerPermission(iOS)) {
-      setFullScreen(true);
-      fullScreenHandle.enter();
+      if (!iOS) fullScreenHandle.enter();
     }
     setIsActive(true);
   };
@@ -155,10 +155,13 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
     toggle,
     reset,
     pause,
-  }
+  };
 
-  return (mobile ? <MobileUI {...uiProps} children={children} /> : <DesktopUI {...uiProps} />)
-
+  return mobile ? (
+    <MobileUI {...uiProps} children={children} />
+  ) : (
+    <DesktopUI {...uiProps} />
+  );
 };
 
 const textColor = function (isActive, isResting) {
@@ -166,11 +169,20 @@ const textColor = function (isActive, isResting) {
   return isResting ? "text-yellow-300" : "text-green-500";
 };
 
-
-function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, pause, children }) {
+function MobileUI({
+  isActive,
+  isResting,
+  currentSeconds,
+  toggle,
+  reset,
+  pause,
+  children,
+}) {
   return (
-    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
-      <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
+    <div className="flex w-fit items-center justify-center rounded-full border border-cal-800 px-4 text-cal-400">
+      <div className={textColor(isActive, isResting)}>
+        {formatTime(currentSeconds)}
+      </div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded-full p-3 ">
           {isActive ? <Pause size={24} /> : <Play size={24} />}
@@ -185,10 +197,19 @@ function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, pause, c
   );
 }
 
-function DesktopUI({ isActive, isResting, currentSeconds, toggle, reset, pause }) {
+function DesktopUI({
+  isActive,
+  isResting,
+  currentSeconds,
+  toggle,
+  reset,
+  pause,
+}) {
   return (
-    <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
-      <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
+    <div className="flex w-fit items-center justify-center rounded-full border border-cal-800 px-4 text-cal-400">
+      <div className={textColor(isActive, isResting)}>
+        {formatTime(currentSeconds)}
+      </div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
           {isActive ? <Pause size={16} /> : <Play size={16} />}
@@ -208,6 +229,5 @@ export const formatTime = (seconds) => {
   return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-export const getFullScreenTimerPermission = (iOS) => {
-  return iOS ? false : JSON.parse(localStorage.getItem("fullScreenTimerPermission"))
-}
+export const getFullScreenTimerPermission = (iOS) =>
+  JSON.parse(localStorage.getItem("fullScreenTimerPermission"));
