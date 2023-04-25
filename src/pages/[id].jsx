@@ -16,11 +16,18 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer, formatTime } from "../components/Timer";
-import { iOSAtom, commandsOpenAtom, isRestingAtom, meditationSecondsAtom, fullScreenAtom } from "@/atoms/index";
+import {
+  iOSFullScreenAtom,
+  iOSAtom,
+  commandsOpenAtom,
+  isRestingAtom,
+  meditationSecondsAtom,
+  fullScreenAtom,
+} from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Logo } from "@/components/Logo";
-import { isIOS } from 'react-device-detect';
+import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
 
 function getData(id) {
@@ -32,48 +39,68 @@ function getData(id) {
 }
 
 export default function Home({ id }) {
-  const [iOS, setIOS] = useAtom(iOSAtom)
+  const [iOS, setIOS] = useAtom(iOSAtom);
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
   const fullScreenHandle = useFullScreenHandle();
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
+  const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
 
   useEffect(() => {
-    setIOS(isIOS)
-  }, [])
+    setIOSFullScreen(iOS && fullScreen);
+  }, [setIOSFullScreen, fullScreen, iOS]);
+
+  useEffect(() => {
+    setIOS(isIOS);
+  }, [setIOS]);
 
   return (
     <Layout>
-      <Container>
-          <HeaderWithNav
-            data={data}
-            fullScreen={fullScreen}
-            setFullScreen={setFullScreen}
-            fullScreenHandle={fullScreenHandle}
-          />
+      <Container className="w-full">
+        {/* <Container className={clsx({ "w-full": iOSFullScreen })}> */}
+        <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
+          <div>iOS: {iOS ? "true" : "false"}</div>
+        </div>
 
-          <div className="grid-cols-2 space-x-1 lg:grid">
-            <div
-              className={clsx({
-                hidden: fullScreen,
-              })}
-            >
-              <NameHeader data={data} />
-              <Mobile fullScreen={fullScreen} setFullScreen={setFullScreen} fullScreenHandle={fullScreenHandle} imageCard={imageCard} data={data} />
-              <Meditation data={data} />
-            </div>
+        <HeaderWithNav
+          data={data}
+          fullScreen={fullScreen}
+          setFullScreen={setFullScreen}
+          fullScreenHandle={fullScreenHandle}
+        />
 
-            <FullScreenLayout
-              setFullScreen={setFullScreen}
+        <div className="grid-cols-2 space-x-1 lg:grid">
+          <div
+            className={clsx({
+              hidden: fullScreen,
+            })}
+          >
+            <NameHeader data={data} />
+            <Mobile
               fullScreen={fullScreen}
-              handle={fullScreenHandle}
+              setFullScreen={setFullScreen}
+              fullScreenHandle={fullScreenHandle}
               imageCard={imageCard}
               data={data}
             />
-
-            <Desktop setFullScreen={setFullScreen} imageCard={imageCard} data={data} />
+            <Meditation data={data} />
           </div>
+
+          <FullScreenLayout
+            setFullScreen={setFullScreen}
+            fullScreen={fullScreen}
+            handle={fullScreenHandle}
+            imageCard={imageCard}
+            data={data}
+          />
+
+          <Desktop
+            setFullScreen={setFullScreen}
+            imageCard={imageCard}
+            data={data}
+          />
+        </div>
       </Container>
     </Layout>
   );
@@ -86,6 +113,7 @@ function FullScreenLayout({
   setFullScreen,
   fullScreen,
 }) {
+  const [iOS] = useAtom(iOSAtom);
   const [currentSeconds] = useAtom(meditationSecondsAtom);
   const [isResting, setIsResting] = useAtom(isRestingAtom);
 
@@ -97,13 +125,13 @@ function FullScreenLayout({
     <FullScreen
       handle={handle}
       onChange={(bool) => setFullScreen(bool)}
-      className={clsx("bg-cal-900", {
+      className={clsx("bg-cal-900 py-20", {
         hidden: !fullScreen,
       })}
     >
-      {/* <div className="flex flex-col h-screen text-white"> */}
-
-      <div className="flex h-screen items-center">
+      <div
+        className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")}
+      >
         <div className="w-full">
           <PronouncedAs data={data} />
           {imageCard}
@@ -119,7 +147,10 @@ function FullScreenLayout({
           <div className="flex w-full place-content-center">
             <button
               className="rounded-full bg-cal-100 p-2"
-              onClick={() => handle.exit()}
+              onClick={() => {
+                setFullScreen(false);
+                handle.exit();
+              }}
             >
               <Minimize2 className="h-4 w-4 text-cal-800" />
             </button>
@@ -131,18 +162,23 @@ function FullScreenLayout({
   );
 }
 
-function Desktop({data, imageCard}){
+function Desktop({ data, imageCard }) {
   return (
     <div className="hidden lg:block">
       <PronouncedAs data={data} />
       {imageCard}
     </div>
-  )
+  );
 }
 
-function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
-
-  const [, setCommandsOpen] = useAtom(commandsOpenAtom)
+function Mobile({
+  data,
+  imageCard,
+  fullScreenHandle,
+  fullScreen,
+  setFullScreen,
+}) {
+  const [, setCommandsOpen] = useAtom(commandsOpenAtom);
 
   return (
     <>
@@ -155,8 +191,8 @@ function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
         <NextButton id={data.id} />
       </div>
 
-      <div className="fixed bottom-10 w-full place-content-center lg:hidden flex">
-        <div className="z-[999] bg-cal-900 rounded-full border border-cal-300">
+      <div className="fixed bottom-10 flex w-full place-content-center lg:hidden">
+        <div className="z-[999] rounded-full border border-cal-300 bg-cal-900">
           <Timer mobile={true} fullScreenHandle={fullScreenHandle}>
             <ExpandButton
               fullScreenHandle={fullScreenHandle}
@@ -166,14 +202,15 @@ function Mobile({data, imageCard, fullScreenHandle, fullScreen, setFullScreen}){
 
             <button
               onClick={() => setCommandsOpen(true)}
-              className="font-serif text-xl font-bold text-cal-400 mt-0.5 p-2"
-            >72</button>
-
+              className="mt-0.5 p-2 font-serif text-xl font-bold text-cal-400"
+            >
+              72
+            </button>
           </Timer>
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export async function getStaticPaths() {
@@ -216,14 +253,15 @@ function NameHeader({ data }) {
 }
 
 function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
-  const [iOS] = useAtom(iOSAtom)
+  const [iOS] = useAtom(iOSAtom);
+  const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
 
   return (
     <button
-      className={iOS ? "hidden" : ""}
+      // className={iOS ? "hidden" : ""}
       onClick={() => {
-        setFullScreen(!fullScreen);
-        fullScreenHandle.enter();
+        setFullScreen(true);
+        iOS ? setIOSFullScreen(true) : fullScreenHandle.enter();
       }}
     >
       <Expand className="h-5 text-cal-400" />
@@ -231,12 +269,17 @@ function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
   );
 }
 
-
-
 function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
+  const [iOSFullScreen] = useAtom(iOSFullScreenAtom);
+
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
-      <div className="lg:col-start-2">
+      <div
+        className={clsx(
+          "lg:col-start-2"
+          // { invisible: iOSFullScreen }
+        )}
+      >
         <Header data={data} />
       </div>
 
