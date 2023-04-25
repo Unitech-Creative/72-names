@@ -20,7 +20,7 @@ import { meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/at
 import { useAtom } from "jotai";
 import { getFullScreenTimerPermission } from "./Timer";
 
-export const TimerDialog = () => {
+export const TimerDialog = ({pause}) => {
   const [, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
@@ -89,7 +89,8 @@ export const TimerDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         asChild
-        className="flex h-auto justify-center text-cal-400"
+        className="flex h-auto justify-center text-cal-400 cursor-pointer"
+        onClick={() => { pause() } }
       >
         <MoreVertical size={16} />
       </DialogTrigger>
