@@ -9,10 +9,12 @@ import clsx from "clsx";
 export default function NamesPage() {
   let { locale, lang, Pronounced } = Language();
 
-  const names = Object.entries(lang).map(([key, value]) => ({
-    id: key,
-    ...value
-  }));
+  const names = Object.entries(lang)
+    .filter(([key, value]) => parseInt(key) >= 1 && parseInt(key) <= 72) // filter by keys between 1 and 72
+    .map(([key, value]) => ({
+      id: key,
+      ...value
+    }));
 
   return (
 

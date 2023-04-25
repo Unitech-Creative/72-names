@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import Pronounced from "@/locales/pronounced.json";
-import English from "@/locales/en.json";
-import Russian from "@/locales/ru.json";
+import EnglishNames from "@/locales/en.json";
+import RussianNames from "@/locales/ru.json";
+import EnglishApp from "@/locales/en.app.json";
+import RussianApp from "@/locales/ru.app.json";
 import Link from "next/link";
 import { Badge } from "@/components/Badge";
 
@@ -14,7 +16,11 @@ const languages = {
 
 export const Language = () => {
   let { locale } = useRouter();
-  const lang = locale === "ru" ? Russian : English;
+  const names = locale === "ru" ? RussianNames : EnglishNames;
+  const app = locale === "ru" ? RussianApp : EnglishApp;
+
+  const lang = Object.assign({}, names, app);
+
 
   return { locale, lang, Pronounced };
 };
