@@ -193,7 +193,7 @@ function Mobile({
         <NextButton id={data.id} />
       </div>
 
-      <div className="fixed bottom-10 flex w-full place-content-center lg:hidden">
+      <div className="fixed bottom-10 left-0  flex w-full place-content-center lg:hidden">
         <div className="z-[999] rounded-full border border-cal-300 bg-cal-900">
           <Timer mobile={true} fullScreenHandle={fullScreenHandle}>
             <ExpandButton
@@ -260,7 +260,6 @@ function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
 
   return (
     <button
-      // className={iOS ? "hidden" : ""}
       onClick={() => {
         setFullScreen(true);
         iOS ? setIOSFullScreen(true) : fullScreenHandle.enter();
