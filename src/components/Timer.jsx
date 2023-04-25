@@ -133,6 +133,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   const reset = () => {
     setIsActive(false);
     setIsResting(false);
+    initializeTimes();
   };
 
   const playDing = () => {
@@ -151,6 +152,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
     currentSeconds,
     toggle,
     reset,
+    pause,
   }
 
   return (mobile ? <MobileUI {...uiProps} children={children} /> : <DesktopUI {...uiProps} />)
@@ -163,7 +165,7 @@ const textColor = function (isActive, isResting) {
 };
 
 
-function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, children }) {
+function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, pause, children }) {
   return (
     <div className="flex w-fit px-4 items-center justify-center rounded-full border border-cal-800 text-cal-400">
       <div className={textColor(isActive, isResting)}>{formatTime(currentSeconds)}</div>
@@ -174,7 +176,7 @@ function MobileUI({ isActive, isResting, currentSeconds, toggle, reset, children
         <button onClick={reset} className="rounded-full p-1 ">
           <RotateCcw size={16} />
         </button>
-        <TimerDialog />
+        <TimerDialog pause={pause} />
         {children}
       </div>
     </div>
