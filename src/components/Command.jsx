@@ -172,25 +172,31 @@ const NameCommandItem = ({ id }) => {
   return (
     <CommandItem
       key={id}
-      onSelect={() => { router.push(`/${id}`); setOpen(false) } }
+      onSelect={() => {
+        router.push(`/${id}`);
+        setOpen(false);
+      }}
       className="group cursor-pointer"
     >
       <div className="w-full">
         <div className="flex space-x-4">
-          <div className="group-hover:text-cal-200 text-cal-500">#{id}</div>
+          <div className="text-cal-500 group-hover:text-cal-200">#{id}</div>
           <div>
-            <div className="flex group-hover:text-cal-200 text-cal-300">{data.purpose}</div>
-            <div className="flex text-cal-500">{data.short}</div>
+            <div className="flex text-cal-300 group-hover:text-cal-200">
+              {data.purpose}
+            </div>
+            <div className="flex font-normal text-cal-500 group-hover:font-semibold">
+              {data.short}
+            </div>
           </div>
         </div>
-        <div className="flex place-content-end mt-4">
-          <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold w-fit">
-            <div className="leading-6 !text-xs text-cal-400">{pronounced}</div>
+        <div className="mt-4 flex place-content-end">
+          <div className="w-fit rounded-full border border-cal-700 px-5 py-1 font-semibold">
+            <div className="!text-xs leading-6 text-cal-400">{pronounced}</div>
           </div>
         </div>
-
       </div>
     </CommandItem>
-  )
+  );
 
 }
