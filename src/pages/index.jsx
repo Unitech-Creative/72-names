@@ -5,7 +5,7 @@ import { ScrollingNames } from "@/components/ScrollingNames";
 export default function Home({}) {
   return (
     <Layout>
-      <Container>
+      <Container className='w-full'>
         <ScrollingNames />
       </Container>
     </Layout>
