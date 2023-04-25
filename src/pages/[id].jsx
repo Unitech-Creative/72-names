@@ -59,9 +59,11 @@ export default function Home({ id }) {
     <Layout>
       <Container className="w-full">
         {/* <Container className={clsx({ "w-full": iOSFullScreen })}> */}
-        <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
-          <div>iOS: {iOS ? "true" : "false"}</div>
-        </div>
+        {process.env.NODE_ENV === "development" && (
+          <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
+            <div>iOS: {iOS ? "true" : "false"}</div>
+          </div>
+        )}
 
         <HeaderWithNav
           data={data}
