@@ -117,12 +117,12 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-cal-300 text-sm outline-none aria-selected:bg-cal-800 aria-selected:text-cal-200 aria-selected:font-bold data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm text-cal-300 outline-none aria-selected:bg-cal-800/30 aria-selected:font-bold aria-selected:text-cal-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}
   />
-))
+));
 
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
