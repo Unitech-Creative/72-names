@@ -8,11 +8,15 @@ import { ReactSVG } from "react-svg";
 function getNames() {
   let { lang, Pronounced } = Language();
 
-  const names = Object.entries(lang).map(([key, value]) => ({
-    id: key,
-    ...value,
-    pronounced: Pronounced[key],
-  }));
+
+  const names = Object.entries(lang)
+    .filter(([key, value]) => parseInt(key) >= 1 && parseInt(key) <= 72) // filter by keys between 1 and 72
+    .map(([key, value]) => ({
+      id: key,
+      ...value,
+      pronounced: Pronounced[key],
+    }));
+
 
   return names;
 }
@@ -142,7 +146,7 @@ function NameGrid() {
             nameClassName={(nameIndex) =>
               nameIndex >= columns[1].length && "lg:hidden"
             }
-            msPerPixel={15}
+            msPerPixel={12}
           />
           <NameColumn
             names={columns[2].flat()}
