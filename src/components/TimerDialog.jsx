@@ -16,11 +16,12 @@ import { Switch } from "@/components/ui/switch"
 
 import { useState, useEffect } from "react";
 import { formatTime } from "./Timer";
-import { meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/atoms/index";
+import { iOSAtom, meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { getFullScreenTimerPermission } from "./Timer";
 
 export const TimerDialog = ({pause}) => {
+  const [iOS] = useAtom(iOSAtom)
   const [, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
@@ -52,7 +53,7 @@ export const TimerDialog = ({pause}) => {
       localStorage.getItem("meditationSeconds")
     );
     const savedRestTime = Number(localStorage.getItem("restSeconds"));
-    const savedHasFullScreenPermission = getFullScreenTimerPermission();
+    const savedHasFullScreenPermission = getFullScreenTimerPermission(iOS);
 
     if (savedMeditationTime) {
       setMeditationValue(savedMeditationTime);
@@ -89,8 +90,10 @@ export const TimerDialog = ({pause}) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         asChild
-        className="flex h-auto justify-center text-cal-400 cursor-pointer"
-        onClick={() => { pause() } }
+        className="flex h-auto cursor-pointer justify-center text-cal-400"
+        onClick={() => {
+          pause();
+        }}
       >
         <MoreVertical size={16} />
       </DialogTrigger>
@@ -135,36 +138,44 @@ export const TimerDialog = ({pause}) => {
           </div>
           <div className="flex flex-col space-y-5">
             <div className="flex place-content-between">
-              <Label htmlFor="fullscreen-mode">Enter Fullscreen When Timer Starts</Label>
-              <Switch checked={fullScreenPermission} onCheckedChange={(e) => {setFullScreenPermission(e)} } id="fullscreen-mode" />
+              <Label htmlFor="fullscreen-mode">
+                Enter Fullscreen When Timer Starts
+              </Label>
+              <Switch
+                checked={fullScreenPermission}
+                onCheckedChange={(e) => {
+                  setFullScreenPermission(e);
+                }}
+                id="fullscreen-mode"
+              />
             </div>
           </div>
         </div>
         <DialogFooter>
           {process.env.NODE_ENV === "development" && (
-            <>
+            <div className="mt-2 flex flex-col space-y-2">
               <Button
-                className="text-xs"
+                className="block h-10 rounded-lg bg-cal-800/50 text-xs"
                 variant="secondary"
                 onClick={() => useDevMode(2, 4)}
               >
                 2/4
               </Button>
               <Button
-                className="text-xs"
+                className="block h-10 rounded-lg bg-cal-800/50 text-xs"
                 variant="secondary"
                 onClick={() => useDevMode(3, 6)}
               >
                 3/6
               </Button>
               <Button
-                className="text-xs"
+                className="block h-10 rounded-lg bg-cal-800/50 text-xs"
                 variant="secondary"
-                onClick={() => useDevMode(3*60, 2.5*60)}
+                onClick={() => useDevMode(3 * 60, 2.5 * 60)}
               >
                 3m / 2.5m
               </Button>
-            </>
+            </div>
           )}
           <Button onClick={() => saveChanges()}>Save changes</Button>
         </DialogFooter>

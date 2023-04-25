@@ -1,21 +1,26 @@
 import { Logo } from "../components/Logo";
 import Link from "next/link";
 import { useAtom } from "jotai";
-import { commandsOpenAtom } from "@/atoms/index";
+import { iOSFullScreenAtom, commandsOpenAtom } from "@/atoms/index";
 import { Eye, List } from "lucide-react";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 
-export function AppHeader(){
+export function AppHeader() {
+  const [iOSFullScreen] = useAtom(iOSFullScreenAtom);
   const router = useRouter();
   const { route } = router;
 
   return (
     <div className="">
-      <div className="flex w-full place-content-center lg:mt-0">
-        <Logo className="!text-center !text-2xl !text-cal-300 block" />
+      <div
+        className={clsx("flex w-full place-content-center lg:mt-0", {
+          "mb-10": iOSFullScreen,
+        })}
+      >
+        <Logo className="block !text-center !text-2xl !text-cal-300" />
       </div>
-      <div className="flex items-center">
+      <div className={clsx("flex items-center", { hidden: iOSFullScreen })}>
         <SearchButton route={route} />
         <Divider />
         <ScanButton route={route} />
@@ -23,7 +28,7 @@ export function AppHeader(){
         <AllNamesButton route={route} />
       </div>
     </div>
-  )
+  );
 }
 
 const buttonStyles = "my-10 flex space-x-4 rounded-full bg-cal-800/50 px-4 py-2 text-sm text-cal-200 hover:bg-cal-800/70 hover:text-cal-100";
