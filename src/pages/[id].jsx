@@ -23,6 +23,7 @@ import {
   isRestingAtom,
   meditationSecondsAtom,
   fullScreenAtom,
+  timerActiveAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -118,6 +119,7 @@ function FullScreenLayout({
   const [iOS] = useAtom(iOSAtom);
   const [currentSeconds] = useAtom(meditationSecondsAtom);
   const [isResting, setIsResting] = useAtom(isRestingAtom);
+  const [timerActive] = useAtom(timerActiveAtom);
 
   const textColor = function () {
     return isResting ? "text-yellow-300" : "text-cal-400";
@@ -134,17 +136,21 @@ function FullScreenLayout({
       <div
         className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")}
       >
-        <div className="w-full">
+        <div className="flex w-full flex-col space-y-14">
           <PronouncedAs data={data} />
           {imageCard}
 
-          <div className="my-10 flex flex-col place-items-center font-serif">
-            <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-              <div className={`leading-6 ${textColor()}`}>
-                {formatTime(currentSeconds)}
+          {timerActive ? (
+            <div className="flex flex-col place-items-center font-serif">
+              <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
+                <div className={`leading-6 ${textColor()}`}>
+                  {formatTime(currentSeconds)}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className=""></div>
+          )}
 
           <div className="flex w-full place-content-center">
             <button
