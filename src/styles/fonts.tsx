@@ -1,4 +1,4 @@
-import { Montserrat, Cinzel } from "@next/font/google";
+import { Montserrat, Cinzel } from "next/font/google";
 
 export const fontSans = Montserrat({
   subsets: ["latin"],
