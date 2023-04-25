@@ -2,9 +2,10 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
-import React, {useState} from "react";
+import React from "react";
 import { MoreVertical, ChevronRight, Expand } from "lucide-react";
-import { Language } from "@/lib/language";
+import { FormattedMessage } from "react-intl";
+import { Language, appLocale } from "@/lib/language";
 import {
   PrevButton,
   NextButton,
@@ -260,7 +261,9 @@ function Header({ data }) {
 function Meditation({ data }) {
   return (
     <div className=" mt-12 mb-10 md:pl-[80px]">
-      <h3 className="mb-5 font-serif text-2xl text-cal-300">Meditation</h3>
+      <h3 className="mb-5 font-serif text-2xl text-cal-300">
+        <FormattedMessage id="meditation" defaultMessage="Meditation" messages={appLocale} />
+      </h3>
 
       <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
     </div>

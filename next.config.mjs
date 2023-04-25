@@ -22,13 +22,7 @@ const config = {
   i18n: {
     locales: ["en", "ru"],
     defaultLocale: "en",
-    localeDetection: false,
-    domains: [
-      {
-        domain: "www.example.com",
-        defaultLocale: "ru",
-      },
-    ],
+    localeDetection: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
