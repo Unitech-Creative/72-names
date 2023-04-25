@@ -18,7 +18,9 @@ export function AppHeader() {
           "mb-10": iOSFullScreen,
         })}
       >
-        <Logo className="block !text-center !text-2xl !text-cal-300" />
+        <Link href="/" alt="72Names.app">
+          <Logo className="block !text-center !text-2xl !text-cal-300" />
+        </Link>
       </div>
       <div className={clsx("flex items-center", { hidden: iOSFullScreen })}>
         <SearchButton route={route} />
