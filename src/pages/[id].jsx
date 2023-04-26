@@ -25,12 +25,14 @@ import {
   fullScreenAtom,
   timerActiveAtom,
   developerAtom,
+  storageUpdatedAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Logo } from "@/components/Logo";
 import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
+import { getFullScreenTimerPermission } from "@/components/Timer"
 
 function getData(id) {
   let { lang, Pronounced } = Language();
@@ -49,6 +51,8 @@ export default function Home({ id }) {
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
   const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
   const [developer] = useAtom(developerAtom);
+  const [storageUpdated] = useAtom(storageUpdatedAtom);
+  const [fullScreenTimerPermission, setfullScreenTimerPermission] = useState(false);
 
   useEffect(() => {
     setIOSFullScreen(iOS && fullScreen);
@@ -58,13 +62,22 @@ export default function Home({ id }) {
     setIOS(isIOS);
   }, [setIOS]);
 
+  useEffect(() => {
+    setfullScreenTimerPermission(
+      getFullScreenTimerPermission()
+    )
+
+  }, [storageUpdated])
+
   return (
     <Layout>
       <Container className="w-full">
-        {/* <Container className={clsx({ "w-full": iOSFullScreen })}> */}
         {developer && (
           <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
-            <div>iOS: {iOS ? "true" : "false"}</div>
+            <div className="grid grid-cols-2">
+              <div>iOS: {iOS ? "true" : "false"}</div>
+              <div>FS Permission: {fullScreenTimerPermission ? 'yes' : 'no'}</div>
+            </div>
           </div>
         )}
 
@@ -77,9 +90,7 @@ export default function Home({ id }) {
 
         <div className="grid-cols-2 space-x-1 lg:grid">
           <div
-            className={clsx({
-              hidden: fullScreen,
-            })}
+
           >
             <NameHeader data={data} />
             <Mobile

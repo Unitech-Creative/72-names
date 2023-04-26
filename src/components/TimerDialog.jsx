@@ -16,12 +16,13 @@ import { Switch } from "@/components/ui/switch"
 
 import { useState, useEffect } from "react";
 import { formatTime } from "./Timer";
-import { iOSAtom, meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/atoms/index";
+import { developerAtom, iOSAtom, meditationSecondsAtom, restSecondsAtom, storageUpdatedAtom } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { getFullScreenTimerPermission } from "./Timer";
 
 export const TimerDialog = ({pause}) => {
-  const [iOS] = useAtom(iOSAtom)
+  const [iOS] = useAtom(iOSAtom);
+  const [developer] = useAtom(developerAtom);
   const [, setStorageUpdated] = useAtom(storageUpdatedAtom);
   const [meditationSeconds, setMeditationSeconds] = useAtom(
     meditationSecondsAtom
@@ -152,7 +153,7 @@ export const TimerDialog = ({pause}) => {
           </div>
         </div>
         <DialogFooter>
-          {process.env.NODE_ENV === "development" && (
+          {developer && (
             <div className="mt-2 flex flex-col space-y-2">
               <Button
                 className="block h-10 rounded-lg bg-cal-800/50 text-xs"
