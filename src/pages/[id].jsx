@@ -3,9 +3,10 @@ import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
 import React, {useState} from "react";
-import { Minimize2, MoreVertical, ChevronRight, Expand } from "lucide-react";
+import * as Icons from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { Language, appLocale } from "@/lib/language";
+import { PronouncedAs } from "@/components/PronouncedAs";
 import {
   PrevButton,
   NextButton,
@@ -15,23 +16,21 @@ import {
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
-import { Timer, formatTime } from "../components/Timer";
+import { Timer } from "../components/Timer";
 import {
   iOSFullScreenAtom,
   iOSAtom,
   commandsOpenAtom,
-  isRestingAtom,
-  meditationSecondsAtom,
   fullScreenAtom,
-  timerActiveAtom,
   developerAtom,
   storageUpdatedAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { useFullScreenHandle } from "react-full-screen";
 import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
 import { getFullScreenTimerPermission } from "@/components/Timer"
+import { FullScreenLayout } from "@/components/FullScreenLayout";
 
 function getData(id) {
   let { lang, Pronounced } = Language();
@@ -101,8 +100,8 @@ export default function Home({ id }) {
         />
 
         <div className="grid-cols-2 space-x-1 lg:grid mt-5 lg:mt-0">
-          <div>
-            <NameHeader data={data} />
+          <div className={clsx({ "hidden": fullScreen })}>
+            <NameId_Purpose_Short data={data} />
             <Mobile
               fullScreen={fullScreen}
               setFullScreen={setFullScreen}
@@ -124,68 +123,10 @@ export default function Home({ id }) {
   );
 }
 
-function FullScreenLayout({
-  handle,
-  imageCard,
-  data,
-  setFullScreen,
-  fullScreen,
-}) {
-  const [iOS] = useAtom(iOSAtom);
-  const [currentSeconds] = useAtom(meditationSecondsAtom);
-  const [isResting] = useAtom(isRestingAtom);
-  const [timerActive] = useAtom(timerActiveAtom);
-
-  const textColor = function () {
-    return isResting ? "text-yellow-300" : "text-cal-400";
-  };
-
-  return (
-    <FullScreen
-      handle={handle}
-      onChange={(bool) => setFullScreen(bool)}
-      className={clsx("bg-cal-900 py-20", {
-        hidden: !fullScreen,
-      })}
-    >
-      <div className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")} >
-        <div className="flex w-full flex-col space-y-14">
-          <PronouncedAs data={data} />
-          {imageCard}
-
-          {timerActive ? (
-            <div className="flex flex-col place-items-center font-serif">
-              <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-                <div className={`leading-6 ${textColor()}`}>
-                  {formatTime(currentSeconds)}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
-
-          <div className="flex w-full place-content-center">
-            <button
-              className="rounded-full bg-cal-100 p-2"
-              onClick={() => {
-                setFullScreen(false);
-                handle.exit();
-              }}
-            >
-              <Minimize2 className="h-4 w-4 text-cal-800" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </FullScreen>
-  );
-}
-
 function Desktop({ data, imageCard }) {
   return (
     <div className="hidden lg:block">
-      <PronouncedAs data={data} />
+      <PronouncedAs pronounced={data.pronounced} />
       {imageCard}
     </div>
   );
@@ -205,7 +146,7 @@ function Mobile({
       <div className="flex place-content-between items-center lg:hidden">
         <PrevButton id={data.id} />
         <div>
-          <PronouncedAs data={data} />
+          <PronouncedAs pronounced={data.pronounced} />
           {imageCard}
         </div>
         <NextButton id={data.id} />
@@ -252,14 +193,14 @@ export async function getStaticProps(context) {
   };
 }
 
-function NameHeader({ data }) {
+function NameId_Purpose_Short({ data }) {
   return (
     <>
       <div className="mb-5 flex w-full font-serif text-2xl text-cal-200 md:text-3xl">
         <div className={`flex w-[80px]`}>
           #{data.id}
           <div className="ml-1.5 text-cal-700">
-            <ChevronRight className="mt-1" />
+            <Icons.ChevronRight className="mt-1" />
           </div>
         </div>
         <div>{data.purpose}</div>
@@ -283,7 +224,7 @@ function ExpandButton({ fullScreenHandle, setFullScreen }) {
         iOS ? setIOSFullScreen(true) : fullScreenHandle.enter();
       }}
     >
-      <Expand className="h-5 text-cal-400" />
+      <Icons.Expand className="h-5 text-cal-400" />
     </button>
   );
 }
@@ -314,16 +255,6 @@ function Meditation({ data }) {
       </h3>
 
       <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
-    </div>
-  );
-}
-
-function PronouncedAs({ data }) {
-  return (
-    <div className="flex flex-col place-items-center font-serif">
-      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold">
-        <div className={`leading-6 text-cal-400`}>{data.pronounced}</div>
-      </div>
     </div>
   );
 }
