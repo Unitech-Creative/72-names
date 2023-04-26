@@ -127,8 +127,8 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   };
 
   const start = () => {
-    setFullScreen(true);
     if (getFullScreenTimerPermission(iOS)) {
+      setFullScreen(true);
       if (!iOS) fullScreenHandle.enter();
     }
     setIsActive(true);
