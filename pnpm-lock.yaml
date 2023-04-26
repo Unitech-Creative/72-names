@@ -67,6 +67,7 @@ specifiers:
   react-full-screen: ^1.1.1
   react-hook-form: ^7.43.5
   react-hot-toast: ^2.4.0
+  react-howler: ^5.2.0
   react-intl: ^6.3.2
   react-loading-skeleton: ^3.2.0
   react-markdown: ^8.0.5
@@ -133,6 +134,7 @@ dependencies:
   react-full-screen: 1.1.1_react@18.2.0
   react-hook-form: 7.43.5_react@18.2.0
   react-hot-toast: 2.4.0_owo25xnefcwdq3zjgtohz6dbju
+  react-howler: 5.2.0
   react-intl: 6.3.2_j5ip3o3v6sktjzl5cxtjyfbuo4
   react-loading-skeleton: 3.2.0_react@18.2.0
   react-markdown: 8.0.5_luyos4mouogwq6z3wafb3re4ce
@@ -4013,6 +4015,10 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /howler/2.2.3:
+    resolution: {integrity: sha512-QM0FFkw0LRX1PR8pNzJVAY25JhIWvbKMBFM4gqk+QdV+kPXOhleWGCB6AiAF/goGjIHK2e/nIElplvjQwhr0jg==}
+    dev: false
+
   /html-element/2.3.1:
     resolution: {integrity: sha512-xnFt2ZkbFcjc+JoAtg3Hl89VeEZDjododu4VCPkRvFmBTHHA9U1Nt6hLUWfW2O+6Sl/rT1hHK/PivleX3PdBJQ==}
     engines: {node: '>=4.2'}
@@ -5491,6 +5497,13 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:
       - csstype
+    dev: false
+
+  /react-howler/5.2.0:
+    resolution: {integrity: sha512-oDK+zML0MHf3nVNM4lMxh+re87NDa7fHowea2WK8197yqnMiZfPVHoMXtfb/PtuoOsWLO06vmEAtovwTRWpTFg==}
+    dependencies:
+      howler: 2.2.3
+      prop-types: 15.8.1
     dev: false
 
   /react-infinite-scroll-component/6.1.0_react@18.2.0:
