@@ -79,7 +79,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
       setIsResting(false);
       initializeTimes();
       setIsActive(false);
-      if (getFullScreenTimerPermission(iOS)) {
+      if (getFullScreenTimerPermission()) {
         setTimeout(() => {
           setFullScreen(false);
           if (!iOS) fullScreenHandle.exit();
@@ -127,8 +127,8 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
   };
 
   const start = () => {
-    setFullScreen(true);
-    if (getFullScreenTimerPermission(iOS)) {
+    if (getFullScreenTimerPermission()) {
+      setFullScreen(true);
       if (!iOS) fullScreenHandle.enter();
     }
     setIsActive(true);
@@ -235,5 +235,5 @@ export const formatTime = (seconds) => {
   return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-export const getFullScreenTimerPermission = (iOS) =>
+export const getFullScreenTimerPermission = () =>
   JSON.parse(localStorage.getItem("fullScreenTimerPermission"));

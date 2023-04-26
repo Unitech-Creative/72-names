@@ -3,9 +3,10 @@ import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
 import React, {useState} from "react";
-import { Minimize2, MoreVertical, ChevronRight, Expand } from "lucide-react";
+import * as Icons from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { Language, appLocale } from "@/lib/language";
+import { PronouncedAs } from "@/components/PronouncedAs";
 import {
   PrevButton,
   NextButton,
@@ -15,21 +16,21 @@ import {
 } from "@/components/NameNavigation";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
-import { Timer, formatTime } from "../components/Timer";
+import { Timer } from "../components/Timer";
 import {
   iOSFullScreenAtom,
   iOSAtom,
   commandsOpenAtom,
-  isRestingAtom,
-  meditationSecondsAtom,
   fullScreenAtom,
-  timerActiveAtom,
+  developerAtom,
+  storageUpdatedAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { Logo } from "@/components/Logo";
+import { useFullScreenHandle } from "react-full-screen";
 import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
+import { getFullScreenTimerPermission } from "@/components/Timer"
+import { FullScreenLayout } from "@/components/FullScreenLayout";
 
 function getData(id) {
   let { lang, Pronounced } = Language();
@@ -47,6 +48,9 @@ export default function Home({ id }) {
   const fullScreenHandle = useFullScreenHandle();
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
   const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
+  const [developer] = useAtom(developerAtom);
+  const [storageUpdated] = useAtom(storageUpdatedAtom);
+  const [fullScreenTimerPermission, setfullScreenTimerPermission] = useState(false);
 
   useEffect(() => {
     setIOSFullScreen(iOS && fullScreen);
@@ -56,30 +60,48 @@ export default function Home({ id }) {
     setIOS(isIOS);
   }, [setIOS]);
 
+  useEffect(() => {
+    setfullScreenTimerPermission(
+      getFullScreenTimerPermission()
+    )
+
+  }, [storageUpdated])
+
+  const DeveloperTools  = () => {
+    if( !developer ) return null;
+
+    return (
+      <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
+        <div className="grid grid-cols-2">
+          <div>iOS: {iOS ? "true" : "false"}</div>
+          <div>FS Permission: {fullScreenTimerPermission ? 'yes' : 'no'}</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Layout>
       <Container className="w-full">
-        {/* <Container className={clsx({ "w-full": iOSFullScreen })}> */}
-        {process.env.NODE_ENV === "development" && (
-          <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
-            <div>iOS: {iOS ? "true" : "false"}</div>
-          </div>
-        )}
+        <DeveloperTools />
+        <FullScreenLayout
+          setFullScreen={setFullScreen}
+          fullScreen={fullScreen}
+          handle={fullScreenHandle}
+          imageCard={imageCard}
+          data={data}
+        />
 
-        <HeaderWithNav
+        <DesktopToolbar
           data={data}
           fullScreen={fullScreen}
           setFullScreen={setFullScreen}
           fullScreenHandle={fullScreenHandle}
         />
 
-        <div className="grid-cols-2 space-x-1 lg:grid">
-          <div
-            className={clsx({
-              hidden: fullScreen,
-            })}
-          >
-            <NameHeader data={data} />
+        <div className="grid-cols-2 space-x-1 lg:grid mt-5 lg:mt-0">
+          <div className={clsx({ "hidden": fullScreen })}>
+            <NameId_Purpose_Short data={data} />
             <Mobile
               fullScreen={fullScreen}
               setFullScreen={setFullScreen}
@@ -89,14 +111,6 @@ export default function Home({ id }) {
             />
             <Meditation data={data} />
           </div>
-
-          <FullScreenLayout
-            setFullScreen={setFullScreen}
-            fullScreen={fullScreen}
-            handle={fullScreenHandle}
-            imageCard={imageCard}
-            data={data}
-          />
 
           <Desktop
             setFullScreen={setFullScreen}
@@ -109,71 +123,10 @@ export default function Home({ id }) {
   );
 }
 
-function FullScreenLayout({
-  handle,
-  imageCard,
-  data,
-  setFullScreen,
-  fullScreen,
-}) {
-  const [iOS] = useAtom(iOSAtom);
-  const [currentSeconds] = useAtom(meditationSecondsAtom);
-  const [isResting, setIsResting] = useAtom(isRestingAtom);
-  const [timerActive] = useAtom(timerActiveAtom);
-
-  const textColor = function () {
-    return isResting ? "text-yellow-300" : "text-cal-400";
-  };
-
-  return (
-    <FullScreen
-      handle={handle}
-      onChange={(bool) => setFullScreen(bool)}
-      className={clsx("bg-cal-900 py-20", {
-        hidden: !fullScreen,
-      })}
-    >
-      <div
-        className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")}
-      >
-        <div className="flex w-full flex-col space-y-14">
-          <PronouncedAs data={data} />
-          {imageCard}
-
-          {timerActive ? (
-            <div className="flex flex-col place-items-center font-serif">
-              <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold ">
-                <div className={`leading-6 ${textColor()}`}>
-                  {formatTime(currentSeconds)}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className=""></div>
-          )}
-
-          <div className="flex w-full place-content-center">
-            <button
-              className="rounded-full bg-cal-100 p-2"
-              onClick={() => {
-                setFullScreen(false);
-                handle.exit();
-              }}
-            >
-              <Minimize2 className="h-4 w-4 text-cal-800" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* </div> */}
-    </FullScreen>
-  );
-}
-
 function Desktop({ data, imageCard }) {
   return (
     <div className="hidden lg:block">
-      <PronouncedAs data={data} />
+      <PronouncedAs pronounced={data.pronounced} />
       {imageCard}
     </div>
   );
@@ -190,10 +143,10 @@ function Mobile({
 
   return (
     <>
-      <div className="flex place-content-between items-center lg:hidden ">
+      <div className="flex place-content-between items-center lg:hidden">
         <PrevButton id={data.id} />
         <div>
-          <PronouncedAs data={data} />
+          <PronouncedAs pronounced={data.pronounced} />
           {imageCard}
         </div>
         <NextButton id={data.id} />
@@ -240,14 +193,14 @@ export async function getStaticProps(context) {
   };
 }
 
-function NameHeader({ data }) {
+function NameId_Purpose_Short({ data }) {
   return (
     <>
       <div className="mb-5 flex w-full font-serif text-2xl text-cal-200 md:text-3xl">
         <div className={`flex w-[80px]`}>
           #{data.id}
           <div className="ml-1.5 text-cal-700">
-            <ChevronRight className="mt-1" />
+            <Icons.ChevronRight className="mt-1" />
           </div>
         </div>
         <div>{data.purpose}</div>
@@ -260,9 +213,9 @@ function NameHeader({ data }) {
   );
 }
 
-function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
+function ExpandButton({ fullScreenHandle, setFullScreen }) {
   const [iOS] = useAtom(iOSAtom);
-  const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
+  const [, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
 
   return (
     <button
@@ -271,50 +224,27 @@ function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
         iOS ? setIOSFullScreen(true) : fullScreenHandle.enter();
       }}
     >
-      <Expand className="h-5 text-cal-400" />
+      <Icons.Expand className="h-5 text-cal-400" />
     </button>
   );
 }
 
-function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
-  const [iOSFullScreen] = useAtom(iOSFullScreenAtom);
-
+function DesktopToolbar({ data, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
-    <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
-      <div
-        className={clsx(
-          "lg:col-start-2"
-          // { invisible: iOSFullScreen }
-        )}
-      >
-        <Header data={data} />
-      </div>
 
-      <div>
-        <div className="flex place-content-end space-x-4">
-          <div className="hidden">
-            {/* This empty parent div is required, it's keeping the roundedness of this circle */}
-            <div className="flex items-center rounded-full border border-cal-800 p-2">
-              <MoreVertical className="h-5 text-cal-400" />
-            </div>
-          </div>
-          <div className="z-10 hidden space-x-2 lg:flex">
-            <Timer fullScreenHandle={fullScreenHandle} />
-            <ButtonNavigation id={data.id} />
-            <ExpandButton
-              fullScreenHandle={fullScreenHandle}
-              fullScreen={fullScreen}
-              setFullScreen={setFullScreen}
-            />
-          </div>
-        </div>
+    <div className="flex place-content-end space-x-4 lg:mb-20">
+      <div className="z-10 hidden space-x-4 lg:flex">
+        <Timer fullScreenHandle={fullScreenHandle} />
+        <ExpandButton
+          fullScreenHandle={fullScreenHandle}
+          fullScreen={fullScreen}
+          setFullScreen={setFullScreen}
+        />
+        <ButtonNavigation id={data.id} />
       </div>
     </div>
-  );
-}
 
-function Header({ data }) {
-  return <Logo className="mb-5 flex w-full hidden lg:place-content-center" />
+  );
 }
 
 function Meditation({ data }) {
@@ -325,16 +255,6 @@ function Meditation({ data }) {
       </h3>
 
       <div className={`my-5 leading-6 text-cal-400`}>{data.meditation}</div>
-    </div>
-  );
-}
-
-function PronouncedAs({ data }) {
-  return (
-    <div className="flex flex-col place-items-center font-serif">
-      <div className="rounded-full border border-cal-700 px-5 py-1 font-semibold">
-        <div className={`leading-6 text-cal-400`}>{data.pronounced}</div>
-      </div>
     </div>
   );
 }
