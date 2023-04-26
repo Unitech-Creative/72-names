@@ -24,6 +24,7 @@ import {
   meditationSecondsAtom,
   fullScreenAtom,
   timerActiveAtom,
+  developerAtom,
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -47,6 +48,7 @@ export default function Home({ id }) {
   const fullScreenHandle = useFullScreenHandle();
   const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
   const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
+  const [developer] = useAtom(developerAtom);
 
   useEffect(() => {
     setIOSFullScreen(iOS && fullScreen);
@@ -60,7 +62,7 @@ export default function Home({ id }) {
     <Layout>
       <Container className="w-full">
         {/* <Container className={clsx({ "w-full": iOSFullScreen })}> */}
-        {process.env.NODE_ENV === "development" && (
+        {developer && (
           <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
             <div>iOS: {iOS ? "true" : "false"}</div>
           </div>

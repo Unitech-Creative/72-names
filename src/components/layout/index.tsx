@@ -17,6 +17,7 @@ import {
   sigInModalToggleAtom,
   adminAtom,
   unauthenticatedAtom,
+  developerAtom,
 } from "@/atoms/index";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -52,6 +53,16 @@ export default function Layout({
   /* POSTHOG */
   const router = useRouter();
   const posthog = usePostHog();
+
+  /* Developer Toggle */
+  const [developer, setDeveloper] = useAtom(developerAtom);
+
+  useEffect(() => {
+    const developerQuery = router.query.dev == "1"
+    if (developerQuery) {
+      setDeveloper(developerQuery);
+    }
+  }, [router.query.dev, setDeveloper]);
 
   // useEffect(() => {
   //   const routerSignedIn = router.query.signedIn == "True";
