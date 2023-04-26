@@ -54,7 +54,7 @@ export const TimerDialog = ({pause}) => {
       localStorage.getItem("meditationSeconds")
     );
     const savedRestTime = Number(localStorage.getItem("restSeconds"));
-    const savedHasFullScreenPermission = getFullScreenTimerPermission(iOS);
+    const savedHasFullScreenPermission = getFullScreenTimerPermission();
 
     if (savedMeditationTime) {
       setMeditationValue(savedMeditationTime);
