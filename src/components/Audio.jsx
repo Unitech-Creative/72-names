@@ -8,14 +8,14 @@ export const Audio = () => {
   const [startAudioPlayer, setStartPlayer] = useAtom(Atom.startAudioPlayerAtom);
   const [doneAudioPlayer, setDonePlayer] = useAtom(Atom.doneAudioPlayerAtom);
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if( !startAudioPlayer ) return
+  //   if( !startAudioPlayer ) return
 
-    startAudioPlayer.play()
-    console.log("Audio Played")
+  //   startAudioPlayer.play()
+  //   console.log("Audio Played")
 
-  }, [startAudioPlayer])
+  // }, [startAudioPlayer])
 
 
   return (
