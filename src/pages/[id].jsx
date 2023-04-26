@@ -29,7 +29,6 @@ import {
 } from "@/atoms/index";
 import { useAtom } from "jotai";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { Logo } from "@/components/Logo";
 import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
 import { getFullScreenTimerPermission } from "@/components/Timer"
@@ -86,7 +85,6 @@ export default function Home({ id }) {
     <Layout>
       <Container className="w-full">
         <DeveloperTools />
-
         <FullScreenLayout
           setFullScreen={setFullScreen}
           fullScreen={fullScreen}
@@ -102,7 +100,7 @@ export default function Home({ id }) {
           fullScreenHandle={fullScreenHandle}
         />
 
-        <div className="grid-cols-2 space-x-1 lg:grid">
+        <div className="grid-cols-2 space-x-1 lg:grid mt-5 lg:mt-0">
           <div>
             <NameHeader data={data} />
             <Mobile
@@ -150,9 +148,7 @@ function FullScreenLayout({
         hidden: !fullScreen,
       })}
     >
-      <div
-        className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")}
-      >
+      <div className={clsx("flex w-full items-center", iOS ? "py-20" : "h-screen")} >
         <div className="flex w-full flex-col space-y-14">
           <PronouncedAs data={data} />
           {imageCard}
@@ -166,7 +162,7 @@ function FullScreenLayout({
               </div>
             </div>
           ) : (
-            <div className=""></div>
+            <div></div>
           )}
 
           <div className="flex w-full place-content-center">
@@ -182,7 +178,6 @@ function FullScreenLayout({
           </div>
         </div>
       </div>
-      {/* </div> */}
     </FullScreen>
   );
 }
@@ -207,7 +202,7 @@ function Mobile({
 
   return (
     <>
-      <div className="flex place-content-between items-center lg:hidden ">
+      <div className="flex place-content-between items-center lg:hidden">
         <PrevButton id={data.id} />
         <div>
           <PronouncedAs data={data} />
@@ -277,9 +272,9 @@ function NameHeader({ data }) {
   );
 }
 
-function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
+function ExpandButton({ fullScreenHandle, setFullScreen }) {
   const [iOS] = useAtom(iOSAtom);
-  const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
+  const [, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
 
   return (
     <button
@@ -295,36 +290,20 @@ function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
 
 function DesktopToolbar({ data, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
-    <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
-      <div className="lg:col-start-2">
-        <Header data={data} />
-      </div>
 
-      <div>
-        <div className="flex place-content-end space-x-4">
-          <div className="hidden">
-            {/* This empty parent div is required, it's keeping the roundedness of this circle */}
-            <div className="flex items-center rounded-full border border-cal-800 p-2">
-              <MoreVertical className="h-5 text-cal-400" />
-            </div>
-          </div>
-          <div className="z-10 hidden space-x-2 lg:flex">
-            <Timer fullScreenHandle={fullScreenHandle} />
-            <ButtonNavigation id={data.id} />
-            <ExpandButton
-              fullScreenHandle={fullScreenHandle}
-              fullScreen={fullScreen}
-              setFullScreen={setFullScreen}
-            />
-          </div>
-        </div>
+    <div className="flex place-content-end space-x-4 lg:mb-20">
+      <div className="z-10 hidden space-x-4 lg:flex">
+        <Timer fullScreenHandle={fullScreenHandle} />
+        <ExpandButton
+          fullScreenHandle={fullScreenHandle}
+          fullScreen={fullScreen}
+          setFullScreen={setFullScreen}
+        />
+        <ButtonNavigation id={data.id} />
       </div>
     </div>
-  );
-}
 
-function Header({ data }) {
-  return <Logo className="mb-5 flex w-full hidden lg:place-content-center" />
+  );
 }
 
 function Meditation({ data }) {
