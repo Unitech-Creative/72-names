@@ -69,19 +69,33 @@ export default function Home({ id }) {
 
   }, [storageUpdated])
 
+  const DeveloperTools  = () => {
+    if( !developer ) return null;
+
+    return (
+      <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
+        <div className="grid grid-cols-2">
+          <div>iOS: {iOS ? "true" : "false"}</div>
+          <div>FS Permission: {fullScreenTimerPermission ? 'yes' : 'no'}</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Layout>
       <Container className="w-full">
-        {developer && (
-          <div className="fixed top-0 right-0 bg-cal-200 px-2 py-1 text-xs text-black">
-            <div className="grid grid-cols-2">
-              <div>iOS: {iOS ? "true" : "false"}</div>
-              <div>FS Permission: {fullScreenTimerPermission ? 'yes' : 'no'}</div>
-            </div>
-          </div>
-        )}
+        <DeveloperTools />
 
-        <HeaderWithNav
+        <FullScreenLayout
+          setFullScreen={setFullScreen}
+          fullScreen={fullScreen}
+          handle={fullScreenHandle}
+          imageCard={imageCard}
+          data={data}
+        />
+
+        <DesktopToolbar
           data={data}
           fullScreen={fullScreen}
           setFullScreen={setFullScreen}
@@ -89,9 +103,7 @@ export default function Home({ id }) {
         />
 
         <div className="grid-cols-2 space-x-1 lg:grid">
-          <div
-
-          >
+          <div>
             <NameHeader data={data} />
             <Mobile
               fullScreen={fullScreen}
@@ -102,14 +114,6 @@ export default function Home({ id }) {
             />
             <Meditation data={data} />
           </div>
-
-          <FullScreenLayout
-            setFullScreen={setFullScreen}
-            fullScreen={fullScreen}
-            handle={fullScreenHandle}
-            imageCard={imageCard}
-            data={data}
-          />
 
           <Desktop
             setFullScreen={setFullScreen}
@@ -131,7 +135,7 @@ function FullScreenLayout({
 }) {
   const [iOS] = useAtom(iOSAtom);
   const [currentSeconds] = useAtom(meditationSecondsAtom);
-  const [isResting, setIsResting] = useAtom(isRestingAtom);
+  const [isResting] = useAtom(isRestingAtom);
   const [timerActive] = useAtom(timerActiveAtom);
 
   const textColor = function () {
@@ -289,17 +293,10 @@ function ExpandButton({ fullScreenHandle, setFullScreen, fullScreen }) {
   );
 }
 
-function HeaderWithNav({ data, fullScreen, setFullScreen, fullScreenHandle }) {
-  const [iOSFullScreen] = useAtom(iOSFullScreenAtom);
-
+function DesktopToolbar({ data, fullScreen, setFullScreen, fullScreenHandle }) {
   return (
     <div className="grid grid-cols-2 lg:mb-20 lg:grid-cols-3">
-      <div
-        className={clsx(
-          "lg:col-start-2"
-          // { invisible: iOSFullScreen }
-        )}
-      >
+      <div className="lg:col-start-2">
         <Header data={data} />
       </div>
 
