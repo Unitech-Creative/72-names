@@ -1,33 +1,27 @@
 import { useCallback, useState, useEffect } from "react";
-import { Play, Pause, RotateCcw, MoreVertical } from "lucide-react";
+import * as Icons from "lucide-react";
 import { TimerDialog } from "./TimerDialog";
-import {
-  fullScreenAtom,
-  meditationSecondsAtom,
-  restSecondsAtom,
-  timerSecondsAtom,
-  storageUpdatedAtom,
-  isRestingAtom,
-  iOSAtom,
-  timerActiveAtom,
-} from "@/atoms/index";
+import * as Atom from "@/atoms/index";
 import { useAtom } from "jotai";
 
 export const Timer = ({ fullScreenHandle, mobile, children }) => {
-  const [iOS] = useAtom(iOSAtom);
-  const [storageUpdated, setStorageUpdated] = useAtom(storageUpdatedAtom);
-  const [, setFullScreen] = useAtom(fullScreenAtom);
-  const [meditationSeconds, setMeditationSeconds] = useAtom(
+  const [iOS] = useAtom(Atom.iOSAtom);
+  const [storageUpdated, setStorageUpdated] = useAtom(Atom.storageUpdatedAtom);
+  const [, setFullScreen] = useAtom(Atom.fullScreenAtom);
+  const [meditationSeconds, setMeditationSeconds] = useAtom(Atom.
     meditationSecondsAtom
   );
-  const [restSeconds, setRestSeconds] = useAtom(restSecondsAtom);
-  const [, setTimerSeconds] = useAtom(timerSecondsAtom);
+  const [restSeconds, setRestSeconds] = useAtom(Atom.restSecondsAtom);
+  const [, setTimerSeconds] = useAtom(Atom.timerSecondsAtom);
 
   const [isActive, setIsActive] = useState(false);
-  const [isResting, setIsResting] = useAtom(isRestingAtom);
+  const [isResting, setIsResting] = useAtom(Atom.isRestingAtom);
   const [currentSeconds, setCurrentSeconds] = useState(meditationSeconds);
-  const [, setGlobalSeconds] = useAtom(meditationSecondsAtom);
-  const [, setTimerActive] = useAtom(timerActiveAtom);
+  const [, setGlobalSeconds] = useAtom(Atom.meditationSecondsAtom);
+  const [, setTimerActive] = useAtom(Atom.timerActiveAtom);
+  const [startAudioPlayer] = useAtom(Atom.startAudioPlayerAtom);
+  const [doneAudioPlayer] = useAtom(Atom.doneAudioPlayerAtom);
+
 
   useEffect(() => {
     setTimerActive(isActive);
@@ -89,7 +83,7 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
 
     if (isActive) {
       interval = setInterval(() => {
-        if (currentSeconds === 1) isResting ? playDone() : playDing();
+        if (currentSeconds === 1) isResting ? playDoneAudio() : playStartAudio();
 
         if (currentSeconds === 0) {
           if (!isResting) {
@@ -144,14 +138,12 @@ export const Timer = ({ fullScreenHandle, mobile, children }) => {
     initializeTimes();
   };
 
-  const playDing = () => {
-    const audio = new Audio("/audio/ding.mp3");
-    audio.play();
+  const playStartAudio = () => {
+    startAudioPlayer.play();
   };
 
-  const playDone = () => {
-    const audio = new Audio("/audio/done.mp3");
-    audio.play();
+  const playDoneAudio = () => {
+    doneAudioPlayer.play();
   };
 
   const uiProps = {
@@ -191,10 +183,10 @@ function MobileUI({
       </div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded-full p-3 ">
-          {isActive ? <Pause size={24} /> : <Play size={24} />}
+          {isActive ? <Icons.Pause size={24} /> : <Icons.Play size={24} />}
         </button>
         <button onClick={reset} className="rounded-full p-1 ">
-          <RotateCcw size={16} />
+          <Icons.RotateCcw size={16} />
         </button>
         <TimerDialog pause={pause} />
         {children}
@@ -218,10 +210,10 @@ function DesktopUI({
       </div>
       <div className="ml-2 flex space-x-4">
         <button onClick={toggle} className="rounded py-2 hover:text-cal-300">
-          {isActive ? <Pause size={16} /> : <Play size={16} />}
+          {isActive ? <Icons.Pause size={16} /> : <Icons.Play size={16} />}
         </button>
         <button onClick={reset} className="rounded py-2 hover:text-cal-300">
-          <RotateCcw size={16} />
+          <Icons.RotateCcw size={16} />
         </button>
         <TimerDialog pause={pause} />
       </div>

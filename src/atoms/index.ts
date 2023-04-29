@@ -26,3 +26,6 @@ export const commandsOpenAtom = atomWithToggle(false);
 export const iOSAtom = atomWithToggle(false);
 export const iOSFullScreenAtom = atomWithToggle(false);
 export const developerAtom = atomWithToggle(false);
+
+export const startAudioPlayerAtom = atom(false);
+export const doneAudioPlayerAtom = atom(false);

@@ -7,6 +7,7 @@ import * as Icons from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { Language, appLocale } from "@/lib/language";
 import { PronouncedAs } from "@/components/PronouncedAs";
+import { Audio } from "@/components/Audio";
 import {
   PrevButton,
   NextButton,
@@ -17,14 +18,7 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
 import { Timer } from "../components/Timer";
-import {
-  iOSFullScreenAtom,
-  iOSAtom,
-  commandsOpenAtom,
-  fullScreenAtom,
-  developerAtom,
-  storageUpdatedAtom,
-} from "@/atoms/index";
+import * as Atom from "@/atoms/index";
 import { useAtom } from "jotai";
 import { useFullScreenHandle } from "react-full-screen";
 import { isIOS } from "react-device-detect";
@@ -41,16 +35,20 @@ function getData(id) {
 }
 
 export default function Home({ id }) {
-  const [iOS, setIOS] = useAtom(iOSAtom);
+  const [iOS, setIOS] = useAtom(Atom.iOSAtom);
   id = parseInt(id);
   const data = getData(id);
   const imageCard = <ImageCard data={data} />;
   const fullScreenHandle = useFullScreenHandle();
-  const [fullScreen, setFullScreen] = useAtom(fullScreenAtom);
-  const [iOSFullScreen, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
-  const [developer] = useAtom(developerAtom);
-  const [storageUpdated] = useAtom(storageUpdatedAtom);
+  const [fullScreen, setFullScreen] = useAtom(Atom.fullScreenAtom);
+  const [iOSFullScreen, setIOSFullScreen] = useAtom(Atom.iOSFullScreenAtom);
+  const [developer] = useAtom(Atom.developerAtom);
+  const [storageUpdated] = useAtom(Atom.storageUpdatedAtom);
   const [fullScreenTimerPermission, setfullScreenTimerPermission] = useState(false);
+
+  const [startAudioPlayer, setStartPlayer] = useAtom(Atom.startAudioPlayerAtom);
+  const [doneAudioPlayer, setDonePlayer] = useAtom(Atom.doneAudioPlayerAtom);
+
 
   useEffect(() => {
     setIOSFullScreen(iOS && fullScreen);
@@ -83,6 +81,7 @@ export default function Home({ id }) {
   return (
     <Layout>
       <Container className="w-full">
+        <Audio />
         <DeveloperTools />
         <FullScreenLayout
           setFullScreen={setFullScreen}
@@ -139,7 +138,7 @@ function Mobile({
   fullScreen,
   setFullScreen,
 }) {
-  const [, setCommandsOpen] = useAtom(commandsOpenAtom);
+  const [, setCommandsOpen] = useAtom(Atom.commandsOpenAtom);
 
   return (
     <>
@@ -214,8 +213,8 @@ function NameId_Purpose_Short({ data }) {
 }
 
 function ExpandButton({ fullScreenHandle, setFullScreen }) {
-  const [iOS] = useAtom(iOSAtom);
-  const [, setIOSFullScreen] = useAtom(iOSFullScreenAtom);
+  const [iOS] = useAtom(Atom.iOSAtom);
+  const [, setIOSFullScreen] = useAtom(Atom.iOSFullScreenAtom);
 
   return (
     <button
