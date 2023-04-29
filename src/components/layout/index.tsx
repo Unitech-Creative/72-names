@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-
+import * as Analytics from "@/lib/analyticsClient";
 import Link from "next/link";
 import { ReactNode, useEffect } from "react";
 import Meta from "./meta";
@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { MobilePopover, UserFlow } from "./Header/helper";
 import { Logo } from "../Logo";
 import { AppHeader } from "@/components/AppHeader";
-import { LanguageButtons } from "@/lib/language"
+import { LanguageButtons } from "@/lib/language";
 
 import { useAtom } from "jotai";
 import {
@@ -44,7 +44,7 @@ export default function Layout({
   const [, setAdminAtom] = useAtom(adminAtom);
   const [, setUnauthenticatedAtom] = useAtom(unauthenticatedAtom);
 
-  const scrolled = false
+  const scrolled = false;
 
   const { data: session, status: sessionStatus } = useSession();
   setSignedInAtom(sessionStatus === "authenticated");
@@ -58,7 +58,7 @@ export default function Layout({
   const [developer, setDeveloper] = useAtom(developerAtom);
 
   useEffect(() => {
-    const developerQuery = router.query.dev == "1"
+    const developerQuery = router.query.dev == "1";
     if (developerQuery) {
       setDeveloper(developerQuery);
     }
@@ -91,6 +91,7 @@ export default function Layout({
 
   return (
     <>
+      <Analytics.AppAnalytics />
       <Meta {...meta} />
       {sigInModalToggle && <SignInModal />}
       {/* TODO: remove this if it's not going to be used */}
