@@ -5,18 +5,8 @@ import { useAtom } from "jotai";
 
 export const Audio = () => {
 
-  const [startAudioPlayer, setStartPlayer] = useAtom(Atom.startAudioPlayerAtom);
-  const [doneAudioPlayer, setDonePlayer] = useAtom(Atom.doneAudioPlayerAtom);
-
-  // React.useEffect(() => {
-
-  //   if( !startAudioPlayer ) return
-
-  //   startAudioPlayer.play()
-  //   console.log("Audio Played")
-
-  // }, [startAudioPlayer])
-
+  const [, setStartPlayer] = useAtom(Atom.startAudioPlayerAtom);
+  const [, setDonePlayer] = useAtom(Atom.doneAudioPlayerAtom);
 
   return (
     <>
