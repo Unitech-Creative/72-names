@@ -34,7 +34,7 @@ const groups = [
   },
   {
     title: "Money",
-    items: [38,41,45,46,63,70]
+    items: [27,38,41,45,46,63,70]
   },
   {
     title: "Sharing",
