@@ -34,7 +34,7 @@ const groups = [
   },
   {
     title: "Money",
-    items: [41,45, 38, 70]
+    items: [38,41,45,46,63,70]
   },
   {
     title: "Sharing",
@@ -100,6 +100,11 @@ function Commands({ search, setSearch, pages, setPages, page}) {
         <CommandEmpty>
           No results found for "{search}"
         </CommandEmpty>
+
+        <CommandGroup heading="Dialing God">
+          <NameCommandItem id={19} />
+        </CommandGroup>
+
         <Suggestions page={page} setPages={setPages} pages={pages} setSearch={setSearch} />
         <CommandSeparator />
         <Names page={page} />
