@@ -2,7 +2,7 @@ import { ReactSVG } from "react-svg";
 import Layout from "../components/layout";
 import { Container } from "@/components/layout/Container";
 import clsx from "clsx";
-import React, {useState} from "react";
+import { useState } from "react";
 import * as Icons from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { Language, appLocale } from "@/lib/language";
@@ -25,6 +25,7 @@ import { isIOS } from "react-device-detect";
 import { useEffect } from "react";
 import { getFullScreenTimerPermission } from "@/components/Timer"
 import { FullScreenLayout } from "@/components/FullScreenLayout";
+import HebrewName from "@/components/HebrewName";
 
 function getData(id) {
   let { lang, Pronounced } = Language();
@@ -46,9 +47,7 @@ export default function Home({ id }) {
   const [storageUpdated] = useAtom(Atom.storageUpdatedAtom);
   const [fullScreenTimerPermission, setfullScreenTimerPermission] = useState(false);
 
-  const [startAudioPlayer, setStartPlayer] = useAtom(Atom.startAudioPlayerAtom);
-  const [doneAudioPlayer, setDonePlayer] = useAtom(Atom.doneAudioPlayerAtom);
-
+  
 
   useEffect(() => {
     setIOSFullScreen(iOS && fullScreen);
@@ -79,7 +78,11 @@ export default function Home({ id }) {
   }
 
   return (
-    <Layout>
+    <Layout
+      meta={{
+        title: `#${data.id} - ${data.pronounced}`,
+      }}
+    >
       <Container className="w-full">
         <Audio />
         <DeveloperTools />
@@ -126,7 +129,15 @@ function Desktop({ data, imageCard }) {
   return (
     <div className="hidden lg:block">
       <PronouncedAs pronounced={data.pronounced} />
-      {imageCard}
+      
+      <HebrewName
+        pronounced={data.pronounced}
+        containerClassName="gap-0"
+        dotClassName="h-16 w-16"
+        charClassName="text-[14rem] leading-none"
+        pairGapClassName="gap-4"
+      />
+
     </div>
   );
 }
@@ -144,9 +155,15 @@ function Mobile({
     <>
       <div className="flex place-content-between items-center lg:hidden">
         <PrevButton id={data.id} />
-        <div>
+        <div className="flex flex-col items-center gap-4">
           <PronouncedAs pronounced={data.pronounced} />
-          {imageCard}
+          <HebrewName
+            pronounced={data.pronounced}
+            containerClassName="gap-4"
+            dotClassName="h-6 w-6"
+            charClassName="text-7xl leading-none"
+            pairGapClassName="gap-2"
+          />
         </div>
         <NextButton id={data.id} />
       </div>

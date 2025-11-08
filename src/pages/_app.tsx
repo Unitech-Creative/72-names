@@ -9,7 +9,7 @@ import { IntlProvider } from "react-intl";
 import { Analytics } from "@vercel/analytics/react";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
-import { fontSans, fontSerif } from "@/styles/fonts";
+import { fontSans, fontSerif, fontStam } from "@/styles/fonts";
 import { Language } from "@/lib/language";
 
 import { trpc } from "../utils/trpc";
@@ -74,7 +74,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <SessionProvider session={session}>
           <IntlProvider locale={locale} messages={lang}>
             <main
-              className={`${fontSans.variable} ${fontSerif.variable} font-sans`}
+              className={`${fontSans.variable} ${fontSerif.variable} ${fontStam.variable} font-sans`}
             >
               <Component {...pageProps} />
             </main>
